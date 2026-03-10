@@ -6,7 +6,6 @@ import { MomentEngineSequence } from '../components/sections/MomentEngineSequenc
 import { FourPillarsSection } from '../components/sections/FourPillarsSection'
 import { DealExamplesSection } from '../components/sections/DealExamplesSection'
 import { EcosystemSection } from '../components/sections/EcosystemSection'
-import { FanCloudSandboxSection } from '../components/sections/FanCloudSandboxSection'
 import { SectionNav } from '../components/layout/SectionNav'
 
 export function MomentEnginePage() {
@@ -20,7 +19,6 @@ export function MomentEnginePage() {
       <FourPillarsSection content={momentEngineContent.fourPillars} />
       <EcosystemSection content={momentEngineContent.ecosystem} />
       <DealExamplesSection content={momentEngineContent.dealExamples} />
-      <FanCloudSandboxSection />
     </main>
   )
 }

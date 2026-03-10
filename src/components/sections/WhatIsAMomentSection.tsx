@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useScrollProgress } from '../../hooks/useScrollProgress'
 import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
@@ -8,18 +8,18 @@ import type { MomentEngineContent } from '../../content/momentEngine'
 
 function State1Copy({ content }: { content: MomentEngineContent['whatIsAMoment'] }) {
   return (
-    <div>
-      <span
-        className="inline-block rounded-full px-4 py-2 font-body text-body font-semibold"
-        style={{
-          backgroundColor: '#e5e7eb',
-          color: '#6b7280',
-        }}
+    <div className="max-w-3xl">
+      <h2
+        className="font-heading text-brand-h3 font-light"
+        style={{ color: 'rgb(13, 18, 38)' }}
       >
-        The Standard Sports Buy.
-      </span>
-      <p className="section-copy mt-4">
+        {content.contrastLeft.label}
+      </h2>
+      <p className="section-copy mt-6">
         {content.contrastLeft.description}
+      </p>
+      <p className="section-copy mt-4">
+        Buying by schedule can still land impressions near live sports, but it misses the moments when fan attention and intent are highest.
       </p>
     </div>
   )
@@ -30,18 +30,8 @@ function State1Copy({ content }: { content: MomentEngineContent['whatIsAMoment']
 function State2Copy({ content }: { content: MomentEngineContent['whatIsAMoment'] }) {
   return (
     <div>
-      <span
-        className="inline-block rounded-full px-4 py-2 font-body text-body font-semibold"
-        style={{
-          backgroundColor: 'rgba(0,255,204,0.15)',
-          border: '1px solid #00ffcc',
-          color: '#00ffcc',
-        }}
-      >
-        With Genius Sports Moments.
-      </span>
       <h2
-        className="section-title mt-4"
+        className="font-heading text-brand-h3 font-light"
         style={{ color: '#ffffff' }}
       >
         {content.contrastRight.headline}
@@ -65,7 +55,7 @@ function TimelineCard({ variant }: { variant: 'before' | 'after' }) {
     <div
       className="w-full rounded-2xl p-6"
       style={{
-        maxWidth: '480px',
+        maxWidth: isBefore ? '100%' : '480px',
         height: '280px',
         backgroundColor: isBefore ? '#f6f7f9' : '#0a0a2e',
         boxShadow: isBefore
@@ -331,25 +321,12 @@ export function WhatIsAMomentSection({ content }: WhatIsAMomentSectionProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const progress = useScrollProgress(sectionRef)
   const reducedMotion = useReducedMotionSafe()
-  const [headerVisible, setHeaderVisible] = useState(true)
-  const prevStateRef = useRef<number | null>(null)
 
   // Single threshold: fully State 1 or fully State 2. No in-between.
   const effectiveProgress = reducedMotion ? 1 : progress
   const isStateTwo = effectiveProgress >= 0.5
   const state = isStateTwo ? 2 : 1
   const showMomentCards = isStateTwo
-
-  // Mirror content transition: persistent header fades out then back in only when state changes (not on mount)
-  useEffect(() => {
-    const prev = prevStateRef.current
-    prevStateRef.current = state
-    if (prev === null) return // first mount, no dip
-    if (prev === state) return
-    setHeaderVisible(false)
-    const t = setTimeout(() => setHeaderVisible(true), HEADER_TRANSITION_MS)
-    return () => clearTimeout(t)
-  }, [state])
 
   return (
     <section
@@ -373,12 +350,30 @@ export function WhatIsAMomentSection({ content }: WhatIsAMomentSectionProps) {
             className="flex flex-col justify-start flex-shrink-0 pt-12 pb-0"
             style={{ height: '120px' }}
           >
+            <AnimatePresence>
+              {isStateTwo && (
+                <motion.p
+                  key="with-genius-prefix"
+                  className="section-title text-center mb-2"
+                  style={{
+                    color: '#00ffcc',
+                    letterSpacing: '0.01em',
+                  }}
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: HEADER_TRANSITION_MS / 1000, ease: 'easeInOut' }}
+                >
+                  With Genius
+                </motion.p>
+              )}
+            </AnimatePresence>
             <motion.h2
               id="what-is-a-moment-heading"
               className="section-title text-center mb-4"
               style={{ color: isStateTwo ? '#ffffff' : 'rgb(13, 18, 38)' }}
               initial={false}
-              animate={{ opacity: headerVisible ? 1 : 0 }}
+              animate={{ opacity: 1, y: isStateTwo ? 8 : 0 }}
               transition={{ duration: HEADER_TRANSITION_MS / 1000, ease: 'easeInOut' }}
             >
               There's a better way to buy sports.
@@ -390,8 +385,8 @@ export function WhatIsAMomentSection({ content }: WhatIsAMomentSectionProps) {
             {state === 1 ? (
               <motion.div
                 key="state1"
-                className="grid lg:grid-cols-2 gap-16 items-center flex-shrink-0"
-                style={{ minHeight: '400px' }}
+                className="grid lg:grid-cols-2 gap-16 items-center flex-shrink-0 mt-10"
+                style={{ minHeight: '360px' }}
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -16 }}
@@ -405,8 +400,8 @@ export function WhatIsAMomentSection({ content }: WhatIsAMomentSectionProps) {
             ) : (
               <motion.div
                 key="state2"
-                className="grid lg:grid-cols-2 gap-16 items-center flex-shrink-0"
-                style={{ minHeight: '400px' }}
+                className="grid lg:grid-cols-2 gap-16 items-center flex-shrink-0 mt-10"
+                style={{ minHeight: '360px' }}
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -16 }}

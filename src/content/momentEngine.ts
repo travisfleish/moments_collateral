@@ -173,7 +173,7 @@ export const momentEngineContent: MomentEngineContent = {
         label: 'Audience Intelligence.',
         headline: '250 million fans. The right ones, right now.',
         description:
-          'The Fan Graph™ matches the moment to the exact audience segment most likely to respond — assembled automatically, no manual updates required.',
+          'The Fan Graph™ matches the moment to the exact audience segment most likely to respond — assembled automatically, no manual updates required. It continuously refines that segment with live behavior and affinity signals as the game evolves.',
       },
       {
         beat: 4,
@@ -199,7 +199,7 @@ export const momentEngineContent: MomentEngineContent = {
     subhead:
       'A Moment is a discrete, emotionally charged event in a live game that creates measurable audience uplift.',
     contrastLeft: {
-      label: 'The Standard Sports Buy.',
+      label: 'The standard sports buy.',
       description:
         `You target a daypart and run near the game.
 The ad has no idea what's happening on the field.
@@ -208,7 +208,7 @@ It looks like every other sports buy.`,
     },
     contrastRight: {
       label: 'With Genius Sports Moments.',
-      headline: 'Activate at the peak — not the break.',
+      headline: 'Activate at the peak. Not the break.',
       description:
         `Moment Engine detects the inflection points that change how fans feel — and act.
 It triggers your programmatic deal the instant engagement spikes.
@@ -242,7 +242,7 @@ Precise. Emotional. Automatic.`,
 
   // ── Sequence ────────────────────────────────────────────────────────────
   sequence: {
-    kicker: 'How It Works',
+    kicker: '',
     headline: 'Four steps. Under one second.',
     subhead:
       'From play completion to ad on screen, this flow runs automatically while keeping your existing buying workflow intact.',

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 type AnimationMode = 'node-fade' | 'graph-build'
 
@@ -96,7 +96,7 @@ export function AnimatedFanCloud({
     }
   }, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!svgMarkup || !containerRef.current) {
       return
     }
@@ -120,7 +120,7 @@ export function AnimatedFanCloud({
       nodes.forEach((node) => {
         node.style.opacity = '0'
         node.style.transitionProperty = 'opacity'
-        node.style.transitionDuration = '320ms'
+        node.style.transitionDuration = '0ms'
         node.style.transitionTimingFunction = 'ease-out'
         node.style.transitionDelay = '0ms'
       })
@@ -128,6 +128,7 @@ export function AnimatedFanCloud({
 
     const revealNodes = () => {
       nodes.forEach((node, index) => {
+        node.style.transitionDuration = '320ms'
         node.style.transitionDelay = `${index * 30}ms`
         node.style.opacity = '1'
       })
@@ -137,7 +138,7 @@ export function AnimatedFanCloud({
       branches.forEach((branch) => {
         branch.style.opacity = '0'
         branch.style.transitionProperty = 'opacity'
-        branch.style.transitionDuration = '260ms'
+        branch.style.transitionDuration = '0ms'
         branch.style.transitionTimingFunction = 'ease-out'
         branch.style.transitionDelay = '0ms'
       })
@@ -149,7 +150,7 @@ export function AnimatedFanCloud({
           attribute.style.opacity = '1'
         }
         attribute.style.transitionProperty = 'opacity'
-        attribute.style.transitionDuration = '320ms'
+        attribute.style.transitionDuration = '0ms'
         attribute.style.transitionTimingFunction = 'ease-out'
         attribute.style.transitionDelay = '0ms'
       })
@@ -157,6 +158,7 @@ export function AnimatedFanCloud({
 
     const revealGraphBuild = () => {
       branches.forEach((branch, index) => {
+        branch.style.transitionDuration = '260ms'
         branch.style.transitionDelay = `${index * 36}ms`
         branch.style.opacity = '1'
       })
@@ -164,6 +166,7 @@ export function AnimatedFanCloud({
       const branchPhaseMs = branches.length * 36 + 180
       const attributeTimer = window.setTimeout(() => {
         attributes.forEach((attribute, index) => {
+          attribute.style.transitionDuration = '320ms'
           attribute.style.transitionDelay = `${index * 28}ms`
           attribute.style.opacity = '1'
         })

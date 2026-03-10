@@ -32,11 +32,13 @@ const ACTIVATION_OVERLAY_TOTAL_MS = CINEMATIC_ACTIVATING_SCROLL_MS + CINEMATIC_A
 
 export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
   const sectionRef = useRef<HTMLElement>(null)
+  const wasSectionInViewRef = useRef(false)
   const [activeStep, setActiveStep] = useState(0)
   const [detectionPhase, setDetectionPhase] = useState<CinematicPhase>('playing')
   const [isManualActivationPlaying, setIsManualActivationPlaying] = useState(false)
   const [manualActivationRunId, setManualActivationRunId] = useState(0)
   const [fanCloudReplayToken, setFanCloudReplayToken] = useState(0)
+  const [sectionRunId, setSectionRunId] = useState(0)
   const manualActivationTimeoutRef = useRef<number | null>(null)
   const isSectionInView = useInView(sectionRef, { amount: 0.35 })
   const reduced = useReducedMotionSafe()
@@ -96,16 +98,29 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
   }, [])
 
   useEffect(() => {
-    if (isSectionInView) return
+    const wasInView = wasSectionInViewRef.current
+    const hasEnteredView = isSectionInView && !wasInView
+    const hasLeftView = !isSectionInView && wasInView
 
     if (manualActivationTimeoutRef.current !== null) {
       window.clearTimeout(manualActivationTimeoutRef.current)
       manualActivationTimeoutRef.current = null
     }
 
-    setActiveStep(0)
-    setDetectionPhase('playing')
-    setIsManualActivationPlaying(false)
+    if (hasEnteredView) {
+      setSectionRunId((prev) => prev + 1)
+      setActiveStep(0)
+      setDetectionPhase('playing')
+      setIsManualActivationPlaying(false)
+    }
+
+    if (hasLeftView) {
+      setActiveStep(0)
+      setDetectionPhase('playing')
+      setIsManualActivationPlaying(false)
+    }
+
+    wasSectionInViewRef.current = isSectionInView
   }, [isSectionInView])
 
   return (
@@ -118,12 +133,14 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
     >
       <div className="section-shell max-w-[1320px]">
         {/* Header */}
-        <Reveal>
-          <p className="font-body text-body-sm font-medium tracking-widest uppercase mb-4"
-            style={{ color: 'var(--color-purple)' }}>
-            {content.kicker}
-          </p>
-        </Reveal>
+        {content.kicker ? (
+          <Reveal>
+            <p className="font-body text-body-sm font-medium tracking-widest uppercase mb-4"
+              style={{ color: 'var(--color-purple)' }}>
+              {content.kicker}
+            </p>
+          </Reveal>
+        ) : null}
         <Reveal delay={0.06}>
           <h2 id="sequence-heading" className="font-heading text-brand-h2 text-navy mb-6 max-w-2xl font-light">
             {content.headline}
@@ -171,6 +188,19 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
                   </button>
                 ))}
               </div>
+              <div
+                className="h-0.5 rounded-full overflow-hidden mb-8"
+                style={{ backgroundColor: 'var(--color-lightGrey)' }}
+                aria-hidden="true"
+              >
+                <motion.div
+                  className="h-full"
+                  style={{ backgroundColor: 'var(--color-purple)' }}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${((activeStep + 1) / content.steps.length) * 100}%` }}
+                  transition={{ duration: reduced ? 0 : 0.4, ease: 'easeOut' }}
+                />
+              </div>
 
               <h3 className="font-heading text-brand-h3 text-navy mb-8">
                 {step.headline}
@@ -180,6 +210,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
                 <div>
                   {showDetectionVideo && detectionStep?.videoSrc && (
                     <EmbeddedMomentDetection
+                      key={`detection-run-${sectionRunId}`}
                       src={detectionStep.videoSrc}
                       videoAlt={detectionStep.videoAlt ?? `${detectionStep.label} sample video`}
                       onPhaseChange={handleDetectionPhaseChange}
@@ -261,20 +292,6 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
                 </div>
               )}
             </div>
-
-              {/* Progress bar */}
-              <div
-                className="h-0.5 rounded-b-brand overflow-hidden"
-                style={{ backgroundColor: 'var(--color-lightGrey)' }}
-              >
-                <motion.div
-                  className="h-full"
-                  style={{ backgroundColor: 'var(--color-purple)' }}
-                  initial={{ width: 0 }}
-                  animate={{ width: `${((activeStep + 1) / content.steps.length) * 100}%` }}
-                  transition={{ duration: reduced ? 0 : 0.4, ease: 'easeOut' }}
-                />
-              </div>
           </motion.div>
         )}
 

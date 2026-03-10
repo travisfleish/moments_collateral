@@ -41,7 +41,7 @@ const BEAT_COPY = [
     label: 'Audience Intelligence.',
     headline: '250 million fans. The right ones, right now.',
     description:
-      'The Fan Graph™ matches the moment to the exact audience segment most likely to respond — assembled automatically, no manual updates required.',
+      'The Fan Graph™ matches the moment to the exact audience segment most likely to respond — assembled automatically, no manual updates required. It continuously refines that segment with live behavior and affinity signals as the game evolves.',
   },
   {
     beat: 4,
@@ -278,7 +278,6 @@ function MomentEngineDiagram({ beat, reducedMotion }: DiagramProps) {
   // Active accent colors for icons
   const input1IconColor = input1State === 'active' ? blueColor : '#5b6472'
   const input2IconColor = input2State === 'active' ? greenColor : '#5b6472'
-
   return (
     <div ref={diagramRef} className="relative w-full" style={{ minHeight: '500px' }}>
       {/* SVG arrow layer in local pixel coordinates */}
@@ -606,7 +605,7 @@ function BeatCopy({ beat, reducedMotion }: BeatCopyProps) {
         <h3
           className="font-heading"
           style={{
-            fontSize: '1.25rem',
+            fontSize: '1.35rem',
             fontWeight: 300,
             lineHeight: 1.25,
             letterSpacing: '-0.01em',
@@ -618,7 +617,7 @@ function BeatCopy({ beat, reducedMotion }: BeatCopyProps) {
         </h3>
         <p
           className="font-body"
-          style={{ fontSize: '0.95rem', lineHeight: 1.55, color: '#5b6472', maxWidth: '38ch' }}
+          style={{ fontSize: '1rem', lineHeight: 1.6, color: '#5b6472', maxWidth: '40ch' }}
         >
           {copy.description}
         </p>
@@ -696,7 +695,10 @@ export function MomentEngineSection({ content: _content }: MomentEngineSectionPr
 
             {/* Left: diagram */}
             <div>
-              <MomentEngineDiagram beat={beat} reducedMotion={reducedMotion} />
+              <MomentEngineDiagram
+                beat={beat}
+                reducedMotion={reducedMotion}
+              />
             </div>
 
             {/* Right: beat copy */}

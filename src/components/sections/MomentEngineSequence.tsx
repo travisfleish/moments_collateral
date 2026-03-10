@@ -34,7 +34,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const wasSectionInViewRef = useRef(false)
   const [activeStep, setActiveStep] = useState(0)
-  const [detectionPhase, setDetectionPhase] = useState<CinematicPhase>('playing')
+  const [, setDetectionPhase] = useState<CinematicPhase>('playing')
   const [isManualActivationPlaying, setIsManualActivationPlaying] = useState(false)
   const [manualActivationRunId, setManualActivationRunId] = useState(0)
   const [fanCloudReplayToken, setFanCloudReplayToken] = useState(0)

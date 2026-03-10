@@ -1,0 +1,135 @@
+import { useCallback, useEffect, useRef, useState, type RefObject } from 'react'
+import {
+  CINEMATIC_ACTIVATING_HOLD_MS,
+  CINEMATIC_ACTIVATING_SCROLL_MS,
+  CINEMATIC_DETECTED_DISPLAY_MS,
+  CINEMATIC_DETECTING_DELAY_MS,
+} from '../tokens'
+
+export type CinematicPhase = 'playing' | 'detecting' | 'detected' | 'activating' | 'complete'
+
+export type CinematicCompletePayload = {
+  videoCurrentTime: number
+  capturedFrameDataUrl: string | null
+}
+
+interface UseCinematicDetectionFlowOptions {
+  videoRef: RefObject<HTMLVideoElement | null>
+  onComplete?: (payload: CinematicCompletePayload) => void
+  onPhaseChange?: (phase: CinematicPhase) => void
+}
+
+export function useCinematicDetectionFlow({
+  videoRef,
+  onComplete,
+  onPhaseChange,
+}: UseCinematicDetectionFlowOptions) {
+  const [phase, setPhase] = useState<CinematicPhase>('playing')
+  const [payload, setPayload] = useState<CinematicCompletePayload | null>(null)
+  const timeoutRef = useRef<number | null>(null)
+  const completionNotifiedRef = useRef(false)
+
+  const clearScheduledTimeout = useCallback(() => {
+    if (timeoutRef.current !== null) {
+      window.clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+  }, [])
+
+  const captureCurrentVideoFrame = useCallback((): CinematicCompletePayload => {
+    const video = videoRef.current
+    if (!video) {
+      return { videoCurrentTime: 0, capturedFrameDataUrl: null }
+    }
+
+    let capturedFrameDataUrl: string | null = null
+
+    if (video.videoWidth > 0 && video.videoHeight > 0) {
+      const canvas = document.createElement('canvas')
+      canvas.width = video.videoWidth
+      canvas.height = video.videoHeight
+
+      const context = canvas.getContext('2d')
+      if (context) {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height)
+        capturedFrameDataUrl = canvas.toDataURL('image/jpeg', 0.92)
+      }
+    }
+
+    return {
+      videoCurrentTime: video.currentTime,
+      capturedFrameDataUrl,
+    }
+  }, [videoRef])
+
+  useEffect(() => {
+    clearScheduledTimeout()
+
+    if (phase === 'detecting') {
+      timeoutRef.current = window.setTimeout(() => {
+        setPhase('detected')
+      }, CINEMATIC_DETECTING_DELAY_MS)
+      return
+    }
+
+    if (phase === 'detected') {
+      timeoutRef.current = window.setTimeout(() => {
+        const video = videoRef.current
+        if (video) {
+          video.pause()
+        }
+
+        const nextPayload = captureCurrentVideoFrame()
+        setPayload(nextPayload)
+        setPhase('activating')
+      }, CINEMATIC_DETECTED_DISPLAY_MS)
+      return
+    }
+
+    if (phase === 'activating') {
+      timeoutRef.current = window.setTimeout(() => {
+        setPhase('complete')
+      }, CINEMATIC_ACTIVATING_SCROLL_MS + CINEMATIC_ACTIVATING_HOLD_MS)
+      return
+    }
+
+    if (phase === 'complete' && payload && !completionNotifiedRef.current) {
+      completionNotifiedRef.current = true
+      onComplete?.(payload)
+    }
+  }, [captureCurrentVideoFrame, clearScheduledTimeout, onComplete, payload, phase, videoRef])
+
+  useEffect(() => clearScheduledTimeout, [clearScheduledTimeout])
+
+  useEffect(() => {
+    onPhaseChange?.(phase)
+  }, [onPhaseChange, phase])
+
+  const handleVideoEnded = useCallback(() => {
+    const video = videoRef.current
+    if (video) {
+      video.pause()
+    }
+    setPhase('detecting')
+  }, [videoRef])
+
+  const reset = useCallback(() => {
+    clearScheduledTimeout()
+    completionNotifiedRef.current = false
+    setPayload(null)
+    setPhase('playing')
+
+    const video = videoRef.current
+    if (!video) return
+
+    video.currentTime = 0
+    void video.play().catch(() => undefined)
+  }, [clearScheduledTimeout, videoRef])
+
+  return {
+    phase,
+    payload,
+    handleVideoEnded,
+    reset,
+  }
+}

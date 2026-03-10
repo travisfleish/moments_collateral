@@ -1,0 +1,74 @@
+@import './styles/theme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--gs-bg);
+  }
+
+  body {
+    @apply font-body text-text;
+    background-color: var(--gs-bg);
+    margin: 0;
+    padding: 0;
+  }
+
+  #root {
+    background-color: var(--gs-bg);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+/* ─── Utility Classes ────────────────────────────────────────────────────── */
+
+@layer components {
+  .section-title {
+    @apply text-brand-h2 font-heading text-navy font-light;
+  }
+
+  .section-copy {
+    @apply text-body font-body;
+    color: var(--color-text-muted);
+  }
+
+  .section-shell {
+    @apply max-w-[1200px] mx-auto px-6 lg:px-12;
+  }
+
+  .brand-card {
+    background-color: var(--color-lightGrey);
+    border: 1px solid var(--color-lightGrey);
+    border-radius: var(--radius-md);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .brand-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* ─── Reduced Motion ─────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

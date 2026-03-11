@@ -47,7 +47,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
   const detectionStep = content.steps.find((s) => s.id === 'step-detect') ?? content.steps[0]
   const shouldRevealFanCloud = activeStep === 1
   const shouldShowActivationOverlay = activeStep === 1 && isManualActivationPlaying
-  const showDetectionVideo = activeStep === 0 && isSectionInView
+  const showDetectionVideo = activeStep === 0
   const reelRows = [...AUDIENCE_IDS, ...AUDIENCE_IDS, ...AUDIENCE_IDS].map((id, index) => ({
     id,
     isTarget: index === AUDIENCE_IDS.length + AUDIENCE_TARGET_INDEX,
@@ -100,7 +100,6 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
   useEffect(() => {
     const wasInView = wasSectionInViewRef.current
     const hasEnteredView = isSectionInView && !wasInView
-    const hasLeftView = !isSectionInView && wasInView
 
     if (manualActivationTimeoutRef.current !== null) {
       window.clearTimeout(manualActivationTimeoutRef.current)
@@ -109,12 +108,6 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
 
     if (hasEnteredView) {
       setSectionRunId((prev) => prev + 1)
-      setActiveStep(0)
-      setDetectionPhase('playing')
-      setIsManualActivationPlaying(false)
-    }
-
-    if (hasLeftView) {
       setActiveStep(0)
       setDetectionPhase('playing')
       setIsManualActivationPlaying(false)

@@ -10,6 +10,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { label: 'What Is a Moment', targetId: 'what-is-a-moment' },
   { label: 'How It Works', targetId: 'sequence' },
+  { label: 'Genius Moments', targetId: 'moments' },
   { label: 'Moment Engine', targetId: 'moment-engine' },
   { label: 'The Genius Advantage', targetId: 'four-pillars' },
   { label: 'The Stack', targetId: 'ecosystem' },
@@ -21,25 +22,46 @@ const NAV_ITEMS: NavItem[] = [
 export function SectionNav() {
   const [activeId, setActiveId] = useState<string>(NAV_ITEMS[0]!.targetId)
   const observersRef = useRef<IntersectionObserver[]>([])
+  const sectionsRef = useRef<HTMLElement[]>([])
 
   useEffect(() => {
     // Clean up previous observers
     observersRef.current.forEach((o) => o.disconnect())
     observersRef.current = []
+    sectionsRef.current = []
+
+    const sections = NAV_ITEMS.map(({ targetId }) => document.getElementById(targetId)).filter(
+      Boolean
+    ) as HTMLElement[]
+    sectionsRef.current = sections
+
+    const syncActiveSection = () => {
+      const viewportAnchorY = window.innerHeight * 0.34
+      const activeSection =
+        sectionsRef.current.find((section) => {
+          const rect = section.getBoundingClientRect()
+          return rect.top <= viewportAnchorY && rect.bottom >= viewportAnchorY
+        }) ??
+        sectionsRef.current.find((section) => section.getBoundingClientRect().top > viewportAnchorY) ??
+        sectionsRef.current[sectionsRef.current.length - 1]
+
+      if (activeSection) {
+        setActiveId(activeSection.id)
+      }
+    }
 
     const observers = NAV_ITEMS.map(({ targetId }) => {
       const el = document.getElementById(targetId)
       if (!el) return null
 
       const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry && entry.isIntersecting) {
-            setActiveId(targetId)
-          }
+        () => {
+          // Re-evaluate all sections so tall sticky sections win correctly.
+          syncActiveSection()
         },
         {
-          threshold: [0, 0.35, 0.6, 1],
-          rootMargin: '-12% 0px -45% 0px',
+          threshold: [0, 0.25, 0.5, 0.75, 1],
+          rootMargin: '-8% 0px -52% 0px',
         }
       )
 
@@ -47,9 +69,27 @@ export function SectionNav() {
       return observer
     })
 
+    let rafId = 0
+    const onScroll = () => {
+      if (rafId) return
+      rafId = window.requestAnimationFrame(() => {
+        syncActiveSection()
+        rafId = 0
+      })
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    syncActiveSection()
+
     observersRef.current = observers.filter(Boolean) as IntersectionObserver[]
 
     return () => {
+      if (rafId) {
+        window.cancelAnimationFrame(rafId)
+      }
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
       observersRef.current.forEach((o) => o.disconnect())
     }
   }, [])

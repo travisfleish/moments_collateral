@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { CINEMATIC_ACTIVATING_HOLD_MS, CINEMATIC_ACTIVATING_SCROLL_MS } from '../../tokens'
 
 type AnimationMode = 'node-fade' | 'graph-build'
 
@@ -12,6 +13,8 @@ interface AnimatedFanCloudProps {
 }
 
 const SVG_URL = '/fan-cloud.svg'
+const SVG_VIEWBOX_WIDTH = 1200
+const SVG_VIEWBOX_HEIGHT = 675
 const NODE_SELECTOR = 'path.cls-6, path.cls-18'
 const BRANCH_SELECTOR = '.cls-2, .cls-3'
 const ATTRIBUTE_SELECTOR = `${NODE_SELECTOR}, text.cls-5, text.cls-7, text.cls-8, text.cls-10, text.cls-11, text.cls-12, text.cls-13, text.cls-14, text.cls-15, text.cls-16, text.cls-17, path.cls-19, path.cls-20, path.cls-21, path.cls-22, path.cls-23, path.cls-24, path.cls-25, path.cls-26, path.cls-27, path.cls-28, path.cls-32, path.cls-39, path.cls-40, path.cls-41, path.cls-47, path.cls-54, image`
@@ -64,6 +67,35 @@ function isCenterStaticAttribute(attribute: SVGElement) {
   }
 
   return false
+}
+
+function getNearestBranchIndex(
+  attributeCenter: { x: number; y: number } | null,
+  branchCenters: Array<{ x: number; y: number } | null>
+) {
+  if (!attributeCenter || !branchCenters.length) {
+    return -1
+  }
+
+  let nearestIndex = -1
+  let nearestDistance = Number.POSITIVE_INFINITY
+
+  branchCenters.forEach((branchCenter, index) => {
+    if (!branchCenter) {
+      return
+    }
+
+    const dx = attributeCenter.x - branchCenter.x
+    const dy = attributeCenter.y - branchCenter.y
+    const distance = dx * dx + dy * dy
+
+    if (distance < nearestDistance) {
+      nearestDistance = distance
+      nearestIndex = index
+    }
+  })
+
+  return nearestIndex
 }
 
 export function AnimatedFanCloud({
@@ -157,21 +189,44 @@ export function AnimatedFanCloud({
     }
 
     const revealGraphBuild = () => {
+      const overlayTotalMs =
+        CINEMATIC_ACTIVATING_SCROLL_MS + CINEMATIC_ACTIVATING_HOLD_MS
+      const finalSettleLeadMs = 260
+      const targetFinalAttributeCompleteMs = Math.max(0, overlayTotalMs - finalSettleLeadMs)
+      const branchFadeMs = 1100
+      const attributeFadeMs = 1320
+      const attributeLeadMs = 140
+      const branchDelayStepMs =
+        branches.length > 1
+          ? Math.max(
+              120,
+              Math.round(
+                (targetFinalAttributeCompleteMs - attributeFadeMs + attributeLeadMs) /
+                  (branches.length - 1)
+              )
+            )
+          : 0
+      const branchCenters = branches.map((branch) => getElementCenter(branch))
+
       branches.forEach((branch, index) => {
-        branch.style.transitionDuration = '260ms'
-        branch.style.transitionDelay = `${index * 36}ms`
+        branch.style.transitionDuration = `${branchFadeMs}ms`
+        branch.style.transitionDelay = `${index * branchDelayStepMs}ms`
         branch.style.opacity = '1'
       })
 
-      const branchPhaseMs = branches.length * 36 + 180
-      const attributeTimer = window.setTimeout(() => {
-        attributes.forEach((attribute, index) => {
-          attribute.style.transitionDuration = '320ms'
-          attribute.style.transitionDelay = `${index * 28}ms`
-          attribute.style.opacity = '1'
-        })
-      }, branchPhaseMs)
-      timers.push(attributeTimer)
+      attributes.forEach((attribute, index) => {
+        if (isCenterStaticAttribute(attribute)) {
+          return
+        }
+
+        const nearestBranchIndex = getNearestBranchIndex(getElementCenter(attribute), branchCenters)
+        const baseDelay =
+          nearestBranchIndex >= 0 ? nearestBranchIndex * branchDelayStepMs : index * branchDelayStepMs
+
+        attribute.style.transitionDuration = `${attributeFadeMs}ms`
+        attribute.style.transitionDelay = `${Math.max(0, baseDelay - attributeLeadMs)}ms`
+        attribute.style.opacity = '1'
+      })
     }
 
     if (reducedMotion) {
@@ -219,6 +274,12 @@ export function AnimatedFanCloud({
       className={className}
       role="img"
       aria-label={alt}
+      style={{
+        // Keep a stable render box while SVG markup is loading.
+        aspectRatio: `${SVG_VIEWBOX_WIDTH} / ${SVG_VIEWBOX_HEIGHT}`,
+        minHeight: '220px',
+        backgroundColor: 'var(--color-navy)',
+      }}
       dangerouslySetInnerHTML={{ __html: svgMarkup }}
     />
   )

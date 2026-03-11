@@ -200,20 +200,29 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
               </h3>
 
               {(showDetectionVideo || shouldRevealFanCloud) && (
-                <div>
+                <AnimatePresence mode="wait" initial={false}>
                   {showDetectionVideo && detectionStep?.videoSrc && (
-                    <EmbeddedMomentDetection
+                    <motion.div
                       key={`detection-run-${sectionRunId}`}
-                      src={detectionStep.videoSrc}
-                      videoAlt={detectionStep.videoAlt ?? `${detectionStep.label} sample video`}
-                      onPhaseChange={handleDetectionPhaseChange}
-                    />
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: reduced ? 0.12 : 0.35, ease: 'easeInOut' }}
+                    >
+                      <EmbeddedMomentDetection
+                        src={detectionStep.videoSrc}
+                        videoAlt={detectionStep.videoAlt ?? `${detectionStep.label} sample video`}
+                        onPhaseChange={handleDetectionPhaseChange}
+                      />
+                    </motion.div>
                   )}
                   {shouldRevealFanCloud && (
                     <motion.div
+                      key={`fan-cloud-run-${sectionRunId}-${fanCloudReplayToken}`}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ duration: reduced ? 0.15 : 0.45, ease: 'easeOut' }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: reduced ? 0.15 : 0.45, ease: 'easeInOut' }}
                     >
                       <div
                         className="relative overflow-hidden rounded-brand border"
@@ -282,7 +291,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
                       </div>
                     </motion.div>
                   )}
-                </div>
+                </AnimatePresence>
               )}
             </div>
           </motion.div>

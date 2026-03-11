@@ -6,6 +6,7 @@ import {
   type CinematicPhase,
   type CinematicCompletePayload,
 } from '../../hooks/useCinematicDetectionFlow'
+import { ScannerOverlay } from '../ScannerOverlay'
 
 interface EmbeddedMomentDetectionProps {
   src: string
@@ -21,11 +22,12 @@ export function EmbeddedMomentDetection({
   const videoRef = useRef<HTMLVideoElement>(null)
   const [completionPayload, setCompletionPayload] = useState<CinematicCompletePayload | null>(null)
 
-  const { phase, handleVideoEnded, reset } = useCinematicDetectionFlow({
+  const { phase, handleVideoEnded, handleVideoTimeUpdate, reset } = useCinematicDetectionFlow({
     videoRef,
     onComplete: setCompletionPayload,
     onPhaseChange,
   })
+  const isScannerActive = phase === 'playing'
 
   return (
     <div className="mb-6 overflow-hidden rounded-brand border relative" style={{ borderColor: 'var(--color-lightGrey)' }}>
@@ -38,8 +40,12 @@ export function EmbeddedMomentDetection({
         muted
         playsInline
         preload="metadata"
+        onTimeUpdate={handleVideoTimeUpdate}
         onEnded={handleVideoEnded}
       />
+      <div className="absolute inset-0">
+        <ScannerOverlay active={isScannerActive} durationMs={1600} />
+      </div>
 
       <AnimatePresence>
         {phase === 'detecting' && (

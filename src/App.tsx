@@ -4,7 +4,7 @@ import { IframeTestPage } from './pages/IframeTestPage'
 import { SiteHeader } from './components/layout/SiteHeader'
 
 // Toggle to true to show the persistent site header above all pages.
-const SHOW_SITE_HEADER = false
+const SHOW_SITE_HEADER = true
 
 export function App() {
   return (

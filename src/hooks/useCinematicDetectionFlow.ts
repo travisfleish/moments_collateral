@@ -19,6 +19,8 @@ interface UseCinematicDetectionFlowOptions {
   onPhaseChange?: (phase: CinematicPhase) => void
 }
 
+const DETECTION_LEAD_TIME_SECONDS = 1
+
 export function useCinematicDetectionFlow({
   videoRef,
   onComplete,
@@ -105,13 +107,34 @@ export function useCinematicDetectionFlow({
     onPhaseChange?.(phase)
   }, [onPhaseChange, phase])
 
+  const startDetecting = useCallback(() => {
+    const video = videoRef.current
+    if (video) {
+      video.pause()
+    }
+
+    setPhase((currentPhase) => (currentPhase === 'playing' ? 'detecting' : currentPhase))
+  }, [videoRef])
+
+  const handleVideoTimeUpdate = useCallback(() => {
+    const video = videoRef.current
+    if (!video || !Number.isFinite(video.duration) || video.duration <= 0) {
+      return
+    }
+
+    const remainingSeconds = video.duration - video.currentTime
+    if (remainingSeconds <= DETECTION_LEAD_TIME_SECONDS) {
+      startDetecting()
+    }
+  }, [startDetecting, videoRef])
+
   const handleVideoEnded = useCallback(() => {
     const video = videoRef.current
     if (video) {
       video.pause()
     }
-    setPhase('detecting')
-  }, [videoRef])
+    startDetecting()
+  }, [startDetecting, videoRef])
 
   const reset = useCallback(() => {
     clearScheduledTimeout()
@@ -129,6 +152,7 @@ export function useCinematicDetectionFlow({
   return {
     phase,
     payload,
+    handleVideoTimeUpdate,
     handleVideoEnded,
     reset,
   }

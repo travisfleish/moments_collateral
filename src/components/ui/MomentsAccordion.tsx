@@ -8,7 +8,9 @@ type MomentDetails = {
 };
 
 type MomentsAccordionProps = {
-  labels: string[];
+  inGameLabels: string[];
+  inSeasonLabels: string[];
+  thematicBundleLabel: string;
   detailsByLabel: Record<string, MomentDetails>;
   modalTitlePrefix?: string;
 };
@@ -38,21 +40,22 @@ function PlusMinusIcon({ isOpen }: { isOpen: boolean }) {
   );
 }
 
-function MomentsAccordion({ labels, detailsByLabel, modalTitlePrefix = "March Madness Moments" }: MomentsAccordionProps) {
+function MomentsAccordion({
+  inGameLabels,
+  inSeasonLabels,
+  thematicBundleLabel,
+  detailsByLabel,
+  modalTitlePrefix = "March Madness Moments"
+}: MomentsAccordionProps) {
   const reducedMotion = useReducedMotionSafe();
   const [mobileOpenId, setMobileOpenId] = useState<string | null>(null);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [activeModalLabel, setActiveModalLabel] = useState<string | null>(null);
   const mobileItemRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const mobileExtraWrapperRef = useRef<HTMLDivElement | null>(null);
-  const cinderellaIndex = labels.findIndex((label) => label.toUpperCase() === "CINDERELLA STORY");
-  const mobileSplitIndex = cinderellaIndex === -1 ? labels.length : cinderellaIndex;
-  const mobileButtonLabels = labels.slice(0, mobileSplitIndex);
-  const mobileExtraLabels = labels.slice(mobileSplitIndex);
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
   const [desktopOpenId, setDesktopOpenId] = useState<string | null>(null);
-  const midpoint = Math.ceil(labels.length / 2);
-  const labelColumns = [labels.slice(0, midpoint), labels.slice(midpoint)];
+  const labelColumns = [inGameLabels, inSeasonLabels];
 
   useEffect(() => {
     if (typeof window === "undefined" || !mobileOpenId) {
@@ -102,7 +105,7 @@ function MomentsAccordion({ labels, detailsByLabel, modalTitlePrefix = "March Ma
         if (!entry?.isIntersecting) {
           setIsMobileExpanded(false);
           setMobileOpenId((current) =>
-            current && mobileExtraLabels.includes(current) ? null : current
+            current && inSeasonLabels.includes(current) ? null : current
           );
         }
       },
@@ -111,7 +114,7 @@ function MomentsAccordion({ labels, detailsByLabel, modalTitlePrefix = "March Ma
 
     observer.observe(extraWrapperNode);
     return () => observer.disconnect();
-  }, [isMobileExpanded, mobileExtraLabels]);
+      }, [isMobileExpanded, inSeasonLabels]);
 
   useEffect(() => {
     if (typeof window === "undefined" || typeof document === "undefined" || !isFormModalOpen) {
@@ -148,11 +151,13 @@ function MomentsAccordion({ labels, detailsByLabel, modalTitlePrefix = "March Ma
     ? `${modalTitlePrefix}: ${toTitleCase(activeModalLabel)}`
     : modalTitlePrefix;
 
+  const columnHeaders = ["In-Game", "In-Season"];
+
   return (
     <>
       <div className="flex flex-col gap-4 md:hidden">
         <div className="grid grid-cols-1 gap-2">
-          {mobileButtonLabels.map((label, index) => {
+          {inGameLabels.map((label, index) => {
             const isOpen = mobileOpenId === label;
             const panelId = `mobile-moment-panel-${index}`;
             const details = detailsByLabel[label] ?? {
@@ -223,7 +228,7 @@ function MomentsAccordion({ labels, detailsByLabel, modalTitlePrefix = "March Ma
               </div>
             );
           })}
-          {mobileExtraLabels.length > 0 ? (
+          {inSeasonLabels.length > 0 ? (
             <button
               type="button"
               aria-expanded={isMobileExpanded}
@@ -253,7 +258,7 @@ function MomentsAccordion({ labels, detailsByLabel, modalTitlePrefix = "March Ma
                 className="overflow-hidden"
               >
                 <div className="grid grid-cols-1 gap-2 pt-1">
-                  {mobileExtraLabels.map((label, index) => {
+                  {inSeasonLabels.map((label, index) => {
                     const isOpen = mobileOpenId === label;
                     const panelId = `mobile-moment-panel-extra-${index}`;
                     const details = detailsByLabel[label] ?? {
@@ -329,12 +334,25 @@ function MomentsAccordion({ labels, detailsByLabel, modalTitlePrefix = "March Ma
             ) : null}
           </AnimatePresence>
         </div>
+
+        <button
+          type="button"
+          onClick={() => openFormModal(thematicBundleLabel)}
+          className="mt-4 w-full rounded-2xl border-2 border-[var(--color-gs-accent-500)] bg-white px-5 py-4 text-center font-heading text-base font-medium text-navy transition-colors hover:bg-[var(--color-gs-accent-50)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gs-accent-500)]/70"
+        >
+          {thematicBundleLabel}
+        </button>
       </div>
 
-      <div className="hidden flex-col gap-4 md:flex md:flex-row md:items-start md:gap-8">
-        {labelColumns.map((columnLabels, columnIndex) => (
-          <div key={`column-${columnIndex}`} className="mt-0 flex w-full flex-col divide-y divide-[var(--color-lightGrey)] overflow-hidden rounded-2xl bg-white">
-            {columnLabels.map((label, index) => {
+      <div className="hidden flex-col gap-4 md:flex">
+        <div className="flex flex-row items-start gap-8">
+          {labelColumns.map((columnLabels, columnIndex) => (
+            <div key={`column-${columnIndex}`} className="mt-0 flex w-full flex-col overflow-hidden rounded-2xl bg-white">
+              <h4 className="px-5 pt-4 pb-2 font-body text-xs font-semibold uppercase tracking-[0.12em] text-[#596581]">
+                {columnHeaders[columnIndex]}
+              </h4>
+              <div className="flex flex-col divide-y divide-[var(--color-lightGrey)]">
+              {columnLabels.map((label, index) => {
               const isOpen = desktopOpenId === label;
               const panelId = `moment-panel-${columnIndex}-${index}`;
               const details = detailsByLabel[label] ?? {
@@ -404,8 +422,20 @@ function MomentsAccordion({ labels, detailsByLabel, modalTitlePrefix = "March Ma
                 </div>
               );
             })}
-          </div>
-        ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 w-full md:mt-6">
+          <button
+            type="button"
+            onClick={() => openFormModal(thematicBundleLabel)}
+            className="w-full rounded-2xl border-2 border-[var(--color-gs-accent-500)] bg-white px-5 py-4 text-center font-heading text-base font-medium text-navy transition-colors hover:bg-[var(--color-gs-accent-50)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gs-accent-500)]/70"
+          >
+            {thematicBundleLabel}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>

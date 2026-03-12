@@ -65,7 +65,9 @@ export type HeroStat = {
 
 export type SportsMomentPlan = {
   sport: string
-  moments: string[]
+  inGame: string[]
+  inSeason: string[]
+  thematicBundle: string
   audiences: string[]
 }
 
@@ -311,18 +313,21 @@ export type StepThreeCard = {
       plans: [
         {
           sport: 'NFL',
-          moments: [
-            'Red-zone possession',
-            'Fourth-down conversion',
-            'Goal-line stand',
-            'Turnover swing',
-            'Two-minute drill',
-            'Fourth-quarter comeback',
-            'Game-winning drive',
-            'Overtime opening drive',
-            'Defensive touchdown',
-            'Walk-off field goal',
+          inGame: [
+            'In-Game Moment 1',
+            'In-Game Moment 2',
+            'In-Game Moment 3',
+            'In-Game Moment 4',
+            'In-Game Moment 5',
           ],
+          inSeason: [
+            'In-Season Moment 1',
+            'In-Season Moment 2',
+            'In-Season Moment 3',
+            'In-Season Moment 4',
+            'In-Season Moment 5',
+          ],
+          thematicBundle: 'High Impact Moments',
           audiences: [
             'NFL die-hards',
             'Fantasy football players',
@@ -334,18 +339,21 @@ export type StepThreeCard = {
         },
         {
           sport: 'WNBA/NBA',
-          moments: [
-            'Early momentum run',
-            'Fast-break sequence',
-            'Paint takeover',
-            'Three-point barrage',
-            'Defensive stop streak',
-            'Late-game rally',
-            'Buzzer beater win',
-            'Player heat-check run',
-            'Overtime force',
-            'Clutch free-throw close',
+          inGame: [
+            'In-Game Moment 1',
+            'In-Game Moment 2',
+            'In-Game Moment 3',
+            'In-Game Moment 4',
+            'In-Game Moment 5',
           ],
+          inSeason: [
+            'In-Season Moment 1',
+            'In-Season Moment 2',
+            'In-Season Moment 3',
+            'In-Season Moment 4',
+            'In-Season Moment 5',
+          ],
+          thematicBundle: 'High Impact Moments',
           audiences: [
             'Basketball superfans',
             'Sneaker and style enthusiasts',
@@ -357,18 +365,21 @@ export type StepThreeCard = {
         },
         {
           sport: 'PWHL/NHL',
-          moments: [
-            'Power-play goal',
-            'Penalty kill stand',
-            'Breakaway chance',
-            'Goalie save run',
-            'End-to-end rush',
-            'Third-period equalizer',
-            'Overtime winner',
-            'Shootout clincher',
-            'Empty-net pressure',
-            'Rivalry game spark',
+          inGame: [
+            'In-Game Moment 1',
+            'In-Game Moment 2',
+            'In-Game Moment 3',
+            'In-Game Moment 4',
+            'In-Game Moment 5',
           ],
+          inSeason: [
+            'In-Season Moment 1',
+            'In-Season Moment 2',
+            'In-Season Moment 3',
+            'In-Season Moment 4',
+            'In-Season Moment 5',
+          ],
+          thematicBundle: 'High Impact Moments',
           audiences: [
             'Hockey loyalists',
             'Cold-weather travel buyers',
@@ -380,18 +391,21 @@ export type StepThreeCard = {
         },
         {
           sport: 'MLB',
-          moments: [
-            'Leadoff double',
-            'Bases-loaded at-bat',
-            'Home-run robbery',
-            'Seventh-inning rally',
-            'Pitch-count turning point',
-            'Walk-off hit',
-            'Closer enters in save situation',
-            'Extra-innings tension',
-            'Rookie breakout inning',
-            'Late defensive gem',
+          inGame: [
+            'In-Game Moment 1',
+            'In-Game Moment 2',
+            'In-Game Moment 3',
+            'In-Game Moment 4',
+            'In-Game Moment 5',
           ],
+          inSeason: [
+            'In-Season Moment 1',
+            'In-Season Moment 2',
+            'In-Season Moment 3',
+            'In-Season Moment 4',
+            'In-Season Moment 5',
+          ],
+          thematicBundle: 'High Impact Moments',
           audiences: [
             'Baseball stat trackers',
             'Family sports viewers',
@@ -403,18 +417,21 @@ export type StepThreeCard = {
         },
         {
           sport: 'Golf',
-          moments: [
-            'Opening-round surge',
-            'Birdie run',
-            'Back-nine charge',
-            'Long putt conversion',
-            'Bunker recovery',
-            'Lead change on 16',
-            'Birdie streak',
-            'Final-hole approach',
-            'Playoff hole',
-            'Trophy-clinching putt',
+          inGame: [
+            'In-Game Moment 1',
+            'In-Game Moment 2',
+            'In-Game Moment 3',
+            'In-Game Moment 4',
+            'In-Game Moment 5',
           ],
+          inSeason: [
+            'In-Season Moment 1',
+            'In-Season Moment 2',
+            'In-Season Moment 3',
+            'In-Season Moment 4',
+            'In-Season Moment 5',
+          ],
+          thematicBundle: 'High Impact Moments',
           audiences: [
             'Affluent sports fans',
             'Luxury travel shoppers',
@@ -426,18 +443,21 @@ export type StepThreeCard = {
         },
         {
           sport: 'NASCAR',
-          moments: [
-            'Green-flag restart',
-            'Stage win battle',
-            'Pit-road strategy swing',
-            'Multi-car pack run',
-            'Caution flag reset',
-            'Late-race caution',
-            'Final-lap pass',
-            'Photo-finish battle',
-            'Overtime restart',
-            'Victory burnout',
+          inGame: [
+            'In-Game Moment 1',
+            'In-Game Moment 2',
+            'In-Game Moment 3',
+            'In-Game Moment 4',
+            'In-Game Moment 5',
           ],
+          inSeason: [
+            'In-Season Moment 1',
+            'In-Season Moment 2',
+            'In-Season Moment 3',
+            'In-Season Moment 4',
+            'In-Season Moment 5',
+          ],
+          thematicBundle: 'High Impact Moments',
           audiences: [
             'Motorsport enthusiasts',
             'Auto aftermarket buyers',
@@ -449,18 +469,21 @@ export type StepThreeCard = {
         },
         {
           sport: 'NWSL',
-          moments: [
-            'Opening goal',
-            'Counterattack break',
-            'Penalty box scramble',
-            'Goalkeeper save sequence',
-            'Set-piece opportunity',
-            'Penalty decision',
-            'Equalizer push',
-            'Stoppage-time winner',
-            'Captain-led comeback',
-            'Playoff berth clinch',
+          inGame: [
+            'In-Game Moment 1',
+            'In-Game Moment 2',
+            'In-Game Moment 3',
+            'In-Game Moment 4',
+            'In-Game Moment 5',
           ],
+          inSeason: [
+            'In-Season Moment 1',
+            'In-Season Moment 2',
+            'In-Season Moment 3',
+            'In-Season Moment 4',
+            'In-Season Moment 5',
+          ],
+          thematicBundle: 'High Impact Moments',
           audiences: [
             'Women’s football supporters',
             'Purpose-driven brand followers',
@@ -472,18 +495,21 @@ export type StepThreeCard = {
         },
         {
           sport: 'World Cup',
-          moments: [
-            'Group-stage opener',
-            'Early lead swing',
-            'VAR decision moment',
-            'Set-piece breakthrough',
-            'Comeback equalizer',
-            'Penalty shootout',
-            'Extra-time winner',
-            'Knockout advancement clinch',
-            'Rival nation upset',
-            'Final whistle celebration',
+          inGame: [
+            'In-Game Moment 1',
+            'In-Game Moment 2',
+            'In-Game Moment 3',
+            'In-Game Moment 4',
+            'In-Game Moment 5',
           ],
+          inSeason: [
+            'In-Season Moment 1',
+            'In-Season Moment 2',
+            'In-Season Moment 3',
+            'In-Season Moment 4',
+            'In-Season Moment 5',
+          ],
+          thematicBundle: 'High Impact Moments',
           audiences: [
             'Global football fans',
             'National-team loyalists',
@@ -495,18 +521,21 @@ export type StepThreeCard = {
         },
         {
           sport: 'March Madness',
-          moments: [
-            'Late game rally',
-            'Down to the wire',
-            'Buzzer beater win',
-            'Elimination game',
-            'Upset alert',
-            'Cinderella advancement',
-            'Elite 8 clinch',
-            'Final Four berth',
-            'Championship matchup',
-            'Hero game performance',
+          inGame: [
+            'In-Game Moment 1',
+            'In-Game Moment 2',
+            'In-Game Moment 3',
+            'In-Game Moment 4',
+            'In-Game Moment 5',
           ],
+          inSeason: [
+            'In-Season Moment 1',
+            'In-Season Moment 2',
+            'In-Season Moment 3',
+            'In-Season Moment 4',
+            'In-Season Moment 5',
+          ],
+          thematicBundle: 'High Impact Moments',
           audiences: [
             'College hoops fans',
             'Bracket participants',

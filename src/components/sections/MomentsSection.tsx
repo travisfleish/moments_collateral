@@ -110,15 +110,22 @@ function MomentsSection({
     return null
   }
   const isMarchMadness = activePlan.sport === 'March Madness'
-  const activeLabels = isMarchMadness
-    ? marchMadnessMoments.labels
-    : toUpperLabels(activePlan.moments)
+  const inGameLabels = isMarchMadness
+    ? marchMadnessMoments.inGame
+    : toUpperLabels(activePlan.inGame)
+  const inSeasonLabels = isMarchMadness
+    ? marchMadnessMoments.inSeason
+    : toUpperLabels(activePlan.inSeason)
+  const thematicBundleLabel = isMarchMadness
+    ? marchMadnessMoments.thematicBundle
+    : activePlan.thematicBundle
+  const allLabels = [...inGameLabels, ...inSeasonLabels]
   const activeDetailsByLabel = useMemo(
     () =>
       isMarchMadness
         ? marchMadnessMomentDetailsByLabel
-        : buildFallbackDetails(activePlan.sport, activeLabels),
-    [activeLabels, activePlan.sport, isMarchMadness]
+        : buildFallbackDetails(activePlan.sport, allLabels),
+    [allLabels, activePlan.sport, isMarchMadness]
   )
   const stepOneTitle = content.stepOneTitle
   const stepOneIntro = isMarchMadness
@@ -175,7 +182,9 @@ function MomentsSection({
 
           <div className="relative z-10 px-8 pb-8 md:px-10 md:pb-10">
             <MomentsAccordion
-              labels={activeLabels}
+              inGameLabels={inGameLabels}
+              inSeasonLabels={inSeasonLabels}
+              thematicBundleLabel={thematicBundleLabel}
               detailsByLabel={activeDetailsByLabel}
               modalTitlePrefix={`${activePlan.sport} Moments`}
             />

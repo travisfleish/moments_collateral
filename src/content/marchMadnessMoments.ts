@@ -74,6 +74,9 @@ export type MarchMadnessMomentsContent = {
     introParagraph1: string;
     introParagraph2: string;
     labels: string[];
+    inGame: string[];
+    inSeason: string[];
+    thematicBundle: string;
     modalTemplate: MomentModalTemplate;
   };
   audiences: DualListSection;
@@ -216,6 +219,21 @@ export const marchMadnessMomentsContent: MarchMadnessMomentsContent = {
       "CHAMPIONSHIP",
       "HERO GAME"
     ],
+    inGame: [
+      "In-Game Moment 1",
+      "In-Game Moment 2",
+      "In-Game Moment 3",
+      "In-Game Moment 4",
+      "In-Game Moment 5"
+    ],
+    inSeason: [
+      "In-Season Moment 1",
+      "In-Season Moment 2",
+      "In-Season Moment 3",
+      "In-Season Moment 4",
+      "In-Season Moment 5"
+    ],
+    thematicBundle: "High Impact Moments",
     modalTemplate: {
       bullets: ["What it is", "Why it matters to fans", "Best message types"]
     }

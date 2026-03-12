@@ -131,7 +131,7 @@ export function HeroSection({ content }: HeroSectionProps) {
                 borderColor: 'rgba(255,255,255,0.2)',
               }}
             >
-              <p className="font-body text-body-sm font-medium text-white mb-1">
+              <p className="font-body text-base font-medium mb-1" style={{ color: '#FFFF66' }}>
                 {stat.label}
               </p>
               {stat.sublabel ? (

@@ -126,11 +126,11 @@ function MomentsSection({
     : `Select the key ${activePlan.sport} moments you want to align your brand with.`
 
   return (
-    <section id="moments" className="scroll-mt-24 py-24">
+    <section id="moments" className="scroll-mt-24 bg-gs-accent-600 py-24">
       <div className="section-shell">
         <div className="mb-8 px-2 py-2 md:px-0">
-          <h2 className="section-title">{content.headline}</h2>
-          <p className="section-copy mt-4 max-w-3xl">{content.description}</p>
+          <h2 className="section-title text-white">{content.headline}</h2>
+          <p className="section-copy mt-4 max-w-3xl text-[#dbe7ff]">{content.description}</p>
 
           <div className="mt-8 flex flex-wrap gap-2">
             {content.plans.map((plan, index) => {
@@ -140,11 +140,11 @@ function MomentsSection({
                   key={plan.sport}
                   type="button"
                   onClick={() => setActiveSportIndex(index)}
-                  className="rounded-full border px-4 py-2 font-body text-sm transition-colors"
+                  className="rounded-full border px-4 py-2 font-body text-sm font-medium transition-colors"
                   style={{
-                    borderColor: isActive ? 'var(--color-gs-accent-500)' : 'var(--color-lightGrey)',
-                    backgroundColor: isActive ? 'rgba(0,17,225,0.08)' : '#ffffff',
-                    color: isActive ? 'var(--color-gs-accent-500)' : 'var(--color-text-muted)',
+                    borderColor: isActive ? 'var(--color-navy)' : 'var(--color-lightGrey)',
+                    backgroundColor: isActive ? 'var(--color-navy)' : '#ffffff',
+                    color: isActive ? '#ffffff' : 'var(--color-text-muted)',
                   }}
                 >
                   {plan.sport}
@@ -154,9 +154,9 @@ function MomentsSection({
           </div>
         </div>
 
-        <div className="relative overflow-hidden rounded-2xl bg-gs-surface">
+        <div className="relative w-full overflow-hidden rounded-2xl bg-gs-surface lg:max-w-[92%]">
           <div className="pointer-events-none absolute inset-0">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#f3f4f6] via-[#f3f4f6] to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#f8f9fb] via-[#f8f9fb] to-transparent" />
             <GeniusStripeRail
               theme="blue"
               className="absolute inset-y-0 right-0 hidden lg:block lg:w-[26%] lg:translate-x-8 xl:w-[38%] xl:translate-x-10"
@@ -164,7 +164,7 @@ function MomentsSection({
             />
           </div>
 
-          <div className="relative z-10 px-8 pb-8 pt-4 md:px-10 md:pb-10 md:pt-6">
+          <div className="relative z-10 px-8 pb-8 pt-8 md:px-10 md:pb-10 md:pt-10">
             <h2 className={stepTitleClassName}>{stepOneTitle}</h2>
             <div className="mt-4 max-w-3xl space-y-3">
               <p className="m-0 font-body text-sm leading-[1.45] text-[var(--color-text-muted)] md:text-base">
@@ -182,7 +182,7 @@ function MomentsSection({
           </div>
         </div>
 
-        <article className="relative mt-8 overflow-hidden rounded-2xl bg-gs-surface">
+        <article className="relative mt-8 w-full overflow-hidden rounded-2xl bg-gs-surface lg:ml-auto lg:max-w-[92%]">
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute inset-0 bg-gradient-to-r from-[#f8f9fb] via-[#f8f9fb] to-transparent" />
             <GeniusStripeRail
@@ -244,7 +244,7 @@ function MomentsSection({
           </div>
         </article>
 
-        <article className="relative mt-8 overflow-hidden rounded-2xl bg-gs-surface">
+        <article className="relative mt-8 w-full overflow-hidden rounded-2xl bg-gs-surface lg:max-w-[92%]">
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute inset-0 bg-gradient-to-r from-[#f8f9fb] via-[#f8f9fb] to-transparent" />
             <GeniusStripeRail
@@ -261,7 +261,7 @@ function MomentsSection({
             </p>
             <div className="mt-5">
               <div className="flex justify-end">
-                <span className="rounded-md border border-[#c7d9f8] bg-white px-3 py-1 font-body text-[11px] text-[var(--color-text-muted)] md:text-xs">
+                <span className="rounded-md border border-[var(--color-lightGrey)] bg-gs-surface px-3 py-1 font-body text-[11px] text-[var(--color-text-muted)] md:text-xs">
                   Automatic • Premium • Audience-led
                 </span>
               </div>
@@ -274,22 +274,22 @@ function MomentsSection({
                       key={card.step}
                       onMouseEnter={() => setHoveredStepThreeCard(card.step)}
                       onMouseLeave={() => setHoveredStepThreeCard(null)}
-                      className={`rounded-lg border border-[#2f64be] bg-[#0a2f73] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-[opacity,filter,transform] duration-200 ${
+                      className={`rounded-lg border border-[var(--color-lightGrey)] bg-white p-4 shadow-[0_8px_28px_rgba(13,18,38,0.08)] transition-[opacity,filter,transform] duration-200 ${
                         isDimmed
-                          ? 'opacity-100 brightness-[0.58] saturate-[0.55] contrast-[0.88]'
-                          : 'opacity-100 brightness-100 saturate-100 contrast-100'
+                          ? 'opacity-75'
+                          : 'opacity-100'
                       } ${hoveredStepThreeCard === card.step ? '-translate-y-0.5' : ''}`}
                     >
-                    <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-full border border-white/35 px-2 font-body text-[11px] font-semibold text-white/95">
+                    <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-full border border-[var(--color-lightGrey)] bg-white px-2 font-body text-[11px] font-semibold text-navy">
                       {card.step}
                     </span>
-                    <h4 className="mt-3 whitespace-pre-line font-heading text-base font-light leading-[1.06] text-white md:min-h-[2.12em] md:text-lg">
+                    <h4 className="mt-3 whitespace-pre-line font-heading text-base font-light leading-[1.06] text-navy md:min-h-[2.12em] md:text-lg">
                       {card.title}
                     </h4>
-                    <p className="mt-2 font-body text-sm leading-[1.45] text-[#bfd4ff] md:min-h-[2.9em]">
+                    <p className="mt-2 font-body text-sm leading-[1.45] text-[var(--color-text-muted)] md:min-h-[2.9em]">
                       {card.description}
                     </p>
-                    <span className="mt-4 inline-flex rounded-sm border border-[#4b7fd5] bg-[#173f91] px-2 py-1 font-body text-[11px] text-[#d2e3ff]">
+                    <span className="mt-4 inline-flex rounded-sm border border-[var(--color-lightGrey)] bg-white px-2 py-1 font-body text-[11px] text-[var(--color-text-muted)]">
                       {card.tag}
                     </span>
                     </article>

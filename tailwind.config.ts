@@ -50,6 +50,8 @@ const config: Config = {
         orange: '#fa5d00',
         lightGrey: '#f6f7f9',
         snow: '#fafafa',
+        'gs-bg': 'var(--gs-bg)',
+        'gs-surface': 'var(--gs-surface)',
         'gs-primary-700': '#0d1226',
         'gs-accent-500': '#0000dc',
         'gs-accent-600': '#0011e1',

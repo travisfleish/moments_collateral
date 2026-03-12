@@ -8,7 +8,7 @@ interface WhatIsAMomentSectionProps {
 }
 
 const AUTO_ADVANCE_MS = 3200
-const comparisonCardClassName = 'flex h-full flex-col rounded-2xl border p-6 lg:h-[300px]'
+const comparisonCardClassName = 'flex h-full flex-col rounded-2xl bg-gs-surface p-6 lg:h-[300px]'
 
 function ConnectorArrow({
   direction,
@@ -162,11 +162,6 @@ function ComparisonCard({
         scale: isActive ? 1 : 0.985,
       }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      style={{
-        borderColor: isActive ? 'rgba(0,0,220,0.30)' : 'rgba(15,23,42,0.12)',
-        boxShadow: isActive ? '0 14px 30px rgba(0,0,220,0.12)' : 'none',
-        backgroundColor: '#ffffff',
-      }}
     >
       <h3 className="font-heading text-brand-h4 text-navy">{title}</h3>
       <ul className="mt-5 space-y-2 list-disc pl-5">

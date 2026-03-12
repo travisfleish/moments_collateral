@@ -143,9 +143,9 @@ export type StepThreeCard = {
     hero: {
       kicker: 'Genius Sports Moments',
       titleLines: [
-        'See the game,',
-        'know the fan,',
-        'win the moment',
+        'See the game.',
+        'Know the fan.',
+        'Win the moment.',
       ],
       subhead:
         'The only advertising activation solution that leverages official live game data and verified fan intelligence to identify and activate meaningful sports moments instantly, enabling addressable campaigns at scale across open programmatic infrastructure.',

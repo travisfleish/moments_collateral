@@ -122,7 +122,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
       ref={sectionRef}
       id="sequence"
       style={{ backgroundColor: 'var(--gs-bg)' }}
-      className="relative py-24 overflow-hidden"
+      className="relative pt-14 pb-24 md:pt-16 overflow-hidden"
       aria-labelledby="sequence-heading"
     >
       <div className="section-shell max-w-[1320px]">

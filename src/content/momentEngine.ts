@@ -148,7 +148,7 @@ export type StepThreeCard = {
         'Win the moment.',
       ],
       subhead:
-        'The only advertising activation solution that leverages official live game data and verified fan intelligence to identify and activate meaningful sports moments instantly, enabling addressable campaigns at scale across open programmatic infrastructure.',
+        'The Genius Moment Engine is the only advertising activation solution that leverages official live game data and verified fan intelligence to identify and activate meaningful sports moments instantly, enabling addressable campaigns at scale across open programmatic infrastructure.',
       stats: [
         {
           value: '400+',
@@ -227,9 +227,9 @@ export type StepThreeCard = {
     // ── What Is A Moment ────────────────────────────────────────────────────
     whatIsAMoment: {
       kicker: 'What Is a Moment',
-      headline: 'Genius Moments connects brands to\nfan emotions with precision at scale.',
+      headline: 'Fans have evolved.\nSo should how you reach them.',
       subhead:
-        'Fans have evolved and sports media buying should too. Genius Moments connects brands to the always-on fan journey, powered by audience intelligence for measurable impact.',
+        'Today, brands face a tradeoff in sports media: they can buy programmatic and contextual ads at scale, but without a connection to live game emotion, or invest in expensive in game placements that are high impact but lack precision and targeting. Genius Moments brings both together, connecting real time fan emotion with scalable, data driven activation.',
       contrastLeft: {
         label: 'Programmatic + Contextual Media',
         description:
@@ -237,7 +237,7 @@ export type StepThreeCard = {
   The buy can be timely, but it is not connected to how fans feel in the moment.`,
       },
       contrastRight: {
-        label: 'Premium',
+        label: 'Premium Live Sports',
         headline: 'Emotion without precision creates wasted opportunity.',
         description:
           `Premium environments can deliver scale and emotion, but activation timing and audience precision remain broad.
@@ -522,9 +522,9 @@ export type StepThreeCard = {
     // ── Sequence ────────────────────────────────────────────────────────────
     sequence: {
       kicker: '',
-      headline: 'Four steps. Under one second.',
+      headline: 'How The Moment Engine Works',
       subhead:
-        'From play completion to ad on screen, this flow runs automatically while keeping your existing buying workflow intact.',
+        'Four steps. Less than one second. The Genius Moment Engine is an event-based advertising solution powered by official game data that identifies and signals meaningful sports moments as they happen, enabling unique addressable advertising activation at scale.',
       steps: [
         {
           id: 'step-detect',

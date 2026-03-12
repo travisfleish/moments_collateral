@@ -9,6 +9,8 @@ interface WhatIsAMomentSectionProps {
 
 const AUTO_ADVANCE_MS = 3200
 const comparisonCardClassName = 'flex h-full flex-col rounded-2xl bg-gs-surface p-6 lg:h-[300px]'
+const boldSubheadSentence =
+  'Genius Moments brings both together, connecting real time fan emotion with scalable, data driven activation.'
 
 function ConnectorArrow({
   direction,
@@ -197,6 +199,10 @@ function OutsideChecklist({ items }: { items: string[] }) {
 export function WhatIsAMomentSection({ content }: WhatIsAMomentSectionProps) {
   const reducedMotion = useReducedMotionSafe()
   const [activeCard, setActiveCard] = useState(0)
+  const boldSentenceIncluded = content.subhead.includes(boldSubheadSentence)
+  const subheadLead = boldSentenceIncluded
+    ? content.subhead.replace(` ${boldSubheadSentence}`, '')
+    : content.subhead
 
   useEffect(() => {
     if (reducedMotion) {
@@ -221,9 +227,15 @@ export function WhatIsAMomentSection({ content }: WhatIsAMomentSectionProps) {
           <h2 id="what-is-a-moment-heading" className="section-title whitespace-pre-line">
             {content.headline}
           </h2>
-          <p className="section-copy mt-5">{content.subhead}</p>
+          <p className="section-copy mt-5">{subheadLead}</p>
+          {boldSentenceIncluded ? (
+            <p className="section-copy mt-4">
+              <strong className="font-semibold text-navy">{boldSubheadSentence}</strong>
+            </p>
+          ) : null}
         </div>
 
+        <h3 className="mt-10 text-center font-heading text-brand-h4 text-navy">The Sports Media Tradeoff</h3>
         <div className="mt-12 grid gap-4 lg:gap-6 items-stretch lg:grid-cols-[minmax(0,1fr)_72px_280px_72px_minmax(0,1fr)]">
           <div className="flex flex-col">
             <ComparisonCard

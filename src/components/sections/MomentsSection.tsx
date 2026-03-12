@@ -276,18 +276,15 @@ function MomentsSection({
               </div>
               <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
                 {content.stepThreeCards.map((card) => {
-                  const isDimmed =
-                    hoveredStepThreeCard !== null && hoveredStepThreeCard !== card.step
+                  const isHovered = hoveredStepThreeCard === card.step
                   return (
                     <article
                       key={card.step}
                       onMouseEnter={() => setHoveredStepThreeCard(card.step)}
                       onMouseLeave={() => setHoveredStepThreeCard(null)}
-                      className={`rounded-lg border border-[var(--color-lightGrey)] bg-white p-4 shadow-[0_8px_28px_rgba(13,18,38,0.08)] transition-[opacity,filter,transform] duration-200 ${
-                        isDimmed
-                          ? 'opacity-75'
-                          : 'opacity-100'
-                      } ${hoveredStepThreeCard === card.step ? '-translate-y-0.5' : ''}`}
+                      className={`rounded-lg border border-[var(--color-lightGrey)] p-4 shadow-[0_8px_28px_rgba(13,18,38,0.08)] transition-[background-color,transform] duration-200 ${
+                        isHovered ? 'bg-[#f0f4ff] -translate-y-0.5' : 'bg-white'
+                      }`}
                     >
                     <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-full border border-[var(--color-lightGrey)] bg-white px-2 font-body text-[11px] font-semibold text-navy">
                       {card.step}
@@ -298,7 +295,7 @@ function MomentsSection({
                     <p className="mt-2 font-body text-sm leading-[1.45] text-[var(--color-text-muted)] md:min-h-[2.9em]">
                       {card.description}
                     </p>
-                    <span className="mt-4 inline-flex rounded-sm border border-[var(--color-lightGrey)] bg-white px-2 py-1 font-body text-[11px] text-[var(--color-text-muted)]">
+                    <span className="mt-4 inline-flex rounded-sm border border-[var(--color-lightGrey)] bg-[var(--color-lightGrey)] px-2 py-1 font-body text-[11px] text-[var(--color-text-muted)]">
                       {card.tag}
                     </span>
                     </article>

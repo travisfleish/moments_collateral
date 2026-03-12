@@ -312,7 +312,7 @@ export type StepThreeCard = {
         {
           step: '05',
           title: 'Audience\nActivation',
-          description: 'Reach the right audience through Genius.',
+          description: 'Reach audiences with precision.',
           tag: 'Audience precision',
         },
       ],

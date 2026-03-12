@@ -42,7 +42,7 @@ export function EcosystemSection({ content }: EcosystemSectionProps) {
         aria-hidden="true"
       />
 
-      <div className="section-shell-wide">
+      <div className="mx-auto max-w-[1080px] px-6 lg:px-12">
         {/* Header */}
         <Reveal>
           <p className="font-body text-body-sm font-medium tracking-widest uppercase mb-4"
@@ -78,7 +78,7 @@ export function EcosystemSection({ content }: EcosystemSectionProps) {
                 return (
                   <div
                     key={p.name}
-                    className="brand-card flex items-center justify-center px-4 py-4 min-h-[68px]"
+                    className="brand-card flex items-center justify-center px-3 py-3 min-h-[56px]"
                   >
                     {logoSrc ? (
                       <img
@@ -122,7 +122,7 @@ export function EcosystemSection({ content }: EcosystemSectionProps) {
                 return (
                   <div
                     key={p.name}
-                    className="brand-card flex items-center justify-center px-4 py-4 min-h-[68px]"
+                    className="brand-card flex items-center justify-center px-3 py-3 min-h-[56px]"
                   >
                     {logoSrc ? (
                       <img

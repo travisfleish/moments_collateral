@@ -2,7 +2,7 @@
 
 Marketing microsite for **Genius Sports Moments** built with React, TypeScript, Vite, Tailwind, and Framer Motion.
 
-This project presents the Moment Engine value proposition as a narrative scroll experience, combining official live sports data, audience intelligence, and programmatic activation into one story-driven page.
+This project presents the Moment Engine value proposition as a narrative scroll experience, combining official live sports data, audience intelligence, and programmatic activation into one story-driven page. The site also features a **Genius Moments** section with March Madness–specific content and moment packages.
 
 ---
 
@@ -18,11 +18,12 @@ This project presents the Moment Engine value proposition as a narrative scroll 
 - [Section-by-Section Content Summary](#section-by-section-content-summary)
   - [Hero](#hero)
   - [What Is a Moment](#what-is-a-moment)
-  - [Moment Engine (Technology Behind a Moment)](#moment-engine-technology-behind-a-moment)
   - [How It Works (4-Step Sequence)](#how-it-works-4-step-sequence)
+  - [Genius Moments](#genius-moments)
+  - [Moment Engine (Technology Behind a Moment)](#moment-engine-technology-behind-a-moment)
   - [The Genius Advantage (Four Pillars)](#the-genius-advantage-four-pillars)
-  - [In Practice (Deal Examples)](#in-practice-deal-examples)
   - [The Stack (Ecosystem)](#the-stack-ecosystem)
+  - [In Practice (Deal Examples)](#in-practice-deal-examples)
 - [UX and Interaction Patterns](#ux-and-interaction-patterns)
 - [Branding, Theming, and Assets](#branding-theming-and-assets)
 - [Editing Content Safely](#editing-content-safely)
@@ -35,7 +36,7 @@ This project presents the Moment Engine value proposition as a narrative scroll 
 
 The site communicates one core promise:
 
-> **"The right ad, at the right moment, in live sport."**
+> **"See the game. Know the fan. Win the moment."**
 
 It explains how Moment Engine:
 
@@ -44,7 +45,7 @@ It explains how Moment Engine:
 - injects updated targeting into existing programmatic deal workflows,
 - and activates coordinated omnichannel creative in under one second.
 
-The page is primarily content-driven; visual components consume typed content objects from a single source file.
+The page is primarily content-driven; visual components consume typed content objects from `momentEngine.ts` and `marchMadnessMoments.ts`.
 
 ---
 
@@ -108,11 +109,16 @@ Defined in `src/App.tsx`:
 High-level layout:
 
 - `src/content/momentEngine.ts` - Typed source-of-truth content object for all narrative sections
+- `src/content/marchMadnessMoments.ts` - March Madness–specific content (moments, audiences, fan cloud, proof)
 - `src/pages/MomentEnginePage.tsx` - Main page assembly and section order
 - `src/components/sections/` - Section components for each narrative chapter
 - `src/components/layout/SectionNav.tsx` - Sticky section navigation with active-section tracking
+- `src/components/layout/SiteHeader.tsx` - Fixed header with logo and CTA (controlled by `SHOW_SITE_HEADER` in `App.tsx`)
 - `src/components/primitives/MotionPrimitives.tsx` - Shared animation primitives (`Reveal`, `Stagger`)
-- `src/hooks/` - Utility hooks (`useScrollProgress`, `useReducedMotionSafe`)
+- `src/components/ui/MomentsAccordion.tsx` - Accordion for moment details in Genius Moments section
+- `src/components/ui/GeniusStripeRail.tsx` - Decorative stripe rail component
+- `src/hooks/` - Utility hooks (`useScrollProgress`, `useReducedMotionSafe`, `useCinematicDetectionFlow`)
+- `src/tokens.ts` - Design tokens
 - `src/styles/theme.css` - Fonts, palette, spacing/radius tokens
 - `src/index.css` - Tailwind layers and shared utility component classes
 - `public/` - Logos and design assets used by sections
@@ -129,13 +135,16 @@ Key content groups in `momentEngineContent`:
 
 - `hero`
 - `whatIsAMoment`
-- `momentEngine`
 - `sequence`
+- `sportsMoments`
+- `momentEngine`
 - `fourPillars`
-- `dealExamples`
 - `ecosystem`
+- `dealExamples`
 
-The file also defines strongly typed interfaces (`HeroStat`, `MomentItem`, `SequenceStep`, `Pillar`, `Deal`, etc.) so copy edits remain structured and safe.
+March Madness–specific content lives in `marchMadnessMoments.ts` (moments, audiences, fan cloud comparison, proof, how-it-works).
+
+The files define strongly typed interfaces (`HeroStat`, `MomentItem`, `SequenceStep`, `Pillar`, `Deal`, `SportsMomentPlan`, `MarchMadnessMomentsContent`, etc.) so copy edits remain structured and safe.
 
 ---
 
@@ -149,45 +158,46 @@ This section captures all narrative copy intent and key content points from the 
 
 - **Kicker:** "Genius Sports Moments"
 - **Title lines:**
-  - "The right ad,"
-  - "at the right moment,"
-  - "in live sport."
-- **Subhead summary:** Moment Engine triggers programmatic deals at the instant a sporting moment unfolds by combining official live data, fan intelligence, and existing ad stack integrations.
+  - "See the game."
+  - "Know the fan."
+  - "Win the moment."
+- **Subhead summary:** The Genius Moment Engine is the only advertising activation solution that leverages official live game data and verified fan intelligence to identify and activate meaningful sports moments instantly, enabling addressable campaigns at scale across open programmatic infrastructure.
 
 **Hero proof stats and meaning:**
 
-- `400+ Official Leagues`  
-  Rights-holder partnerships (including NFL, NCAA, EPL) provide exclusive real-time data.
-- `250M Fan Profiles`  
-  Fan Graph maps 250M consumers across 50B interactions and 5K brand signals.
-- `<1s Moment Detection`  
-  GeniusIQ detects and triggers on official live feeds with sub-second latency.
-- `15-25% Take Rate`  
-  Claimed contextual CPM uplift relative to standard sports inventory.
+- `400+ Official In-Game Tracking`  
+  Exclusive data partnerships with NFL, NCAA, EPL, and others; official in-game tracking rights.
+- `250M Custom Segmentation`  
+  Fan profiles mapped across behavioral and brand signals from the only deterministic data cloud built for sports.
+- `<1s Predictive Decisioning`  
+  GeniusIQ uses event capture, audience targeting, and inventory to generate activation parameters instantly.
+- `50+ In Your Workflow`  
+  Audiences available in your preferred DSP using contextual and behavioral targeting.
 
 ---
 
 ### What Is a Moment
 
-**Purpose:** Contrast generic sports buying with emotionally contextual activation.
+**Purpose:** Contrast programmatic/contextual media with premium live sports, and position Genius Moments as the bridge.
+
+- **Kicker:** "What Is a Moment"
+- **Headline:** "Fans have evolved. So should how you reach them."
+- **Subhead:** Today, brands face a tradeoff: programmatic and contextual ads offer scale but lack emotional connection; premium in-game placements offer impact but lack precision. Genius Moments brings both together.
 
 **Core idea:**
 
 - A "Moment" is positioned as a discrete, emotionally charged live-game event that creates measurable audience uplift.
 - The section reframes buying from generic schedule/daypart placement to event-level emotional timing.
 
-**State 1 narrative ("The Standard Sports Buy"):**
+**State 1 narrative ("Programmatic + Contextual Media"):**
 
-- Broad daypart targeting.
-- Ads run near games but without game-state context.
-- No emotional precision.
-- Limited differentiation versus standard market buys.
+- Precision and scale are available, but emotional context is missing.
+- The buy can be timely, but it is not connected to how fans feel in the moment.
 
-**State 2 narrative ("With Genius Sports Moments"):**
+**State 2 narrative ("Premium Live Sports"):**
 
-- Detects inflection points in real time.
-- Fires deals before emotional relevance decays.
-- Emphasizes precision + emotional relevance + automation.
+- Emotion without precision creates wasted opportunity.
+- Genius Moments closes that gap by combining official data, verified fan intelligence, and instant activation.
 
 **Moment examples in current copy:**
 
@@ -206,6 +216,54 @@ This section captures all narrative copy intent and key content points from the 
 
 ---
 
+### How It Works (4-Step Sequence)
+
+**Purpose:** Operational explanation of end-to-end programmatic execution.
+
+- **Headline:** "How The Moment Engine Works"
+- **Subhead summary:** Four steps. Less than one second. The Genius Moment Engine is an event-based advertising solution powered by official game data that identifies and signals meaningful sports moments as they happen, enabling unique addressable advertising activation at scale.
+
+Detailed steps in copy:
+
+1. **Moment Detected**
+   - GeniusIQ uses official live data to identify the event instantly.
+   - Key fields: official rights-holder feed, `<200ms` event detection, 400+ leagues globally.
+2. **Customize Audience**
+   - Top audiences are mapped by sport and moment in real time.
+   - Key fields: 250M fan profiles, 50B interactions + 5K brand signals, `<300ms` segment assembly.
+3. **Deal Fires**
+   - Pre-configured PMPs and Deal IDs activate automatically through preferred DSP/SSP partners.
+   - No separate buy path or workflow change.
+4. **Ad Activates**
+   - Omnichannel delivery (CTV, mobile, DOOH) launches while emotion is peaking.
+   - End-to-end speed: `<1s` from moment to activation.
+
+---
+
+### Genius Moments
+
+**Purpose:** Explain how to buy and activate Genius Moments with a 3-step flow and sport-specific moment plans.
+
+- **Headline:** "How To Buy & Activate Genius Moments"
+- **Description:** Activating Genius Moments is simple: select the moments that matter, pair them with your audience, and have a Deal ID automatically pushed to your preferred DSP for activation.
+
+**Three-step flow:**
+
+1. **Step 1: Choose your moment** — Select from in-game, in-season, and thematic bundles.
+2. **Step 2: Customize your audience** — Pair moments with audience segments (e.g., NFL die-hards, fantasy players).
+3. **Step 3: Deal activation** — Pre-configured PMPs and Deal IDs activate automatically across DSP/SSP partners.
+
+**Sport-specific plans** (e.g., NFL, NCAA Basketball) define:
+
+- In-game moments
+- In-season moments
+- Thematic bundles (curated high-impact moment groups)
+- Audience segments
+
+**March Madness integration:** The section also surfaces March Madness–specific content from `marchMadnessMoments.ts`, including moment labels (e.g., LATE GAME RALLY, BUZZER BEATER WIN, UPSET), fan cloud comparison, proof metrics, and audience definitions.
+
+---
+
 ### Moment Engine (Technology Behind a Moment)
 
 **Purpose:** Explain technical flow using a 5-beat progressive diagram.
@@ -217,15 +275,15 @@ The headline is:
 The section animates through five beats:
 
 1. **The Data Foundation**  
-   Official, real-time data ingestion across 400+ leagues.
+   400+ global league and federation partners; GeniusIQ ingests official data in real time.
 2. **Contextual Intelligence**  
-   Interprets game state and emotional weight (not just raw event detection).
+   Interprets game state, momentum, and win probability — not just what happened, but what it means.
 3. **Audience Intelligence**  
-   Matches moments to high-response segments from Fan Graph.
+   Fan Graph matches the moment to the exact audience segment most likely to respond.
 4. **The Engine Fires**  
-   Scores + assembles parameters + activates automatically under one second.
+   Scores the event, assembles deal parameters, and activates under one second.
 5. **Activation**  
-   Simultaneous outputs across deal activation, DCO, social, and content personalization.
+   Deal Activation, DCO, Social, Content Personalization — all firing at once inside the programmatic stack.
 
 Diagram emphasizes:
 
@@ -236,42 +294,13 @@ Diagram emphasizes:
 
 ---
 
-### How It Works (4-Step Sequence)
-
-**Purpose:** Operational explanation of end-to-end programmatic execution.
-
-- **Kicker:** "How It Works"
-- **Headline:** "Four steps. Under one second."
-- **Subhead summary:** From play completion to ad on screen, the chain is automated while preserving existing workflows.
-
-Detailed steps in copy:
-
-1. **Moment Detected (Official Data)**
-   - GeniusIQ reads official live feed.
-   - Classifies event + emotion.
-   - Key fields: official rights-holder feed, `<200ms` latency, 400+ league coverage.
-2. **Audience Assembled (Fan Graph)**
-   - Uses 250M profiles, 50B interactions, 5K brand signals.
-   - Builds highest-value segment in real time.
-   - Key field: `<300ms` segment build time.
-3. **Deal Fires (Programmatic)**
-   - Updates pre-configured deal IDs/PMPs with moment + segment context.
-   - No separate buy path or workflow change.
-   - Compatible with major SSPs.
-4. **Ad Activates (Omnichannel)**
-   - Synchronized trigger across CTV, mobile, and DOOH.
-   - Ensures channel-consistent relevance.
-   - End-to-end sync target: `<1s`.
-
----
-
 ### The Genius Advantage (Four Pillars)
 
 **Purpose:** Position defensibility and category differentiation.
 
 - **Kicker:** "The Genius Advantage"
 - **Headline:** "Four pillars no one else can offer."
-- **Subhead summary:** Product moat emerges from the combination of rights, contextual modeling, audience intelligence, and integration.
+- **Subhead summary:** When you partner with Genius, you get four advantages no one else can combine, so your media reaches fans faster, with deeper context, and higher relevance in every moment.
 
 Current pillars:
 
@@ -291,7 +320,7 @@ Current pillars:
 **Purpose:** Show real-world packaging patterns by region, sport, trigger, audience, and channel mix.
 
 - **Kicker:** "In Practice"
-- **Headline:** "How buyers are activating Moment Engine."
+- **Headline:** "Your in-house agency model, powered by Moment Engine."
 - **Subhead summary:** Demonstrates how moment triggers map to verticals, audience definitions, and channel activation plans.
 
 Current examples:
@@ -326,7 +355,7 @@ Current examples:
 
 - **Kicker:** "The Stack"
 - **Headline:** "Built into the ecosystem you already use."
-- **Subhead summary:** Moment Engine augments rather than replaces existing supply and demand infrastructure.
+- **Subhead summary:** Moment Engine doesn't replace your stack — it supercharges it. Supply-side and demand-side partners are already integrated, so activation is immediate.
 
 Supply-side partners in copy:
 
@@ -359,6 +388,7 @@ The page combines static content with scroll and state-driven transitions:
 - **Scroll-progress storytelling** powers state transitions in:
   - `WhatIsAMomentSection` (2-state contrast)
   - `MomentEngineSection` (5-beat diagram progression)
+- **Genius Moments** section uses `MomentsAccordion`, `GeniusStripeRail`, and March Madness content
 - **Interactive step/deal tabs** in sequence and deal examples sections
 - **Reveal and stagger primitives** for consistent entrance motion
 - **Reduced motion support** via Framer Motion preference handling + CSS media query
@@ -379,9 +409,9 @@ Design system references:
 
 Notable asset groups:
 
-- `public/genius-assets/` (brand logos)
+- `public/genius-assets/` (brand logos; decorative line assets such as `green-lines.png`, `blue-lines.png`, `bright-green-lines.png` when present)
 - `public/logos/` (ecosystem partner logos)
-- `public/green-lines.png` (four pillars decorative motif)
+- `public/fan-cloud.svg` (fan cloud visualization)
 
 ---
 
@@ -389,7 +419,8 @@ Notable asset groups:
 
 For copy updates, prefer editing:
 
-- `src/content/momentEngine.ts`
+- `src/content/momentEngine.ts` — main narrative content
+- `src/content/marchMadnessMoments.ts` — March Madness moments, audiences, fan cloud, proof
 
 Guidelines:
 
@@ -397,7 +428,7 @@ Guidelines:
 - Update copy and quantitative claims together (hero stats, proof chips, thresholds).
 - If adding/removing sections, update:
   - `src/pages/MomentEnginePage.tsx`
-  - `src/components/layout/SectionNav.tsx` (labels + target IDs)
+  - `src/components/layout/SectionNav.tsx` (labels + target IDs in `NAV_ITEMS`)
   - any affected section component IDs (`id`/`aria-labelledby`)
 
 ---

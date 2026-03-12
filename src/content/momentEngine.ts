@@ -197,9 +197,9 @@ export type StepThreeCard = {
         {
           beat: 1,
           label: 'The Data Foundation.',
-          headline: 'Every major sport. Every live feed. All official.',
+          headline: '400+ global league and federation partners.',
           description:
-            'GeniusIQ ingests official data from 400+ global leagues in real time — not scraped, not delayed, not approximate.',
+            'GeniusIQ ingests official data from the NFL, NCAA, EPL, and other partners in real time — not scraped, not delayed, not approximate.',
         },
         {
           beat: 2,

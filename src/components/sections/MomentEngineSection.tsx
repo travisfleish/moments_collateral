@@ -36,9 +36,9 @@ const BEAT_COPY = [
   {
     beat: 1,
     label: 'The Data Foundation.',
-    headline: 'Every major sport. Every live feed. All official.',
+    headline: '400+ global league and federation partners.',
     description:
-      'GeniusIQ ingests official data from 400+ global leagues in real time — not scraped, not delayed, not approximate.',
+      'GeniusIQ ingests official data from the NFL, NCAA, EPL, and other partners in real time — not scraped, not delayed, not approximate.',
   },
   {
     beat: 2,
@@ -290,7 +290,7 @@ function MomentEngineDiagram({ beat, reducedMotion }: DiagramProps) {
   const input1IconColor = input1State === 'active' ? blueColor : '#5b6472'
   const input2IconColor = input2State === 'active' ? greenColor : '#5b6472'
   return (
-    <div ref={diagramRef} className="relative w-full" style={{ minHeight: '500px' }}>
+    <div ref={diagramRef} className="relative w-full" style={{ minHeight: '420px' }}>
       {/* SVG arrow layer in local pixel coordinates */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none"
@@ -493,13 +493,12 @@ function MomentEngineDiagram({ beat, reducedMotion }: DiagramProps) {
 
         {/* Column 3: Moment Engine + Outputs */}
         {/*
-          Shift the stack upward so the combined Moment Engine + Outputs group
-          centers against the input cards and circles rather than anchoring the
-          Moment Engine box itself to the midpoint.
+          Center the combined Moment Engine + Outputs block vertically against
+          the input cards and circles.
         */}
         <div
-          className="flex flex-col"
-          style={{ paddingTop: '126px', paddingBottom: '8px', paddingLeft: '24px', gap: '37px' }}
+          className="flex flex-col justify-center"
+          style={{ paddingLeft: '24px', gap: '37px' }}
         >
 
           {/* Moment Engine box */}
@@ -720,7 +719,7 @@ export function MomentEngineSection({ content: _content }: MomentEngineSectionPr
           </div>
 
           {/* Two-column layout */}
-          <div className="grid lg:grid-cols-[1.35fr_0.85fr] gap-12 lg:gap-16 items-center">
+          <div className="grid lg:grid-cols-[1.35fr_0.85fr] gap-12 lg:gap-16 items-stretch">
 
             {/* Left: diagram */}
             <div>
@@ -730,13 +729,13 @@ export function MomentEngineSection({ content: _content }: MomentEngineSectionPr
               />
             </div>
 
-            {/* Right: beat copy */}
-            <div className="lg:pl-10">
+            {/* Right: beat copy — centered vertically on the diagram */}
+            <div className="lg:pl-10 flex items-center">
               <BeatCopy beat={beat} reducedMotion={reducedMotion} />
             </div>
           </div>
 
-          <div className="mt-8 px-2 lg:px-6">
+          <div className="mt-2 px-2 lg:px-6">
             <div className="relative">
               <div
                 className="absolute left-0 right-0 top-[16px] h-0.5 rounded-full"

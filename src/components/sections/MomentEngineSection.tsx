@@ -612,17 +612,7 @@ function BeatCopy({ beat, reducedMotion }: BeatCopyProps) {
         exit="exit"
         transition={{ duration: reducedMotion ? 0.1 : 0.4, ease: 'easeOut' }}
       >
-        <h3
-          className="font-heading"
-          style={{
-            fontSize: '1.35rem',
-            fontWeight: 300,
-            lineHeight: 1.25,
-            letterSpacing: '-0.01em',
-            color: '#0d1226',
-            marginBottom: '1rem',
-          }}
-        >
+        <h3 className="font-heading text-brand-h3 text-navy mb-4">
           {copy.headline}
         </h3>
         <p

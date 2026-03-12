@@ -56,7 +56,7 @@ export function EcosystemSection({ content }: EcosystemSectionProps) {
           </h2>
         </Reveal>
         <Reveal delay={0.12}>
-          <p className="section-copy max-w-2xl mb-16">
+          <p className="section-subhead">
             {content.subhead}
           </p>
         </Reveal>
@@ -66,7 +66,7 @@ export function EcosystemSection({ content }: EcosystemSectionProps) {
           {/* Supply side */}
           <div>
             <Reveal>
-              <h3 className="font-body text-body-sm font-medium uppercase tracking-wider mb-6"
+              <h3 className="font-heading text-brand-h4 uppercase tracking-wider mb-6"
                 style={{ color: 'var(--color-text-muted)' }}>
                 Supply Partners
               </h3>
@@ -110,7 +110,7 @@ export function EcosystemSection({ content }: EcosystemSectionProps) {
           {/* Demand side */}
           <div>
             <Reveal>
-              <h3 className="font-body text-body-sm font-medium uppercase tracking-wider mb-6"
+              <h3 className="font-heading text-brand-h4 uppercase tracking-wider mb-6"
                 style={{ color: 'var(--color-text-muted)' }}>
                 Demand Partners
               </h3>

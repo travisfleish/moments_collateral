@@ -27,6 +27,8 @@ interface EmbeddedMomentDetectionProps {
   startTime?: number
   /** When true with startOnView, reset the sequence when scrolling out of view and back in */
   resetOnReenterView?: boolean
+  /** When true, show the pulsing scanner overlay during the playing phase. Default: false */
+  showScannerOverlay?: boolean
 }
 
 export function EmbeddedMomentDetection({
@@ -40,6 +42,7 @@ export function EmbeddedMomentDetection({
   startOnView = false,
   startTime,
   resetOnReenterView = false,
+  showScannerOverlay = false,
 }: EmbeddedMomentDetectionProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [completionPayload, setCompletionPayload] = useState<CinematicCompletePayload | null>(null)
@@ -75,7 +78,7 @@ export function EmbeddedMomentDetection({
       reset()
     }
   }, [inView, reset, resetOnReenterView, startOnView])
-  const isScannerActive = phase === 'playing'
+  const isScannerActive = showScannerOverlay && phase === 'playing'
 
   // When looping, reset as soon as Moment Detected or Moment Captured is shown
   useEffect(() => {
@@ -117,9 +120,11 @@ export function EmbeddedMomentDetection({
         onTimeUpdate={handleVideoTimeUpdate}
         onEnded={handleVideoEnded}
       />
-      <div className="absolute inset-0">
-        <ScannerOverlay active={isScannerActive} durationMs={1600} />
-      </div>
+      {showScannerOverlay && (
+        <div className="absolute inset-0">
+          <ScannerOverlay active={isScannerActive} durationMs={1600} />
+        </div>
+      )}
 
       <AnimatePresence>
         {phase === 'detecting' && (

@@ -34,7 +34,7 @@ export function FourPillarsSection({ content }: FourPillarsSectionProps) {
           </h2>
         </Reveal>
         <Reveal delay={0.12}>
-          <p className="section-copy max-w-2xl mb-16">
+          <p className="section-subhead">
             {content.subhead}
           </p>
         </Reveal>

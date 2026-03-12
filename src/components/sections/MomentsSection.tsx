@@ -11,7 +11,7 @@ type MomentsSectionProps = {
 }
 
 const highlightedPhrases = ['Genius Moments', 'Fan Graph'] as const
-const stepTitleClassName = 'font-heading text-brand-h3 font-light text-navy'
+const stepTitleClassName = 'font-heading text-brand-h3 text-navy'
 
 const marchMadnessMomentDetailsByLabel: Record<string, { trigger: string; description: string }> = {
   'LATE GAME RALLY': {
@@ -137,7 +137,7 @@ function MomentsSection({
       <div className="section-shell">
         <div className="mb-8 px-2 py-2 md:px-0">
           <h2 className="section-title text-white">{content.headline}</h2>
-          <p className="section-copy mt-4 max-w-3xl text-[#dbe7ff]">{content.description}</p>
+          <p className="section-subhead mt-4 text-[#dbe7ff]">{content.description}</p>
 
           <div className="mt-8 flex flex-wrap gap-2">
             {content.plans.map((plan, index) => {

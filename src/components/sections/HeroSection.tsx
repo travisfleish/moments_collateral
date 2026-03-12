@@ -33,7 +33,7 @@ export function HeroSection({ content }: HeroSectionProps) {
   return (
     <section
       style={{ backgroundColor: 'var(--gs-bg)' }}
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden"
+      className="relative flex flex-col justify-start overflow-hidden"
       aria-label="Hero"
     >
       {/* Curved mesh background decoration */}
@@ -74,7 +74,7 @@ export function HeroSection({ content }: HeroSectionProps) {
         }}
       />
 
-      <div className="section-shell relative z-10 py-24">
+      <div className="section-shell relative z-10 pt-32 pb-10">
         {/* Top row: kicker only (logo moved to site header) */}
         <div className="mb-6">
           <Reveal delay={0.04}>
@@ -92,10 +92,7 @@ export function HeroSection({ content }: HeroSectionProps) {
 
         {/* Title */}
         <Reveal delay={0.08}>
-          <h1
-            className="font-heading text-brand-h1 text-navy mb-8 max-w-3xl"
-            style={{ fontSize: '50.5586px', fontWeight: 300 }}
-          >
+          <h1 className="font-heading text-brand-h1 text-navy mb-8 max-w-3xl">
             {content.titleLines.map((line, i) => (
               <span key={i} className="block">{line}</span>
             ))}
@@ -104,7 +101,7 @@ export function HeroSection({ content }: HeroSectionProps) {
 
         {/* Subhead */}
         <Reveal delay={0.16}>
-          <p className="font-body text-body text-[var(--color-text-muted)] max-w-2xl mb-16 leading-relaxed">
+          <p className="section-subhead-hero">
             {content.subhead}
           </p>
         </Reveal>

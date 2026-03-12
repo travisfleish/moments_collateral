@@ -190,7 +190,7 @@ function MomentsAccordion({
                 >
                   <span className="flex items-center gap-3">
                     <PlusMinusIcon isOpen={isOpen} />
-                    <h3 className="m-0 font-heading text-left text-base font-book leading-6 text-slate-900">
+                    <h3 className="m-0 text-left text-18 text-slate-900">
                       {toTitleCase(label)}
                     </h3>
                   </span>
@@ -211,12 +211,12 @@ function MomentsAccordion({
                       className="overflow-hidden border-t border-[var(--color-lightGrey)] bg-white"
                     >
                       <div className="space-y-2 px-5 pb-4 pt-3 text-left">
-                        <p className="text-sm text-slate-900">
-                          <span className="font-medium text-slate-700">Trigger: </span>
+                        <p className="font-body text-base text-slate-900">
+                          <span className="font-medium">Trigger: </span>
                           {details.trigger}
                         </p>
-                        <p className="text-sm text-slate-900">
-                          <span className="font-medium text-slate-700">Description: </span>
+                        <p className="font-body text-base text-slate-900">
+                          <span className="font-medium">Description: </span>
                           {details.description}
                         </p>
                         <div className="pt-2">
@@ -291,7 +291,7 @@ function MomentsAccordion({
                         >
                           <span className="flex items-center gap-3">
                             <PlusMinusIcon isOpen={isOpen} />
-                            <h3 className="m-0 font-heading text-left text-base font-book leading-6 text-slate-900">
+                            <h3 className="m-0 text-left text-18 text-slate-900">
                               {toTitleCase(label)}
                             </h3>
                           </span>
@@ -312,12 +312,12 @@ function MomentsAccordion({
                               className="overflow-hidden border-t border-[var(--color-lightGrey)] bg-white"
                             >
                               <div className="space-y-2 px-5 pb-4 pt-3 text-left">
-                                <p className="text-sm text-slate-900">
-                                  <span className="font-medium text-slate-700">Trigger: </span>
+                                <p className="font-body text-base text-slate-900">
+                                  <span className="font-medium">Trigger: </span>
                                   {details.trigger}
                                 </p>
-                                <p className="text-sm text-slate-900">
-                                  <span className="font-medium text-slate-700">Description: </span>
+                                <p className="font-body text-base text-slate-900">
+                                  <span className="font-medium">Description: </span>
                                   {details.description}
                                 </p>
                                 <div className="pt-2">
@@ -357,7 +357,7 @@ function MomentsAccordion({
           >
             <span className="flex items-center gap-3">
               <PlusMinusIcon isOpen={mobileOpenId === thematicBundleLabel} />
-              <h3 className="m-0 font-heading text-left text-base font-book leading-6 text-navy">
+              <h3 className="m-0 text-left text-18 text-navy">
                 {toTitleCase(thematicBundleLabel)}
               </h3>
             </span>
@@ -377,12 +377,12 @@ function MomentsAccordion({
                 className="overflow-hidden bg-[#f0f4ff]"
               >
                 <div className="space-y-2 px-5 pb-4 pt-3 text-left">
-                  <p className="text-sm text-slate-900">
-                    <span className="font-medium text-slate-700">What it is: </span>
+                  <p className="font-body text-base text-slate-900">
+                    <span className="font-medium">What it is: </span>
                     {thematicBundle.trigger}
                   </p>
-                  <p className="text-sm text-slate-900">
-                    <span className="font-medium text-slate-700">Description: </span>
+                  <p className="font-body text-base text-slate-900">
+                    <span className="font-medium">Description: </span>
                     {thematicBundle.description}
                   </p>
                   <div className="pt-2">
@@ -404,10 +404,11 @@ function MomentsAccordion({
       <div className="hidden flex-col gap-4 md:flex">
         <div className="flex flex-row items-start gap-8">
           {labelColumns.map((columnLabels, columnIndex) => (
-            <div key={`column-${columnIndex}`} className="mt-0 flex w-full flex-col overflow-hidden rounded-2xl bg-white">
-              <h4 className="px-5 pt-4 pb-2 font-body text-xs font-semibold uppercase tracking-[0.12em] text-[#596581]">
+            <div key={`column-${columnIndex}`} className="mt-0 flex w-full flex-col">
+              <h4 className="mb-2 text-18 font-medium text-slate-700 md:mb-3">
                 {columnHeaders[columnIndex]}
               </h4>
+              <div className="flex flex-col overflow-hidden rounded-2xl bg-white">
               <div className="flex flex-col divide-y divide-[var(--color-lightGrey)]">
               {columnLabels.map((label, index) => {
               const isOpen = desktopOpenId === label;
@@ -434,7 +435,7 @@ function MomentsAccordion({
                   >
                     <span className="flex items-center gap-3">
                       <PlusMinusIcon isOpen={isOpen} />
-                      <h3 className="m-0 font-heading text-left text-base font-book leading-6 text-slate-900">
+                      <h3 className="m-0 text-left text-18 text-slate-900">
                         {toTitleCase(label)}
                       </h3>
                     </span>
@@ -455,12 +456,12 @@ function MomentsAccordion({
                         className="overflow-hidden bg-white"
                       >
                         <div className="mx-auto max-w-3xl space-y-2 px-6 pb-4 pt-3 text-left">
-                          <p className="text-base text-slate-900">
-                            <span className="font-medium text-slate-700">Trigger: </span>
+                          <p className="font-body text-base text-slate-900">
+                            <span className="font-medium">Trigger: </span>
                             {details.trigger}
                           </p>
-                          <p className="text-base text-slate-900">
-                            <span className="font-medium text-slate-700">Description: </span>
+                          <p className="font-body text-base text-slate-900">
+                            <span className="font-medium">Description: </span>
                             {details.description}
                           </p>
                           <div className="pt-2">
@@ -480,6 +481,7 @@ function MomentsAccordion({
               );
             })}
               </div>
+              </div>
             </div>
           ))}
         </div>
@@ -496,7 +498,7 @@ function MomentsAccordion({
           >
             <span className="flex items-center gap-3">
               <PlusMinusIcon isOpen={desktopOpenId === thematicBundleLabel} />
-              <h3 className="m-0 font-heading text-left text-base font-book leading-6 text-navy">
+              <h3 className="m-0 text-left text-18 text-navy">
                 {toTitleCase(thematicBundleLabel)}
               </h3>
             </span>
@@ -516,12 +518,12 @@ function MomentsAccordion({
                 className="overflow-hidden bg-[#f0f4ff]"
               >
                 <div className="mx-auto max-w-3xl space-y-2 px-6 pb-4 pt-3 text-left">
-                  <p className="text-base text-slate-900">
-                    <span className="font-medium text-slate-700">What it is: </span>
+                  <p className="font-body text-base text-slate-900">
+                    <span className="font-medium">What it is: </span>
                     {thematicBundle.trigger}
                   </p>
-                  <p className="text-base text-slate-900">
-                    <span className="font-medium text-slate-700">Description: </span>
+                  <p className="font-body text-base text-slate-900">
+                    <span className="font-medium">Description: </span>
                     {thematicBundle.description}
                   </p>
                   <div className="pt-2">
@@ -562,7 +564,7 @@ function MomentsAccordion({
               onClick={(event) => event.stopPropagation()}
             >
               <div className="flex items-start justify-between border-b border-[var(--color-lightGrey)] px-4 py-3 md:px-6 md:py-4">
-                <h3 id="moments-form-modal-title" className="m-0 pr-4 text-lg font-medium text-slate-900">
+                <h3 id="moments-form-modal-title" className="m-0 pr-4 font-heading text-brand-h3 text-slate-900">
                   {modalTitle}
                 </h3>
                 <button

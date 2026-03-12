@@ -44,7 +44,7 @@ export function SiteHeader() {
           href="https://www.geniussports.com"
           target="_blank"
           rel="noreferrer"
-          className="flex-shrink-0 rounded-full border border-navy/20 bg-white/80 px-2 py-0.5 font-heading text-[11px] font-light text-navy backdrop-blur-sm transition-all duration-200 hover:border-navy hover:bg-navy hover:text-white sm:px-2.5 sm:py-1 sm:text-xs md:px-3 md:py-1.5 md:text-sm"
+          className="flex-shrink-0 rounded-full border border-navy/20 bg-white/80 px-2 py-0.5 font-heading text-sm font-medium text-navy backdrop-blur-sm transition-all duration-200 hover:border-navy hover:bg-navy hover:text-white sm:px-2.5 sm:py-1 md:px-3 md:py-1.5 lg:text-[1rem]"
         >
           Visit Genius Sports
         </a>

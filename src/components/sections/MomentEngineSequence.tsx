@@ -141,7 +141,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
           </h2>
         </Reveal>
         <Reveal delay={0.12}>
-          <p className="section-copy max-w-2xl mb-8">
+          <p className="section-subhead">
             {content.subhead}
           </p>
         </Reveal>

@@ -30,6 +30,10 @@ const config: Config = {
         'section-title': ['2.5rem', { lineHeight: '1.15', letterSpacing: '-0.015em', fontWeight: '300' }],
         // Section copy: 18px / weight 400 / lh 1.6 / ls 0
         'section-copy': ['1.125rem', { lineHeight: '1.6', letterSpacing: '0', fontWeight: '400' }],
+        // Subhead: 22px — hero section only
+        '22': ['1.375rem', { lineHeight: '1.55', letterSpacing: '0', fontWeight: '400' }],
+        // Subhead: 18px — non-hero section subheads (matches FANHub body style)
+        '18': ['1.125rem', { lineHeight: '1.6', letterSpacing: '0', fontWeight: '400' }],
       },
       fontWeight: {
         // 300 — ESKlarheitKurrentTRIAL Book  → headings (h1, h2, section titles)

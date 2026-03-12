@@ -46,6 +46,20 @@
     color: var(--color-text-muted);
   }
 
+  /* Subhead style for non-hero sections: font-body text-18 opacity-80 (matches FANHub body style) */
+  .section-subhead {
+    @apply font-body text-18 opacity-80 mb-8 md:mb-12;
+    color: var(--color-text);
+    max-width: 42.125rem;
+  }
+
+  /* Hero subhead: larger text-22, same font-body opacity-80 */
+  .section-subhead-hero {
+    @apply font-body text-22 opacity-80 mb-8 md:mb-12;
+    color: var(--color-text-muted);
+    max-width: 42.125rem;
+  }
+
   .section-shell {
     @apply max-w-[1200px] mx-auto px-6 lg:px-12;
   }

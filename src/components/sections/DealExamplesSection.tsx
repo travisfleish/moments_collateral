@@ -34,7 +34,7 @@ export function DealExamplesSection({ content }: DealExamplesSectionProps) {
           </h2>
         </Reveal>
         <Reveal delay={0.12}>
-          <p className="section-copy max-w-2xl mb-12">
+          <p className="section-subhead">
             {content.subhead}
           </p>
         </Reveal>

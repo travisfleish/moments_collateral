@@ -93,15 +93,15 @@ function GeniusMomentsBridgeCard({ reducedMotion }: { reducedMotion: boolean }) 
       animate={{
         opacity: 1,
         scale: reducedMotion ? 1 : 1.06,
-        boxShadow: '0 20px 44px rgba(30,58,196,0.34)',
+        boxShadow: '0 0 80px rgba(0,0,220,0.45), 0 30px 60px -15px rgba(15,23,42,0.4)',
       }}
       style={{
         borderColor: 'rgba(208,219,255,0.8)',
         backgroundColor: 'var(--color-gs-accent-500)',
       }}
     >
-      <h3 className="font-heading text-xl lg:text-2xl leading-tight" style={{ color: '#ffffff' }}>
-        Genius Moments
+      <h3 className="font-heading text-brand-h4 text-white leading-tight">
+        Genius Moment Engine
       </h3>
       <ul className="mt-5 space-y-3 list-disc pl-5">
         {[
@@ -110,7 +110,7 @@ function GeniusMomentsBridgeCard({ reducedMotion }: { reducedMotion: boolean }) 
           'Price: efficient',
           'Inventory: scaled',
         ].map((item) => (
-          <li key={item} className="font-body text-base lg:text-lg" style={{ color: 'rgba(255,255,255,0.95)' }}>
+          <li key={item} className="font-body text-sm lg:text-base" style={{ color: 'rgba(255,255,255,0.95)' }}>
             {item}
           </li>
         ))}
@@ -249,25 +249,25 @@ export function WhatIsAMomentSection({ content }: WhatIsAMomentSectionProps) {
       className="overflow-x-hidden bg-white py-24 md:py-28"
     >
       <div className="section-shell-wide">
-        <div className="mx-auto max-w-4xl text-center">
+        <div className="mx-auto max-w-6xl text-center">
           <h2
             id="what-is-a-moment-heading"
-            className="section-title whitespace-pre-line text-[clamp(2rem,5vw,3.4rem)] leading-[1.05]"
+            className="section-title text-[3.25rem] whitespace-pre-line"
           >
             {content.headline}
           </h2>
-          <p className="section-copy mx-auto mt-6 max-w-4xl text-[clamp(1rem,1.8vw,1.18rem)] leading-[1.55] text-[#4d5a70]">
+          <p className="section-subhead mx-auto mt-6 max-w-4xl">
             <span>{subheadLead}</span>
             {subheadBoldSentence ? <strong className="font-semibold text-navy">{subheadBoldSentence}</strong> : null}
           </p>
         </div>
 
-        <div className="mt-12 text-center">
-          <h3 className="font-body text-sm font-semibold uppercase tracking-[0.16em] text-[#596581]">
+        <div className="mt-10 text-center">
+          <h3 className="font-heading text-sm uppercase tracking-[0.16em] text-[#596581]">
             The Sports Media Tradeoff
           </h3>
         </div>
-        <div className="mt-8 grid items-stretch gap-4 md:grid-cols-3 lg:mt-12 lg:gap-6 lg:grid-cols-[minmax(260px,1fr)_72px_minmax(340px,400px)_72px_minmax(260px,1fr)]">
+        <div className="mt-10 grid items-stretch gap-4 md:grid-cols-3 lg:mt-14 lg:gap-6 lg:grid-cols-[minmax(260px,1fr)_72px_minmax(340px,400px)_72px_minmax(260px,1fr)]">
           <div className="flex min-w-0 flex-col">
             <ComparisonCard
               title={content.contrastLeft.label}

@@ -38,35 +38,35 @@ const BEAT_COPY = [
     label: 'The Data Foundation.',
     headline: '400+ global league and federation partners.',
     description:
-      'GeniusIQ ingests official data from the NFL, NCAA, EPL, and other partners in real time — not scraped, not delayed, not approximate.',
+      'GeniusIQ ingests official data from the NFL, NCAA, EPL, and other partners in real time. Not scraped, not delayed, not approximate.',
   },
   {
     beat: 2,
     label: 'Contextual Intelligence.',
     headline: 'Not just what happened. What it means.',
     description:
-      'GeniusIQ interprets game state, momentum, and win probability — scoring each event for its emotional weight before the broadcast catches up.',
+      'GeniusIQ interprets game state, momentum, and win probability allowing it to score each event for its emotional weight before the broadcast catches up.',
   },
   {
     beat: 3,
     label: 'Audience Intelligence.',
     headline: '250 million fans. The right ones, right now.',
     description:
-      'The Fan Graph™ matches the moment to the exact audience segment most likely to respond — assembled automatically, no manual updates required. It continuously refines that segment with live behavior and affinity signals as the game evolves.',
+      'The Fan Graph™ automatically matches the moment to the exact audience segment most likely to respond. It continuously refines that segment with live behavior and affinity signals as the game evolves.',
   },
   {
     beat: 4,
     label: 'The Engine Fires.',
     headline: 'Under a second. Fully automatic.',
     description:
-      'The Moment Engine scores the event, assembles deal parameters, and activates — before the feeling fades.',
+      'The Moment Engine scores the event, assembles deal parameters, and activates before the feeling fades.',
   },
   {
     beat: 5,
     label: 'Activation.',
     headline: 'Every channel. Simultaneously.',
     description:
-      'Deal Activation, DCO, Social, Content Personalization — all firing at once, inside the programmatic stack you already use.',
+      'Deal Activation, DCO, Social, Content Personalization all firing at once, inside the programmatic stack you already use.',
   },
 ]
 

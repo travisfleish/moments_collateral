@@ -683,7 +683,7 @@ export type StepThreeCard = {
           number: '01',
           title: 'Official Rights',
           description:
-            'We are the official data and streaming partner for the NFL, NCAA, EPL, and 400+ other leagues. That means our data is faster, more accurate, and more granular than any aggregator or scraper — it\'s the same feed powering broadcast.',
+            'We are the official data and streaming partner for the NFL, NCAA, EPL, and 400+ other leagues. That means our data is faster, more accurate, and more granular than any aggregator or scraper.',
           proof: 'NFL, NCAA, EPL + 400+ official partnerships',
         },
         {
@@ -691,7 +691,7 @@ export type StepThreeCard = {
           number: '02',
           title: 'Contextual Depth',
           description:
-            'GeniusIQ doesn\'t just detect events — it interprets game state. Score differential, time remaining, momentum index, win probability shift. We know not just what happened, but what it means emotionally for the fans watching.',
+            'GeniusIQ doesn\'t just detect events, it interprets game state. Score differential, time remaining, momentum index, win probability shift. We know not just what happened, but what it means emotionally for the fans watching.',
           proof: 'Game state interpretation, not raw data relay',
         },
         {
@@ -699,7 +699,7 @@ export type StepThreeCard = {
           number: '03',
           title: 'Audience Precision',
           description:
-            'Fan Graph™ is the most comprehensive sports fan intelligence platform in market. 250M consumer profiles built from 50B interactions and 5K exclusive brand-affinity signals — mapped to moment types and emotional states.',
+            'Our Fan Graph™ is the most comprehensive sports fan intelligence platform in market. 250M consumer profiles built from 50B interactions and 5K exclusive brand-affinity signals then mapped to moment types and emotional states.',
           proof: '250M profiles · 50B interactions · 5K brand signals',
         },
         {
@@ -774,7 +774,7 @@ export type StepThreeCard = {
       kicker: 'The Stack',
       headline: 'Built into the ecosystem you already use.',
       subhead:
-        'Moment Engine doesn\'t replace your stack — it supercharges it. Supply-side and demand-side partners are already integrated, so activation is immediate.',
+        'The Genius Moment Engine fits seamlessly into your existing workflow. Supply-side and demand-side partners are already integrated, so activation is easy, intuitive and immediate.',
       supplyPartners: [
         { name: 'PubMatic', category: 'SSP' },
         { name: 'Magnite', category: 'SSP' },

@@ -355,7 +355,7 @@ Current examples:
 
 - **Kicker:** "The Stack"
 - **Headline:** "Built into the ecosystem you already use."
-- **Subhead summary:** Moment Engine doesn't replace your stack — it supercharges it. Supply-side and demand-side partners are already integrated, so activation is immediate.
+- **Subhead summary:** The Genius Moment Engine integrates seamlessly into your existing workflow. Supply-side and demand-side partners are already integrated, so activation is immediate.
 
 Supply-side partners in copy:
 

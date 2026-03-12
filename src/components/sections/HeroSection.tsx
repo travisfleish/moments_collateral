@@ -75,8 +75,8 @@ export function HeroSection({ content }: HeroSectionProps) {
       />
 
       <div className="section-shell relative z-10 py-24">
-        {/* Top row: kicker left, logo right */}
-        <div className="mb-6 flex items-center justify-between gap-6">
+        {/* Top row: kicker only (logo moved to site header) */}
+        <div className="mb-6">
           <Reveal delay={0.04}>
             <div className="inline-block">
               <p className="font-body text-xl font-medium tracking-widest uppercase text-black">
@@ -87,13 +87,6 @@ export function HeroSection({ content }: HeroSectionProps) {
                 style={{ backgroundColor: 'rgba(15, 23, 42, 0.45)' }}
               />
             </div>
-          </Reveal>
-          <Reveal delay={0}>
-            <img
-              src="/genius-assets/genius_logo.svg"
-              alt="Genius Sports"
-              className="h-[120px] w-auto object-contain"
-            />
           </Reveal>
         </div>
 

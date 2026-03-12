@@ -50,6 +50,14 @@
     @apply max-w-[1200px] mx-auto px-6 lg:px-12;
   }
 
+  .section-shell-wide {
+    @apply max-w-[1440px] mx-auto px-6 lg:px-12;
+  }
+
+  .section-shell-narrow {
+    @apply max-w-[960px] mx-auto px-6 lg:px-12;
+  }
+
   .brand-card {
     background-color: var(--color-lightGrey);
     border: 1px solid var(--color-lightGrey);

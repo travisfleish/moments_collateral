@@ -346,7 +346,7 @@ function MomentEngineDiagram({ beat, reducedMotion }: DiagramProps) {
       {/* HTML layout grid — 3 columns */}
       <div
         className="relative grid gap-x-8 gap-y-4 h-full"
-        style={{ gridTemplateColumns: '151px 112px minmax(0, 1fr)', zIndex: 2 }}
+        style={{ gridTemplateColumns: '300px 112px minmax(0, 1fr)', zIndex: 2 }}
       >
         {/* Column 1: Input boxes */}
         <div className="flex flex-col justify-between gap-4 py-2">
@@ -707,7 +707,7 @@ export function MomentEngineSection({ content: _content }: MomentEngineSectionPr
       style={{ height: '300vh' }}
     >
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden bg-white">
-        <div className="section-shell w-full">
+        <div className="section-shell-wide w-full">
 
           {/* Section header */}
           <div className="text-center mb-12">

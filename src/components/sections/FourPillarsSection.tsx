@@ -20,7 +20,7 @@ export function FourPillarsSection({ content }: FourPillarsSectionProps) {
         aria-hidden="true"
       />
 
-      <div className="section-shell">
+      <div className="section-shell-wide">
         {/* Header */}
         <Reveal>
           <p className="font-body text-body-sm font-medium tracking-widest uppercase mb-4"

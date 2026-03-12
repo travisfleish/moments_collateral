@@ -125,7 +125,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
       className="relative pt-14 pb-24 md:pt-16 overflow-hidden"
       aria-labelledby="sequence-heading"
     >
-      <div className="section-shell max-w-[1320px]">
+      <div className="section-shell-wide">
         {/* Header */}
         {content.kicker ? (
           <Reveal>

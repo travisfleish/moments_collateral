@@ -20,7 +20,7 @@ export function DealExamplesSection({ content }: DealExamplesSectionProps) {
       className="relative py-24 overflow-hidden"
       aria-labelledby="deal-examples-heading"
     >
-      <div className="section-shell relative z-10">
+      <div className="section-shell-wide relative z-10">
         {/* Header */}
         <Reveal>
           <p className="font-body text-body-sm font-medium tracking-widest uppercase mb-4"

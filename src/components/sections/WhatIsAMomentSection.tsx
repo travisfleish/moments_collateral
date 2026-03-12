@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
 import { EmbeddedMomentDetection } from './EmbeddedMomentDetection'
+import type { CinematicPhase } from '../../hooks/useCinematicDetectionFlow'
 import type { MomentEngineContent } from '../../content/momentEngine'
 
 interface WhatIsAMomentSectionProps {
@@ -67,7 +69,23 @@ function ConnectorArrow({
 const MOMENTS_SAMPLE_VIDEO = '/Moments Sample.mp4'
 const INSTAGRAM_ADS_IMAGE = '/instagram-ads.png'
 
+const INSTAGRAM_ADS_DELAY_MS = 500
+
 function GeniusMomentsBridgeCard({ reducedMotion }: { reducedMotion: boolean }) {
+  const [momentPhase, setMomentPhase] = useState<CinematicPhase>('playing')
+  const [showInstagramAds, setShowInstagramAds] = useState(false)
+
+  const phaseShowsAds = momentPhase === 'detected' || momentPhase === 'activating' || momentPhase === 'complete'
+
+  useEffect(() => {
+    if (!phaseShowsAds) {
+      setShowInstagramAds(false)
+      return
+    }
+    const id = window.setTimeout(() => setShowInstagramAds(true), INSTAGRAM_ADS_DELAY_MS)
+    return () => window.clearTimeout(id)
+  }, [phaseShowsAds])
+
   return (
     <motion.article
       className={`flex h-full min-h-[380px] flex-col rounded-2xl relative z-10 border border-[rgba(15,23,42,0.08)] p-7 lg:min-h-[340px] lg:h-[340px] lg:scale-[1.06] overflow-visible`}
@@ -109,19 +127,26 @@ function GeniusMomentsBridgeCard({ reducedMotion }: { reducedMotion: boolean }) 
             <EmbeddedMomentDetection
               src={MOMENTS_SAMPLE_VIDEO}
               videoAlt="Moment detection sample"
-              loop
+              freezeOnDetected
+              startOnView
+              startTime={2.5}
+              resetOnReenterView
+              onPhaseChange={setMomentPhase}
               className="mb-0 rounded-lg shadow-lg"
               style={{ borderColor: 'rgba(255,255,255,0.3)' }}
             />
           </div>
 
-          {/* Instagram ads: right side on md+, bleeds out over right edge on lg+ */}
+          {/* Instagram ads: right side on md+, bleeds out over right edge on lg+; fades in when moment detected */}
           <div className="shrink-0 w-[240px] md:w-[260px] md:-mr-4 lg:min-w-[280px] lg:-mr-8 xl:min-w-[329px] xl:-mr-16 flex items-center justify-center md:justify-end pointer-events-none">
-            <img
+            <motion.img
               src={INSTAGRAM_ADS_IMAGE}
               alt=""
               aria-hidden
               className="h-[140px] md:h-[155px] lg:h-[175px] w-auto object-contain object-center md:object-right"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: showInstagramAds ? 1 : 0 }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
             />
           </div>
         </div>

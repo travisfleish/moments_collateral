@@ -6,6 +6,7 @@ import {
   type CinematicPhase,
   type CinematicCompletePayload,
 } from '../../hooks/useCinematicDetectionFlow'
+import { useInView } from '../../hooks/useInView'
 import { ScannerOverlay } from '../ScannerOverlay'
 
 const LOOP_RESET_DELAY_MS = 400
@@ -18,6 +19,14 @@ interface EmbeddedMomentDetectionProps {
   style?: React.CSSProperties
   /** When true, the video and moment detection animation loop continuously */
   loop?: boolean
+  /** When true, stay on "Moment Detected" and do not progress to activating/complete */
+  freezeOnDetected?: boolean
+  /** When true, delay starting the video until the element comes into view */
+  startOnView?: boolean
+  /** Start playback at this time in seconds (e.g. 2.5 to skip the first 2.5 seconds) */
+  startTime?: number
+  /** When true with startOnView, reset the sequence when scrolling out of view and back in */
+  resetOnReenterView?: boolean
 }
 
 export function EmbeddedMomentDetection({
@@ -27,15 +36,45 @@ export function EmbeddedMomentDetection({
   className = '',
   style,
   loop = false,
+  freezeOnDetected = false,
+  startOnView = false,
+  startTime,
+  resetOnReenterView = false,
 }: EmbeddedMomentDetectionProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [completionPayload, setCompletionPayload] = useState<CinematicCompletePayload | null>(null)
+  const [containerRef, inView] = useInView<HTMLDivElement>({
+    threshold: 0.2,
+    once: !(startOnView && resetOnReenterView),
+  })
+  const shouldPlay = !startOnView || inView
 
   const { phase, handleVideoEnded, handleVideoTimeUpdate, reset } = useCinematicDetectionFlow({
     videoRef,
     onComplete: setCompletionPayload,
     onPhaseChange,
+    freezeOnDetected,
+    startTime,
   })
+
+  // Reset sequence when scrolling out of view and back in (only when resetOnReenterView + startOnView)
+  const prevInViewRef = useRef<boolean | null>(null)
+  const hasLeftViewRef = useRef(false)
+  useEffect(() => {
+    if (!startOnView || !resetOnReenterView) return
+
+    const wasInView = prevInViewRef.current
+    prevInViewRef.current = inView
+
+    if (wasInView === true && inView === false) {
+      hasLeftViewRef.current = true
+    }
+    if (wasInView === false && inView === true && hasLeftViewRef.current) {
+      hasLeftViewRef.current = false
+      setCompletionPayload(null)
+      reset()
+    }
+  }, [inView, reset, resetOnReenterView, startOnView])
   const isScannerActive = phase === 'playing'
 
   // When looping, reset as soon as Moment Detected or Moment Captured is shown
@@ -50,9 +89,12 @@ export function EmbeddedMomentDetection({
 
   return (
     <div
+      ref={containerRef}
       className={`mb-6 overflow-hidden rounded-brand border relative ${className}`}
       style={{ borderColor: 'var(--color-lightGrey)', ...style }}
     >
+      {shouldPlay ? (
+        <>
       <video
         ref={videoRef}
         className="w-full h-auto"
@@ -62,6 +104,16 @@ export function EmbeddedMomentDetection({
         muted
         playsInline
         preload="metadata"
+        onLoadedMetadata={(e) => {
+          if (startTime != null && startTime > 0) {
+            const video = e.currentTarget
+            if (Number.isFinite(video.duration) && video.duration > 0) {
+              video.currentTime = Math.min(startTime, video.duration - 0.1)
+            } else {
+              video.currentTime = startTime
+            }
+          }
+        }}
         onTimeUpdate={handleVideoTimeUpdate}
         onEnded={handleVideoEnded}
       />
@@ -134,6 +186,10 @@ export function EmbeddedMomentDetection({
             </div>
           </div>
         </div>
+      )}
+        </>
+      ) : (
+        <div className="aspect-video w-full bg-[rgba(13,18,38,0.2)]" aria-hidden />
       )}
     </div>
   )

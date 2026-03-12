@@ -17,6 +17,10 @@ interface UseCinematicDetectionFlowOptions {
   videoRef: RefObject<HTMLVideoElement | null>
   onComplete?: (payload: CinematicCompletePayload) => void
   onPhaseChange?: (phase: CinematicPhase) => void
+  /** When true, stay on "Moment Detected" and do not progress to activating/complete */
+  freezeOnDetected?: boolean
+  /** Start playback at this time in seconds when resetting (e.g. 2.5) */
+  startTime?: number
 }
 
 const DETECTION_LEAD_TIME_SECONDS = 1
@@ -25,6 +29,8 @@ export function useCinematicDetectionFlow({
   videoRef,
   onComplete,
   onPhaseChange,
+  freezeOnDetected = false,
+  startTime,
 }: UseCinematicDetectionFlowOptions) {
   const [phase, setPhase] = useState<CinematicPhase>('playing')
   const [payload, setPayload] = useState<CinematicCompletePayload | null>(null)
@@ -75,6 +81,7 @@ export function useCinematicDetectionFlow({
     }
 
     if (phase === 'detected') {
+      if (freezeOnDetected) return
       timeoutRef.current = window.setTimeout(() => {
         const video = videoRef.current
         if (video) {
@@ -99,7 +106,7 @@ export function useCinematicDetectionFlow({
       completionNotifiedRef.current = true
       onComplete?.(payload)
     }
-  }, [captureCurrentVideoFrame, clearScheduledTimeout, onComplete, payload, phase, videoRef])
+  }, [captureCurrentVideoFrame, clearScheduledTimeout, freezeOnDetected, onComplete, payload, phase, videoRef])
 
   useEffect(() => clearScheduledTimeout, [clearScheduledTimeout])
 
@@ -145,9 +152,12 @@ export function useCinematicDetectionFlow({
     const video = videoRef.current
     if (!video) return
 
-    video.currentTime = 0
+    const seekTo = startTime != null && startTime > 0
+      ? Math.min(startTime, Math.max(0, (video.duration || 0) - 0.1))
+      : 0
+    video.currentTime = seekTo
     void video.play().catch(() => undefined)
-  }, [clearScheduledTimeout, videoRef])
+  }, [clearScheduledTimeout, startTime, videoRef])
 
   return {
     phase,

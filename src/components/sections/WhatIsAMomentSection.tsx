@@ -121,8 +121,7 @@ function GeniusMomentsBridgeCard({ reducedMotion }: { reducedMotion: boolean }) 
       }
       style={{
         borderColor: 'rgba(167,179,255,0.42)',
-        background:
-          'linear-gradient(180deg, rgba(102,86,210,0.96) 0%, rgba(88,73,198,0.96) 100%)',
+        backgroundColor: 'var(--color-gs-accent-500)',
       }}
     >
       <h3 className="font-heading text-brand-h4" style={{ color: '#ffffff' }}>

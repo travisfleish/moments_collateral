@@ -63,11 +63,17 @@ export type HeroStat = {
     description: string
   }
 
+export type ThematicBundle = {
+  label: string
+  trigger: string
+  description: string
+}
+
 export type SportsMomentPlan = {
   sport: string
   inGame: string[]
   inSeason: string[]
-  thematicBundle: string
+  thematicBundle: ThematicBundle
   audiences: string[]
 }
 
@@ -327,7 +333,12 @@ export type StepThreeCard = {
             'In-Season Moment 4',
             'In-Season Moment 5',
           ],
-          thematicBundle: 'High Impact Moments',
+          thematicBundle: {
+            label: 'High Impact Moments',
+            trigger: 'A curated bundle of high-impact moments spanning in-game and in-season',
+            description:
+              'This thematic bucket groups multiple moments under a single theme (e.g., high impact, high emotional, high leverage). Unlike discrete in-game or in-season moments, it activates when any moment within the theme occurs, offering broader reach across the designated theme.',
+          },
           audiences: [
             'NFL die-hards',
             'Fantasy football players',
@@ -353,7 +364,12 @@ export type StepThreeCard = {
             'In-Season Moment 4',
             'In-Season Moment 5',
           ],
-          thematicBundle: 'High Impact Moments',
+          thematicBundle: {
+            label: 'High Impact Moments',
+            trigger: 'A curated bundle of high-impact moments spanning in-game and in-season',
+            description:
+              'This thematic bucket groups multiple moments under a single theme (e.g., high impact, high emotional, high leverage). Unlike discrete in-game or in-season moments, it activates when any moment within the theme occurs, offering broader reach across the designated theme.',
+          },
           audiences: [
             'Basketball superfans',
             'Sneaker and style enthusiasts',
@@ -379,7 +395,12 @@ export type StepThreeCard = {
             'In-Season Moment 4',
             'In-Season Moment 5',
           ],
-          thematicBundle: 'High Impact Moments',
+          thematicBundle: {
+            label: 'High Impact Moments',
+            trigger: 'A curated bundle of high-impact moments spanning in-game and in-season',
+            description:
+              'This thematic bucket groups multiple moments under a single theme (e.g., high impact, high emotional, high leverage). Unlike discrete in-game or in-season moments, it activates when any moment within the theme occurs, offering broader reach across the designated theme.',
+          },
           audiences: [
             'Hockey loyalists',
             'Cold-weather travel buyers',
@@ -405,7 +426,12 @@ export type StepThreeCard = {
             'In-Season Moment 4',
             'In-Season Moment 5',
           ],
-          thematicBundle: 'High Impact Moments',
+          thematicBundle: {
+            label: 'High Impact Moments',
+            trigger: 'A curated bundle of high-impact moments spanning in-game and in-season',
+            description:
+              'This thematic bucket groups multiple moments under a single theme (e.g., high impact, high emotional, high leverage). Unlike discrete in-game or in-season moments, it activates when any moment within the theme occurs, offering broader reach across the designated theme.',
+          },
           audiences: [
             'Baseball stat trackers',
             'Family sports viewers',
@@ -431,7 +457,12 @@ export type StepThreeCard = {
             'In-Season Moment 4',
             'In-Season Moment 5',
           ],
-          thematicBundle: 'High Impact Moments',
+          thematicBundle: {
+            label: 'High Impact Moments',
+            trigger: 'A curated bundle of high-impact moments spanning in-game and in-season',
+            description:
+              'This thematic bucket groups multiple moments under a single theme (e.g., high impact, high emotional, high leverage). Unlike discrete in-game or in-season moments, it activates when any moment within the theme occurs, offering broader reach across the designated theme.',
+          },
           audiences: [
             'Affluent sports fans',
             'Luxury travel shoppers',
@@ -457,7 +488,12 @@ export type StepThreeCard = {
             'In-Season Moment 4',
             'In-Season Moment 5',
           ],
-          thematicBundle: 'High Impact Moments',
+          thematicBundle: {
+            label: 'High Impact Moments',
+            trigger: 'A curated bundle of high-impact moments spanning in-game and in-season',
+            description:
+              'This thematic bucket groups multiple moments under a single theme (e.g., high impact, high emotional, high leverage). Unlike discrete in-game or in-season moments, it activates when any moment within the theme occurs, offering broader reach across the designated theme.',
+          },
           audiences: [
             'Motorsport enthusiasts',
             'Auto aftermarket buyers',
@@ -483,7 +519,12 @@ export type StepThreeCard = {
             'In-Season Moment 4',
             'In-Season Moment 5',
           ],
-          thematicBundle: 'High Impact Moments',
+          thematicBundle: {
+            label: 'High Impact Moments',
+            trigger: 'A curated bundle of high-impact moments spanning in-game and in-season',
+            description:
+              'This thematic bucket groups multiple moments under a single theme (e.g., high impact, high emotional, high leverage). Unlike discrete in-game or in-season moments, it activates when any moment within the theme occurs, offering broader reach across the designated theme.',
+          },
           audiences: [
             'Women’s football supporters',
             'Purpose-driven brand followers',
@@ -509,7 +550,12 @@ export type StepThreeCard = {
             'In-Season Moment 4',
             'In-Season Moment 5',
           ],
-          thematicBundle: 'High Impact Moments',
+          thematicBundle: {
+            label: 'High Impact Moments',
+            trigger: 'A curated bundle of high-impact moments spanning in-game and in-season',
+            description:
+              'This thematic bucket groups multiple moments under a single theme (e.g., high impact, high emotional, high leverage). Unlike discrete in-game or in-season moments, it activates when any moment within the theme occurs, offering broader reach across the designated theme.',
+          },
           audiences: [
             'Global football fans',
             'National-team loyalists',
@@ -535,7 +581,12 @@ export type StepThreeCard = {
             'In-Season Moment 4',
             'In-Season Moment 5',
           ],
-          thematicBundle: 'High Impact Moments',
+          thematicBundle: {
+            label: 'High Impact Moments',
+            trigger: 'A curated bundle of high-impact moments spanning in-game and in-season',
+            description:
+              'This thematic bucket groups multiple moments under a single theme (e.g., high impact, high emotional, high leverage). Unlike discrete in-game or in-season moments, it activates when any moment within the theme occurs, offering broader reach across the designated theme.',
+          },
           audiences: [
             'College hoops fans',
             'Bracket participants',

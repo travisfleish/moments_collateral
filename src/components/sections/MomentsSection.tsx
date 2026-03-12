@@ -116,7 +116,7 @@ function MomentsSection({
   const inSeasonLabels = isMarchMadness
     ? marchMadnessMoments.inSeason
     : toUpperLabels(activePlan.inSeason)
-  const thematicBundleLabel = isMarchMadness
+  const thematicBundle = isMarchMadness
     ? marchMadnessMoments.thematicBundle
     : activePlan.thematicBundle
   const allLabels = [...inGameLabels, ...inSeasonLabels]
@@ -184,7 +184,7 @@ function MomentsSection({
             <MomentsAccordion
               inGameLabels={inGameLabels}
               inSeasonLabels={inSeasonLabels}
-              thematicBundleLabel={thematicBundleLabel}
+              thematicBundle={thematicBundle}
               detailsByLabel={activeDetailsByLabel}
               modalTitlePrefix={`${activePlan.sport} Moments`}
             />

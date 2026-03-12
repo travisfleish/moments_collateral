@@ -76,7 +76,11 @@ export type MarchMadnessMomentsContent = {
     labels: string[];
     inGame: string[];
     inSeason: string[];
-    thematicBundle: string;
+    thematicBundle: {
+      label: string;
+      trigger: string;
+      description: string;
+    };
     modalTemplate: MomentModalTemplate;
   };
   audiences: DualListSection;
@@ -233,7 +237,12 @@ export const marchMadnessMomentsContent: MarchMadnessMomentsContent = {
       "In-Season Moment 4",
       "In-Season Moment 5"
     ],
-    thematicBundle: "High Impact Moments",
+    thematicBundle: {
+      label: "High Impact Moments",
+      trigger: "A curated bundle of high-impact moments spanning in-game and in-season",
+      description:
+        "This thematic bucket groups multiple moments under a single theme (e.g., high impact, high emotional, high leverage). Unlike discrete in-game or in-season moments, it activates when any moment within the theme occurs, offering broader reach across the designated theme."
+    },
     modalTemplate: {
       bullets: ["What it is", "Why it matters to fans", "Best message types"]
     }

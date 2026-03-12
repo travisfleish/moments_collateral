@@ -7,10 +7,16 @@ type MomentDetails = {
   description: string;
 };
 
+type ThematicBundle = {
+  label: string;
+  trigger: string;
+  description: string;
+};
+
 type MomentsAccordionProps = {
   inGameLabels: string[];
   inSeasonLabels: string[];
-  thematicBundleLabel: string;
+  thematicBundle: ThematicBundle;
   detailsByLabel: Record<string, MomentDetails>;
   modalTitlePrefix?: string;
 };
@@ -43,10 +49,11 @@ function PlusMinusIcon({ isOpen }: { isOpen: boolean }) {
 function MomentsAccordion({
   inGameLabels,
   inSeasonLabels,
-  thematicBundleLabel,
+  thematicBundle,
   detailsByLabel,
   modalTitlePrefix = "March Madness Moments"
 }: MomentsAccordionProps) {
+  const thematicBundleLabel = thematicBundle.label;
   const reducedMotion = useReducedMotionSafe();
   const [mobileOpenId, setMobileOpenId] = useState<string | null>(null);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
@@ -335,13 +342,63 @@ function MomentsAccordion({
           </AnimatePresence>
         </div>
 
-        <button
-          type="button"
-          onClick={() => openFormModal(thematicBundleLabel)}
-          className="mt-4 w-full rounded-2xl border-2 border-[var(--color-gs-accent-500)] bg-white px-5 py-4 text-center font-heading text-base font-medium text-navy transition-colors hover:bg-[var(--color-gs-accent-50)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gs-accent-500)]/70"
+        <div
+          ref={(node) => {
+            mobileItemRefs.current[thematicBundleLabel] = node;
+          }}
+          className="mt-4 overflow-hidden rounded-2xl bg-[#f0f4ff]"
         >
-          {thematicBundleLabel}
-        </button>
+          <button
+            type="button"
+            aria-expanded={mobileOpenId === thematicBundleLabel}
+            aria-controls="mobile-thematic-bundle-panel"
+            onClick={() => setMobileOpenId((current) => (current === thematicBundleLabel ? null : thematicBundleLabel))}
+            className="flex w-full flex-col px-5 py-4 text-left text-sm font-medium text-slate-900"
+          >
+            <span className="flex items-center gap-3">
+              <PlusMinusIcon isOpen={mobileOpenId === thematicBundleLabel} />
+              <h3 className="m-0 font-heading text-left text-base font-book leading-6 text-navy">
+                {toTitleCase(thematicBundleLabel)}
+              </h3>
+            </span>
+          </button>
+          <AnimatePresence initial={false}>
+            {mobileOpenId === thematicBundleLabel ? (
+              <motion.div
+                id="mobile-thematic-bundle-panel"
+                key="mobile-thematic-bundle-panel"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{
+                  duration: reducedMotion ? 0.12 : 0.22,
+                  ease: "easeOut"
+                }}
+                className="overflow-hidden bg-[#f0f4ff]"
+              >
+                <div className="space-y-2 px-5 pb-4 pt-3 text-left">
+                  <p className="text-sm text-slate-900">
+                    <span className="font-medium text-slate-700">What it is: </span>
+                    {thematicBundle.trigger}
+                  </p>
+                  <p className="text-sm text-slate-900">
+                    <span className="font-medium text-slate-700">Description: </span>
+                    {thematicBundle.description}
+                  </p>
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => openFormModal(thematicBundleLabel)}
+                      className="inline-flex items-center justify-center rounded-md bg-[#1D26FF] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#131bdb] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D26FF]/70"
+                    >
+                      Learn more
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        </div>
       </div>
 
       <div className="hidden flex-col gap-4 md:flex">
@@ -427,14 +484,59 @@ function MomentsAccordion({
           ))}
         </div>
 
-        <div className="mt-4 w-full md:mt-6">
+        <div className="mt-4 w-full overflow-hidden rounded-2xl bg-[#f0f4ff] md:mt-6">
           <button
             type="button"
-            onClick={() => openFormModal(thematicBundleLabel)}
-            className="w-full rounded-2xl border-2 border-[var(--color-gs-accent-500)] bg-white px-5 py-4 text-center font-heading text-base font-medium text-navy transition-colors hover:bg-[var(--color-gs-accent-50)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gs-accent-500)]/70"
+            aria-expanded={desktopOpenId === thematicBundleLabel}
+            aria-controls="desktop-thematic-bundle-panel"
+            onClick={() =>
+              setDesktopOpenId((current) => (current === thematicBundleLabel ? null : thematicBundleLabel))
+            }
+            className="flex w-full flex-col px-5 py-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/80"
           >
-            {thematicBundleLabel}
+            <span className="flex items-center gap-3">
+              <PlusMinusIcon isOpen={desktopOpenId === thematicBundleLabel} />
+              <h3 className="m-0 font-heading text-left text-base font-book leading-6 text-navy">
+                {toTitleCase(thematicBundleLabel)}
+              </h3>
+            </span>
           </button>
+          <AnimatePresence initial={false}>
+            {desktopOpenId === thematicBundleLabel ? (
+              <motion.div
+                id="desktop-thematic-bundle-panel"
+                key="desktop-thematic-bundle-panel"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{
+                  duration: reducedMotion ? 0.12 : 0.22,
+                  ease: "easeOut"
+                }}
+                className="overflow-hidden bg-[#f0f4ff]"
+              >
+                <div className="mx-auto max-w-3xl space-y-2 px-6 pb-4 pt-3 text-left">
+                  <p className="text-base text-slate-900">
+                    <span className="font-medium text-slate-700">What it is: </span>
+                    {thematicBundle.trigger}
+                  </p>
+                  <p className="text-base text-slate-900">
+                    <span className="font-medium text-slate-700">Description: </span>
+                    {thematicBundle.description}
+                  </p>
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => openFormModal(thematicBundleLabel)}
+                      className="inline-flex items-center justify-center rounded-md bg-[#1D26FF] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#131bdb] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D26FF]/70"
+                    >
+                      Learn more
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
         </div>
       </div>
 

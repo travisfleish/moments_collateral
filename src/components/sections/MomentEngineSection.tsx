@@ -522,7 +522,7 @@ function MomentEngineDiagram({ beat, reducedMotion }: DiagramProps) {
               className="font-heading font-medium"
               style={{ fontSize: '14px', color: '#0d1226' }}
             >
-              Moment Engine
+              Genius Moment Engine
             </p>
             <p
               className="font-body mt-1"

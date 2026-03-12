@@ -152,7 +152,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
             initial={reduced ? { opacity: 0 } : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: reduced ? 0.1 : 0.3, ease: 'easeOut' }}
-            className="brand-card shadow-card"
+            className="brand-card"
           >
             <div className="p-8 lg:p-10">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-8">

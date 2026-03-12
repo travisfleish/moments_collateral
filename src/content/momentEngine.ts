@@ -268,9 +268,9 @@ export type StepThreeCard = {
       ],
     },
     sportsMoments: {
-      headline: 'Moments and audiences by sport',
+      headline: 'How To Buy & Activate Genius Moments',
       description:
-        'Choose a sport to view recommended moments and top audience segments.',
+        'Activating Genius Moments is simple: select the moments that matter, pair them with your audience, and have a Deal ID automatically pushed to your preferred DSP for activation.',
       stepOneTitle: 'Step 1: Choose your moment',
       stepTwoTitle: 'Step 2: Customize your audience',
       stepThreeTitle: 'Step 3: Deal activation',

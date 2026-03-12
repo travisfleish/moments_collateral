@@ -134,7 +134,7 @@ function GeniusMomentsBridgeCard({ reducedMotion }: { reducedMotion: boolean }) 
           'Price: low',
           'Inventory: scaled',
         ].map((item) => (
-          <li key={item} className="font-body text-sm" style={{ color: 'rgba(255,255,255,0.95)' }}>
+          <li key={item} className="font-body text-base" style={{ color: 'rgba(255,255,255,0.95)' }}>
             {item}
           </li>
         ))}
@@ -165,7 +165,7 @@ function ComparisonCard({
       <h3 className="font-heading text-brand-h4 text-navy">{title}</h3>
       <ul className="mt-5 space-y-2 list-disc pl-5">
         {bullets.map((item) => (
-          <li key={item} className="font-body text-sm text-[var(--color-text-muted)]">
+          <li key={item} className="font-body text-base text-[var(--color-text-muted)]">
             {item}
           </li>
         ))}

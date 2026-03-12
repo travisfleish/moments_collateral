@@ -131,11 +131,16 @@ export function HeroSection({ content }: HeroSectionProps) {
                 borderColor: 'rgba(255,255,255,0.2)',
               }}
             >
-              <p className="font-heading text-brand-h2 text-white mb-1 font-light">
-                {stat.value}
-              </p>
-              <p className="font-body text-body-sm font-medium text-white mb-2">
+              <p className="font-body text-body-sm font-medium text-white mb-1">
                 {stat.label}
+              </p>
+              {stat.sublabel ? (
+                <p className="font-body text-[12px] leading-snug text-white/90 mb-4">
+                  {stat.sublabel}
+                </p>
+              ) : null}
+              <p className="font-heading text-brand-h2 text-white mb-2 font-light leading-none">
+                {stat.value}
               </p>
               <p className="font-body text-body-sm leading-snug text-white/80">
                 {stat.description}
@@ -144,13 +149,6 @@ export function HeroSection({ content }: HeroSectionProps) {
           ))}
         </Stagger>
 
-        {/* Scroll cue */}
-        <Reveal delay={0.6} className="mt-16 flex items-center gap-3">
-          <div className="w-px h-8 bg-[var(--color-border)]" />
-          <p className="font-body text-body-sm" style={{ color: 'var(--color-text-muted)' }}>
-            Scroll to explore
-          </p>
-        </Reveal>
       </div>
 
     </section>

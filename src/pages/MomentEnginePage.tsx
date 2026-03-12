@@ -18,10 +18,9 @@ export function MomentEnginePage() {
       <WhatIsAMomentSection content={momentEngineContent.whatIsAMoment} />
       <MomentEngineSequence content={momentEngineContent.sequence} />
       <MomentsSection
-        header={marchMadnessMomentsContent.moments.header}
-        introParagraph1={marchMadnessMomentsContent.moments.introParagraph1}
-        introParagraph2={marchMadnessMomentsContent.moments.introParagraph2}
-        labels={marchMadnessMomentsContent.moments.labels}
+        content={momentEngineContent.sportsMoments}
+        marchMadnessMoments={marchMadnessMomentsContent.moments}
+        marchMadnessAudiences={marchMadnessMomentsContent.audiences}
       />
       <MomentEngineSection content={momentEngineContent.momentEngine} />
       <FourPillarsSection content={momentEngineContent.fourPillars} />

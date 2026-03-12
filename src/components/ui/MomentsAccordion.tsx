@@ -10,7 +10,10 @@ type MomentDetails = {
 type MomentsAccordionProps = {
   labels: string[];
   detailsByLabel: Record<string, MomentDetails>;
+  modalTitlePrefix?: string;
 };
+
+const MOMENTS_FORM_IFRAME_SRC = "https://digital.geniussports.com/l/822433/2026-03-11/tzl41f";
 
 function toTitleCase(value: string) {
   return value
@@ -35,9 +38,11 @@ function PlusMinusIcon({ isOpen }: { isOpen: boolean }) {
   );
 }
 
-function MomentsAccordion({ labels, detailsByLabel }: MomentsAccordionProps) {
+function MomentsAccordion({ labels, detailsByLabel, modalTitlePrefix = "March Madness Moments" }: MomentsAccordionProps) {
   const reducedMotion = useReducedMotionSafe();
   const [mobileOpenId, setMobileOpenId] = useState<string | null>(null);
+  const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [activeModalLabel, setActiveModalLabel] = useState<string | null>(null);
   const mobileItemRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const mobileExtraWrapperRef = useRef<HTMLDivElement | null>(null);
   const cinderellaIndex = labels.findIndex((label) => label.toUpperCase() === "CINDERELLA STORY");
@@ -45,10 +50,7 @@ function MomentsAccordion({ labels, detailsByLabel }: MomentsAccordionProps) {
   const mobileButtonLabels = labels.slice(0, mobileSplitIndex);
   const mobileExtraLabels = labels.slice(mobileSplitIndex);
   const [isMobileExpanded, setIsMobileExpanded] = useState(false);
-  const [openIdsByColumn, setOpenIdsByColumn] = useState<Record<number, string | null>>({
-    0: null,
-    1: null
-  });
+  const [desktopOpenId, setDesktopOpenId] = useState<string | null>(null);
   const midpoint = Math.ceil(labels.length / 2);
   const labelColumns = [labels.slice(0, midpoint), labels.slice(midpoint)];
 
@@ -111,6 +113,41 @@ function MomentsAccordion({ labels, detailsByLabel }: MomentsAccordionProps) {
     return () => observer.disconnect();
   }, [isMobileExpanded, mobileExtraLabels]);
 
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof document === "undefined" || !isFormModalOpen) {
+      return;
+    }
+
+    const previousBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsFormModalOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isFormModalOpen]);
+
+  const openFormModal = (label: string) => {
+    setActiveModalLabel(label);
+    setIsFormModalOpen(true);
+  };
+
+  const closeFormModal = () => {
+    setIsFormModalOpen(false);
+  };
+
+  const modalTitle = activeModalLabel
+    ? `${modalTitlePrefix}: ${toTitleCase(activeModalLabel)}`
+    : modalTitlePrefix;
+
   return (
     <>
       <div className="flex flex-col gap-4 md:hidden">
@@ -130,7 +167,7 @@ function MomentsAccordion({ labels, detailsByLabel }: MomentsAccordionProps) {
                 ref={(node) => {
                   mobileItemRefs.current[label] = node;
                 }}
-                className="overflow-hidden rounded-lg bg-white"
+                className="overflow-hidden rounded-2xl bg-white"
               >
                 <button
                   type="button"
@@ -170,6 +207,15 @@ function MomentsAccordion({ labels, detailsByLabel }: MomentsAccordionProps) {
                           <span className="font-medium text-slate-700">Description: </span>
                           {details.description}
                         </p>
+                        <div className="pt-2">
+                          <button
+                            type="button"
+                            onClick={() => openFormModal(label)}
+                            className="inline-flex items-center justify-center rounded-md bg-[#1D26FF] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#131bdb] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D26FF]/70"
+                          >
+                            Learn more
+                          </button>
+                        </div>
                       </div>
                     </motion.div>
                   ) : null}
@@ -182,7 +228,7 @@ function MomentsAccordion({ labels, detailsByLabel }: MomentsAccordionProps) {
               type="button"
               aria-expanded={isMobileExpanded}
               onClick={() => setIsMobileExpanded((current) => !current)}
-              className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-left text-base font-medium text-slate-700 shadow-[0_6px_16px_rgba(15,23,42,0.08)]"
+              className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-left text-base font-medium text-slate-700 shadow-[0_6px_16px_rgba(15,23,42,0.08)]"
             >
               <span className="flex items-center justify-between">
                 <span>{isMobileExpanded ? "Show less" : "And more"}</span>
@@ -222,7 +268,7 @@ function MomentsAccordion({ labels, detailsByLabel }: MomentsAccordionProps) {
                         ref={(node) => {
                           mobileItemRefs.current[label] = node;
                         }}
-                        className="overflow-hidden rounded-lg bg-white"
+                        className="overflow-hidden rounded-2xl bg-white"
                       >
                         <button
                           type="button"
@@ -262,6 +308,15 @@ function MomentsAccordion({ labels, detailsByLabel }: MomentsAccordionProps) {
                                   <span className="font-medium text-slate-700">Description: </span>
                                   {details.description}
                                 </p>
+                                <div className="pt-2">
+                                  <button
+                                    type="button"
+                                    onClick={() => openFormModal(label)}
+                                    className="inline-flex items-center justify-center rounded-md bg-[#1D26FF] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#131bdb] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D26FF]/70"
+                                  >
+                                    Learn more
+                                  </button>
+                                </div>
                               </div>
                             </motion.div>
                           ) : null}
@@ -278,9 +333,9 @@ function MomentsAccordion({ labels, detailsByLabel }: MomentsAccordionProps) {
 
       <div className="hidden flex-col gap-4 md:flex md:flex-row md:items-start md:gap-8">
         {labelColumns.map((columnLabels, columnIndex) => (
-          <div key={`column-${columnIndex}`} className="mt-0 flex w-full flex-col divide-y divide-[var(--color-lightGrey)] overflow-hidden rounded-lg bg-white">
+          <div key={`column-${columnIndex}`} className="mt-0 flex w-full flex-col divide-y divide-[var(--color-lightGrey)] overflow-hidden rounded-2xl bg-white">
             {columnLabels.map((label, index) => {
-              const isOpen = openIdsByColumn[columnIndex] === label;
+              const isOpen = desktopOpenId === label;
               const panelId = `moment-panel-${columnIndex}-${index}`;
               const details = detailsByLabel[label] ?? {
                 trigger: "Moment trigger details for this selection.",
@@ -298,10 +353,7 @@ function MomentsAccordion({ labels, detailsByLabel }: MomentsAccordionProps) {
                     aria-expanded={isOpen}
                     aria-controls={panelId}
                     onClick={() =>
-                      setOpenIdsByColumn((current) => ({
-                        ...current,
-                        [columnIndex]: current[columnIndex] === label ? null : label
-                      }))
+                      setDesktopOpenId((current) => (current === label ? null : label))
                     }
                     className="flex w-full flex-col bg-white px-5 py-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/80"
                   >
@@ -336,6 +388,15 @@ function MomentsAccordion({ labels, detailsByLabel }: MomentsAccordionProps) {
                             <span className="font-medium text-slate-700">Description: </span>
                             {details.description}
                           </p>
+                          <div className="pt-2">
+                            <button
+                              type="button"
+                              onClick={() => openFormModal(label)}
+                              className="inline-flex items-center justify-center rounded-md bg-[#1D26FF] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#131bdb] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D26FF]/70"
+                            >
+                              Learn more
+                            </button>
+                          </div>
                         </div>
                       </motion.div>
                     ) : null}
@@ -346,6 +407,55 @@ function MomentsAccordion({ labels, detailsByLabel }: MomentsAccordionProps) {
           </div>
         ))}
       </div>
+
+      <AnimatePresence>
+        {isFormModalOpen ? (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-[rgba(13,18,38,0.62)] px-4 py-6"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="moments-form-modal-title"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reducedMotion ? 0.1 : 0.2, ease: "easeOut" }}
+            onClick={closeFormModal}
+          >
+            <motion.div
+              className="w-full max-w-4xl overflow-hidden rounded-xl bg-white shadow-[0_20px_60px_rgba(2,6,23,0.35)]"
+              initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
+              transition={{ duration: reducedMotion ? 0.1 : 0.2, ease: "easeOut" }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="flex items-start justify-between border-b border-[var(--color-lightGrey)] px-4 py-3 md:px-6 md:py-4">
+                <h3 id="moments-form-modal-title" className="m-0 pr-4 text-lg font-medium text-slate-900">
+                  {modalTitle}
+                </h3>
+                <button
+                  type="button"
+                  onClick={closeFormModal}
+                  className="rounded-md px-2 py-1 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1D26FF]/70"
+                >
+                  Close
+                </button>
+              </div>
+              <div className="px-4 pb-4 pt-4 md:px-6 md:pb-6">
+                <iframe
+                  src={MOMENTS_FORM_IFRAME_SRC}
+                  width="100%"
+                  height="500"
+                  title="Genius Sports moments form"
+                  frameBorder={0}
+                  allowTransparency
+                  style={{ border: 0 }}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </>
   );
 }

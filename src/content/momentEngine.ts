@@ -3,6 +3,7 @@
 export type HeroStat = {
     value: string
     label: string
+    sublabel?: string
     description: string
   }
   
@@ -61,6 +62,19 @@ export type HeroStat = {
     headline: string
     description: string
   }
+
+export type SportsMomentPlan = {
+  sport: string
+  moments: string[]
+  audiences: string[]
+}
+
+export type StepThreeCard = {
+  step: string
+  title: string
+  description: string
+  tag: string
+}
   
   export type MomentEngineContent = {
     hero: {
@@ -81,6 +95,16 @@ export type HeroStat = {
       contrastLeft: { label: string; description: string }
       contrastRight: { label: string; headline: string; description: string }
       moments: MomentItem[]
+    }
+    sportsMoments: {
+      headline: string
+      description: string
+      stepOneTitle: string
+      stepTwoTitle: string
+      stepThreeTitle: string
+      stepThreeSubhead: string
+      stepThreeCards: StepThreeCard[]
+      plans: SportsMomentPlan[]
     }
     sequence: {
       kicker: string
@@ -119,32 +143,40 @@ export type HeroStat = {
     hero: {
       kicker: 'Genius Sports Moments',
       titleLines: [
-        'The right ad,',
-        'at the right moment,',
-        'in live sport.',
+        'See the game,',
+        'know the fan,',
+        'win the moment',
       ],
       subhead:
-        'Our Moment Engine fires programmatic deals the instant a sporting moment unfolds — combining official live data, fan intelligence, and your existing stack into a single, automated trigger.',
+        'The only advertising activation solution that leverages official live game data and verified fan intelligence to identify and activate meaningful sports moments instantly, enabling addressable campaigns at scale across open programmatic infrastructure.',
       stats: [
         {
           value: '400+',
-          label: 'Official Leagues',
-          description: 'NFL, NCAA, EPL and 400+ rights-holder partnerships providing exclusive, real-time data',
+          label: 'Official In-Game Tracking',
+          sublabel: 'Exclusive Data Partnerships',
+          description:
+            'Data partners, including the NFL, NCAA, and EPL, with exclusive data and official in-game tracking rights.',
         },
         {
           value: '250M',
-          label: 'Fan Profiles',
-          description: 'Fan Graph™: 250M consumers mapped across 50B interactions and 5K exclusive brand signals',
+          label: 'Custom Segmentation',
+          sublabel: 'Know the Fan',
+          description:
+            'Fan profiles mapped across behavioral and brand signals from the only deterministic data cloud built for sports.',
         },
         {
           value: '<1s',
-          label: 'Moment Detection',
-          description: 'GeniusIQ fires on official live data feeds with sub-second latency',
+          label: 'Predictive Decisioning',
+          sublabel: 'Sub-One Second Moment Detection',
+          description:
+            'GeniusIQ uses event capture, audience targeting, and inventory to generate activation parameters instantly with real-time predictive decisions.',
         },
         {
-          value: '15–25%',
-          label: 'Take Rate',
-          description: 'Contextual uplift on CPMs versus standard sports inventory',
+          value: '50+',
+          label: 'In Your Workflow',
+          sublabel: 'Better Way to Buy Sports',
+          description:
+            'Audiences available in your preferred DSP using contextual and behavioral targeting.',
         },
       ],
     },
@@ -195,25 +227,21 @@ export type HeroStat = {
     // ── What Is A Moment ────────────────────────────────────────────────────
     whatIsAMoment: {
       kicker: 'What Is a Moment',
-      headline: 'From time-based buying to moment-based activation.',
+      headline: 'Genius Moments connects brands to\nfan emotions with precision at scale.',
       subhead:
-        'A Moment is a discrete, emotionally charged event in a live game that creates measurable audience uplift.',
+        'Fans have evolved and sports media buying should too. Genius Moments connects brands to the always-on fan journey, powered by audience intelligence for measurable impact.',
       contrastLeft: {
-        label: 'The standard sports buy.',
+        label: 'Programmatic + Contextual Media',
         description:
-          `You target a daypart and run near the game.
-  The ad has no idea what's happening on the field.
-  No game state. No emotional context.
-  It looks like every other sports buy.`,
+          `Precision and scale are available, but emotional context is missing.
+  The buy can be timely, but it is not connected to how fans feel in the moment.`,
       },
       contrastRight: {
-        label: 'With Genius Sports Moments.',
-        headline: 'Activate at the peak. Not the break.',
+        label: 'Premium',
+        headline: 'Emotion without precision creates wasted opportunity.',
         description:
-          `Moment Engine detects the inflection points that change how fans feel — and act.
-  It triggers your programmatic deal the instant engagement spikes.
-  Same buying workflow. Radically better timing.
-  Precise. Emotional. Automatic.`,
+          `Premium environments can deliver scale and emotion, but activation timing and audience precision remain broad.
+  Genius Moments closes that gap by combining official data, verified fan intelligence, and instant activation.`,
       },
       moments: [
         {
@@ -236,6 +264,257 @@ export type HeroStat = {
           trigger: '2+ goal comeback win',
           emotion: 'Pride + Unity',
           verticals: ['Airlines', 'Telco', 'Luxury Goods'],
+        },
+      ],
+    },
+    sportsMoments: {
+      headline: 'Moments and audiences by sport',
+      description:
+        'Choose a sport to view recommended moments and top audience segments.',
+      stepOneTitle: 'Step 1: Choose your moment',
+      stepTwoTitle: 'Step 2: Customize your audience',
+      stepThreeTitle: 'Step 3: Deal activation',
+      stepThreeSubhead:
+        'Activate pre-configured PMPs and Deal IDs instantly across your\npreferred DSP and SSP partners.',
+      stepThreeCards: [
+        {
+          step: '01',
+          title: 'Pre-configured\nDeals',
+          description: 'PMPs and Deal IDs activate automatically.',
+          tag: 'Auto-on',
+        },
+        {
+          step: '02',
+          title: 'Preferred\nPartners',
+          description: 'Activate through your DSP/SSP partners.',
+          tag: 'DSP / SSP',
+        },
+        {
+          step: '03',
+          title: 'Premium\nInventory',
+          description: 'Access premium media via Deal ID.',
+          tag: 'Top quality media',
+        },
+        {
+          step: '04',
+          title: 'Moment\nSelection',
+          description: 'Choose the moments you want to activate.',
+          tag: 'Real-time moments',
+        },
+        {
+          step: '05',
+          title: 'Audience\nActivation',
+          description: 'Reach the right audience through Genius.',
+          tag: 'Audience precision',
+        },
+      ],
+      plans: [
+        {
+          sport: 'NFL',
+          moments: [
+            'Red-zone possession',
+            'Fourth-down conversion',
+            'Goal-line stand',
+            'Turnover swing',
+            'Two-minute drill',
+            'Fourth-quarter comeback',
+            'Game-winning drive',
+            'Overtime opening drive',
+            'Defensive touchdown',
+            'Walk-off field goal',
+          ],
+          audiences: [
+            'NFL die-hards',
+            'Fantasy football players',
+            'Live betting active fans',
+            'Sunday ticket streamers',
+            'Rivalry-week viewers',
+            'Team-specific loyalists',
+          ],
+        },
+        {
+          sport: 'WNBA/NBA',
+          moments: [
+            'Early momentum run',
+            'Fast-break sequence',
+            'Paint takeover',
+            'Three-point barrage',
+            'Defensive stop streak',
+            'Late-game rally',
+            'Buzzer beater win',
+            'Player heat-check run',
+            'Overtime force',
+            'Clutch free-throw close',
+          ],
+          audiences: [
+            'Basketball superfans',
+            'Sneaker and style enthusiasts',
+            'High-frequency streamers',
+            'Player-led fan communities',
+            'Women’s sports advocates',
+            'League pass heavy viewers',
+          ],
+        },
+        {
+          sport: 'PWHL/NHL',
+          moments: [
+            'Power-play goal',
+            'Penalty kill stand',
+            'Breakaway chance',
+            'Goalie save run',
+            'End-to-end rush',
+            'Third-period equalizer',
+            'Overtime winner',
+            'Shootout clincher',
+            'Empty-net pressure',
+            'Rivalry game spark',
+          ],
+          audiences: [
+            'Hockey loyalists',
+            'Cold-weather travel buyers',
+            'In-arena attendees',
+            'Regional rivalry followers',
+            'Late-night game watchers',
+            'Youth hockey households',
+          ],
+        },
+        {
+          sport: 'MLB',
+          moments: [
+            'Leadoff double',
+            'Bases-loaded at-bat',
+            'Home-run robbery',
+            'Seventh-inning rally',
+            'Pitch-count turning point',
+            'Walk-off hit',
+            'Closer enters in save situation',
+            'Extra-innings tension',
+            'Rookie breakout inning',
+            'Late defensive gem',
+          ],
+          audiences: [
+            'Baseball stat trackers',
+            'Family sports viewers',
+            'Regional team loyalists',
+            'Fantasy baseball managers',
+            'Ballpark travel planners',
+            'Night-game second-screen fans',
+          ],
+        },
+        {
+          sport: 'Golf',
+          moments: [
+            'Opening-round surge',
+            'Birdie run',
+            'Back-nine charge',
+            'Long putt conversion',
+            'Bunker recovery',
+            'Lead change on 16',
+            'Birdie streak',
+            'Final-hole approach',
+            'Playoff hole',
+            'Trophy-clinching putt',
+          ],
+          audiences: [
+            'Affluent sports fans',
+            'Luxury travel shoppers',
+            'Equipment and apparel buyers',
+            'Weekend tournament viewers',
+            'Club membership prospects',
+            'Premium hospitality seekers',
+          ],
+        },
+        {
+          sport: 'NASCAR',
+          moments: [
+            'Green-flag restart',
+            'Stage win battle',
+            'Pit-road strategy swing',
+            'Multi-car pack run',
+            'Caution flag reset',
+            'Late-race caution',
+            'Final-lap pass',
+            'Photo-finish battle',
+            'Overtime restart',
+            'Victory burnout',
+          ],
+          audiences: [
+            'Motorsport enthusiasts',
+            'Auto aftermarket buyers',
+            'Road-trip planners',
+            'Garage culture communities',
+            'Weekend race watchers',
+            'Truck and SUV intenders',
+          ],
+        },
+        {
+          sport: 'NWSL',
+          moments: [
+            'Opening goal',
+            'Counterattack break',
+            'Penalty box scramble',
+            'Goalkeeper save sequence',
+            'Set-piece opportunity',
+            'Penalty decision',
+            'Equalizer push',
+            'Stoppage-time winner',
+            'Captain-led comeback',
+            'Playoff berth clinch',
+          ],
+          audiences: [
+            'Women’s football supporters',
+            'Purpose-driven brand followers',
+            'Youth soccer households',
+            'Club-first loyal fans',
+            'Social-first match viewers',
+            'Local supporter groups',
+          ],
+        },
+        {
+          sport: 'World Cup',
+          moments: [
+            'Group-stage opener',
+            'Early lead swing',
+            'VAR decision moment',
+            'Set-piece breakthrough',
+            'Comeback equalizer',
+            'Penalty shootout',
+            'Extra-time winner',
+            'Knockout advancement clinch',
+            'Rival nation upset',
+            'Final whistle celebration',
+          ],
+          audiences: [
+            'Global football fans',
+            'National-team loyalists',
+            'Multicultural households',
+            'Tournament binge viewers',
+            'International travel intenders',
+            'National pride communities',
+          ],
+        },
+        {
+          sport: 'March Madness',
+          moments: [
+            'Late game rally',
+            'Down to the wire',
+            'Buzzer beater win',
+            'Elimination game',
+            'Upset alert',
+            'Cinderella advancement',
+            'Elite 8 clinch',
+            'Final Four berth',
+            'Championship matchup',
+            'Hero game performance',
+          ],
+          audiences: [
+            'College hoops fans',
+            'Bracket participants',
+            'Tournament live bettors',
+            'Conference loyal supporters',
+            'Campus sports communities',
+            'High-intent streaming viewers',
+          ],
         },
       ],
     },
@@ -267,10 +546,10 @@ export type HeroStat = {
         {
           id: 'step-assemble',
           stepNumber: 2,
-          label: 'Audience Assembled',
-          headline: 'Our Fan Graph™ builds the highest-value segment in real time',
+          label: 'Customize Audience',
+          headline: 'Top audiences are mapped by sport and moment in real time',
           description:
-            'Fan Graph™ maps the detected moment to the most responsive audience segment using historical fan behavior, affinity signals, and live context.',
+            'Use the same sport-first view from Step 1 to select the audience segments that best match the moment and campaign objective.',
           fields: [
             { label: 'Audience base', value: '250M fan profiles' },
             { label: 'Signal depth', value: '50B interactions + 5K brand signals' },
@@ -285,12 +564,12 @@ export type HeroStat = {
           label: 'Deal Fires',
           headline: 'Pre-configured PMPs and deal IDs activate automatically',
           description:
-            'The platform injects live moment and segment context into your existing programmatic setup, so buyers continue to transact in the same workflow.',
+            'Deal activation runs through existing buying workflows with pre-configured PMPs and Deal IDs, so activation is immediate once the sport, moments, and audience are selected.',
           fields: [
-            { label: 'Activation path', value: 'Existing DSP + PMP rails' },
-            { label: 'Workflow impact', value: 'No new buy path required' },
-            { label: 'Supply compatibility', value: 'Major SSP ecosystem support' },
-            { label: 'Output', value: 'Live deal-level activation signal' },
+            { label: 'Activation path', value: 'Preferred DSP/SSP partners' },
+            { label: 'Deal setup', value: 'Pre-configured PMPs and Deal IDs' },
+            { label: 'Inventory', value: 'Premium inventory via Deal ID' },
+            { label: 'Output', value: 'Right audience reached through Genius' },
           ],
           badgeText: 'Execution',
         },
@@ -317,7 +596,7 @@ export type HeroStat = {
       kicker: 'The Genius Advantage',
       headline: 'Four pillars no one else can offer.',
       subhead:
-        'Moment Engine works because it sits at the intersection of four unique assets. Each is a moat. Together, they\'re a category.',
+        'When you partner with Genius, you get four advantages no one else can combine, so your media reaches fans faster, with deeper context, and higher relevance in every moment.',
       pillars: [
         {
           id: 'pillar-rights',
@@ -348,8 +627,8 @@ export type HeroStat = {
           number: '04',
           title: 'Seamless Integration',
           description:
-            'Moment Engine operates entirely inside your existing programmatic stack. No new DSP seat, no custom creative workflow, no additional tag. Your current deal ID, your current creative — we inject the intelligence at the deal layer.',
-          proof: 'No new workflows — plug into existing PMPs and deal IDs',
+            'Genius Moments operates entirely inside your programmatic stack. No new DSP seat, no custom creative workflow, no additional tag. Your current deal ID and your current creative. We inject the intelligence at the deal layer.',
+          proof: 'No new workflows. Plug into existing PMPs and deal IDs.',
         },
       ],
     },

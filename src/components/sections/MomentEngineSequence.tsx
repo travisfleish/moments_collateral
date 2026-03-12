@@ -48,6 +48,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
   const shouldRevealFanCloud = activeStep === 1
   const shouldShowActivationOverlay = activeStep === 1 && isManualActivationPlaying
   const showDetectionVideo = activeStep === 0
+  const shouldShowWorkInProgressPlaceholder = step?.id === 'step-deal' || step?.id === 'step-activate'
   const reelRows = [...AUDIENCE_IDS, ...AUDIENCE_IDS, ...AUDIENCE_IDS].map((id, index) => ({
     id,
     isTarget: index === AUDIENCE_IDS.length + AUDIENCE_TARGET_INDEX,
@@ -199,7 +200,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
                 {step.headline}
               </h3>
 
-              {(showDetectionVideo || shouldRevealFanCloud) && (
+              {(showDetectionVideo || shouldRevealFanCloud || shouldShowWorkInProgressPlaceholder) && (
                 <AnimatePresence mode="wait" initial={false}>
                   {showDetectionVideo && detectionStep?.videoSrc && (
                     <motion.div
@@ -207,7 +208,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: reduced ? 0.12 : 0.35, ease: 'easeInOut' }}
+                      transition={{ duration: reduced ? 0.1 : 0.2, ease: 'easeInOut' }}
                     >
                       <EmbeddedMomentDetection
                         src={detectionStep.videoSrc}
@@ -222,7 +223,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: reduced ? 0.15 : 0.45, ease: 'easeInOut' }}
+                      transition={{ duration: reduced ? 0.1 : 0.25, ease: 'easeInOut' }}
                     >
                       <div
                         className="relative overflow-hidden rounded-brand border"
@@ -288,6 +289,34 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
                             </motion.div>
                           )}
                         </AnimatePresence>
+                      </div>
+                    </motion.div>
+                  )}
+                  {shouldShowWorkInProgressPlaceholder && (
+                    <motion.div
+                      key={`wip-${step.id}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: reduced ? 0.1 : 0.25, ease: 'easeInOut' }}
+                      className="mb-6 overflow-hidden rounded-brand border relative"
+                      style={{
+                        borderColor: 'var(--color-lightGrey)',
+                        background:
+                          'linear-gradient(180deg, rgba(13,18,38,0.9) 0%, rgba(13,18,38,0.8) 100%)',
+                        aspectRatio: '16 / 9',
+                      }}
+                    >
+                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center p-6">
+                        <div className="max-w-[520px] rounded-brand border border-white/45 bg-[rgba(13,18,38,0.74)] px-8 py-7 text-center shadow-card backdrop-blur-[2px]">
+                          <p className="font-body text-[11px] tracking-[0.3em] text-white/80">INTERNAL DRAFT</p>
+                          <p className="font-heading text-[clamp(1.3rem,2.8vw,2.2rem)] leading-[1.05] text-white mt-2">
+                            WORK IN PROGRESS
+                          </p>
+                          <p className="font-body text-[clamp(0.85rem,1.35vw,1rem)] leading-relaxed text-white/90 mt-3">
+                            Awaiting final copy and creative assets for this step.
+                          </p>
+                        </div>
                       </div>
                     </motion.div>
                   )}

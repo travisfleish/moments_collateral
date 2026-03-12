@@ -186,10 +186,10 @@ export const marchMadnessMomentsContent: MarchMadnessMomentsContent = {
     steps: [
       {
         title: "Genius March Madness Moments",
-        body: "Select the key in-game or tournament moments you want to align your brand with."
+        body: "Select the March Madness moments you want to align your brand with."
       },
       {
-        title: "Step 2: Customize Your Audience",
+        title: "Step 2: Customize your audience",
         body: "Choose high-intent fan segments based on fandom, behaviors, and purchase signals."
       },
       {
@@ -203,7 +203,7 @@ export const marchMadnessMomentsContent: MarchMadnessMomentsContent = {
     header: "Genius March Madness Moments",
     introParagraph1: "Genius March Madness Moments",
     introParagraph2:
-      "Select the key in-game or tournament moments you want to align your brand with.",
+      "Select the March Madness moments you want to align your brand with.",
     labels: [
       "LATE GAME RALLY",
       "DOWN TO THE WIRE",
@@ -221,7 +221,7 @@ export const marchMadnessMomentsContent: MarchMadnessMomentsContent = {
     }
   },
   audiences: {
-    header: "Step 2: Customize Your Audience",
+    header: "Step 2: Customize your audience",
     subtitle:
       "The Genius Sports audience desk will create custom addressable segments aligned to your specific campaign goals and target audiences.",
     leftHeader: "Popular March Madness Audiences",

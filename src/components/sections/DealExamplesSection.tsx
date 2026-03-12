@@ -173,6 +173,16 @@ export function DealExamplesSection({ content }: DealExamplesSectionProps) {
         </div>
       </div>
 
+      <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center p-6">
+        <div className="max-w-[840px] rounded-brand border border-white/45 bg-[rgba(13,18,38,0.74)] px-8 py-7 text-center shadow-card backdrop-blur-[2px]">
+          <p className="font-body text-[12px] tracking-[0.3em] text-white/80">INTERNAL DRAFT</p>
+          <p className="font-heading text-[clamp(1.75rem,4vw,3rem)] leading-[1.05] text-white mt-2">WORK IN PROGRESS</p>
+          <p className="font-body text-[clamp(0.95rem,1.8vw,1.15rem)] leading-relaxed text-white/90 mt-4">
+            This section will emphasize how we are moving away from a managed services model to an in-house agency model.
+          </p>
+        </div>
+      </div>
+
     </section>
   )
 }

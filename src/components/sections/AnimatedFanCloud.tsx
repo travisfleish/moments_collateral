@@ -17,18 +17,61 @@ const SVG_VIEWBOX_WIDTH = 1200
 const SVG_VIEWBOX_HEIGHT = 675
 const NODE_SELECTOR = 'path.cls-6, path.cls-18'
 const BRANCH_SELECTOR = '.cls-2, .cls-3'
-const ATTRIBUTE_SELECTOR = `${NODE_SELECTOR}, text.cls-5, text.cls-7, text.cls-8, text.cls-10, text.cls-11, text.cls-12, text.cls-13, text.cls-14, text.cls-15, text.cls-16, text.cls-17, path.cls-19, path.cls-20, path.cls-21, path.cls-22, path.cls-23, path.cls-24, path.cls-25, path.cls-26, path.cls-27, path.cls-28, path.cls-32, path.cls-39, path.cls-40, path.cls-41, path.cls-47, path.cls-54, image`
+const ATTRIBUTE_SELECTOR = `${NODE_SELECTOR}, text, tspan, path.cls-9, path.cls-19, path.cls-20, path.cls-21, path.cls-22, path.cls-23, path.cls-24, path.cls-25, path.cls-26, path.cls-27, path.cls-28, path.cls-32, path.cls-39, path.cls-40, path.cls-41, path.cls-47, path.cls-54, image`
 const CENTER_INFO_TEXT_CLASSNAMES = new Set(['cls-7', 'cls-10', 'cls-11'])
 const CENTER_INFO_REGION = { minX: 520, maxX: 690, minY: 360, maxY: 520 }
 const CENTER_PHOTO_REGION = { minX: 500, maxX: 700, minY: 180, maxY: 420 }
+const OUTER_IMAGE_REVEAL_LAG_MS = 120
+
+function toFiniteNumber(value: string | null): number | null {
+  if (!value) return null
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : null
+}
+
+function parseTranslate(transform: string | null): { x: number; y: number } | null {
+  if (!transform) return null
+
+  const match = /translate\(([-\d.]+)(?:[,\s]+([-\d.]+))?\)/.exec(transform)
+  if (!match) return null
+
+  const x = Number(match[1])
+  const y = Number(match[2] ?? 0)
+  if (!Number.isFinite(x) || !Number.isFinite(y)) return null
+
+  return { x, y }
+}
 
 function getElementCenter(element: SVGElement): { x: number; y: number } | null {
   try {
     const box = (element as unknown as SVGGraphicsElement).getBBox()
-    return { x: box.x + box.width / 2, y: box.y + box.height / 2 }
+    if (Number.isFinite(box.width) && Number.isFinite(box.height) && (box.width > 0 || box.height > 0)) {
+      return { x: box.x + box.width / 2, y: box.y + box.height / 2 }
+    }
   } catch {
-    return null
+    // Continue to attribute-based fallbacks below.
   }
+
+  const x = toFiniteNumber(element.getAttribute('x'))
+  const y = toFiniteNumber(element.getAttribute('y'))
+  const width = toFiniteNumber(element.getAttribute('width'))
+  const height = toFiniteNumber(element.getAttribute('height'))
+  if (x !== null && y !== null && width !== null && height !== null) {
+    return { x: x + width / 2, y: y + height / 2 }
+  }
+
+  const cx = toFiniteNumber(element.getAttribute('cx'))
+  const cy = toFiniteNumber(element.getAttribute('cy'))
+  if (cx !== null && cy !== null) {
+    return { x: cx, y: cy }
+  }
+
+  const translatedCenter = parseTranslate(element.getAttribute('transform'))
+  if (translatedCenter) {
+    return translatedCenter
+  }
+
+  return null
 }
 
 function isWithinRegion(
@@ -45,18 +88,21 @@ function isWithinRegion(
 }
 
 function isCenterStaticAttribute(attribute: SVGElement) {
+  const textContainer =
+    attribute.tagName.toLowerCase() === 'text'
+      ? attribute
+      : (attribute.closest('text') as SVGElement | null)
+
   if (
-    attribute.tagName.toLowerCase() === 'text' &&
-    Array.from(CENTER_INFO_TEXT_CLASSNAMES).some((className) => attribute.classList.contains(className))
+    textContainer &&
+    Array.from(CENTER_INFO_TEXT_CLASSNAMES).some((className) => textContainer.classList.contains(className))
   ) {
     return true
   }
 
   if (attribute.tagName.toLowerCase() === 'image') {
-    const width = Number(attribute.getAttribute('width') ?? 0)
-    const height = Number(attribute.getAttribute('height') ?? 0)
-    const isPortraitSource = width >= 2000 && height >= 2000
-    return isPortraitSource && isWithinRegion(getElementCenter(attribute), CENTER_PHOTO_REGION)
+    // Keep all image assets on the animated timing path so none pop in early.
+    return false
   }
 
   if (
@@ -96,6 +142,40 @@ function getNearestBranchIndex(
   })
 
   return nearestIndex
+}
+
+function hashSeed(seed: number) {
+  let hashed = seed | 0
+  hashed ^= hashed >>> 16
+  hashed = Math.imul(hashed, 0x45d9f3b)
+  hashed ^= hashed >>> 16
+  hashed = Math.imul(hashed, 0x45d9f3b)
+  hashed ^= hashed >>> 16
+  return hashed >>> 0
+}
+
+function createSeededRandom(seed: number) {
+  let state = hashSeed(seed) || 0x6d2b79f5
+  return () => {
+    state ^= state << 13
+    state ^= state >>> 17
+    state ^= state << 5
+    return (state >>> 0) / 0x100000000
+  }
+}
+
+function createShuffledIndices(length: number, seed: number) {
+  const indices = Array.from({ length }, (_, index) => index)
+  const random = createSeededRandom(seed)
+
+  for (let index = indices.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(random() * (index + 1))
+    const currentValue = indices[index]
+    indices[index] = indices[swapIndex]
+    indices[swapIndex] = currentValue
+  }
+
+  return indices
 }
 
 export function AnimatedFanCloud({
@@ -195,7 +275,7 @@ export function AnimatedFanCloud({
       const targetFinalAttributeCompleteMs = Math.max(0, overlayTotalMs - finalSettleLeadMs)
       const branchFadeMs = 1100
       const attributeFadeMs = 1320
-      const attributeLeadMs = 140
+      const attributeLeadMs = 0
       const branchDelayStepMs =
         branches.length > 1
           ? Math.max(
@@ -207,21 +287,69 @@ export function AnimatedFanCloud({
             )
           : 0
       const branchCenters = branches.map((branch) => getElementCenter(branch))
+      const nodeCenters = nodes.map((node) => getElementCenter(node))
+      const branchRevealOrder = createShuffledIndices(
+        branches.length,
+        replayToken + branches.length * 131 + 17
+      )
+      const revealStepByBranchIndex = new Map<number, number>(
+        branchRevealOrder.map((branchIndex, revealStep) => [branchIndex, revealStep])
+      )
+      const nodeRevealOrder = createShuffledIndices(
+        nodes.length,
+        replayToken + nodes.length * 227 + 43
+      )
+      const revealStepByNodeIndex = new Map<number, number>(
+        nodeRevealOrder.map((nodeIndex, revealStep) => [nodeIndex, revealStep])
+      )
+      const nodeBaseDelayByIndex = nodeCenters.map((nodeCenter, nodeIndex) => {
+        const nearestBranchIndex = getNearestBranchIndex(nodeCenter, branchCenters)
+        if (nearestBranchIndex >= 0) {
+          return (revealStepByBranchIndex.get(nearestBranchIndex) ?? nearestBranchIndex) * branchDelayStepMs
+        }
 
-      branches.forEach((branch, index) => {
+        return (revealStepByNodeIndex.get(nodeIndex) ?? nodeIndex) * branchDelayStepMs
+      })
+
+      branches.forEach((branch, branchIndex) => {
+        const revealStep = revealStepByBranchIndex.get(branchIndex) ?? branchIndex
         branch.style.transitionDuration = `${branchFadeMs}ms`
-        branch.style.transitionDelay = `${index * branchDelayStepMs}ms`
+        branch.style.transitionDelay = `${revealStep * branchDelayStepMs}ms`
         branch.style.opacity = '1'
       })
 
-      attributes.forEach((attribute, index) => {
+      attributes.forEach((attribute, attributeIndex) => {
         if (isCenterStaticAttribute(attribute)) {
           return
         }
 
+        const isImageAttribute = attribute.tagName.toLowerCase() === 'image'
+        if (isImageAttribute) {
+          const imageCenter = getElementCenter(attribute)
+          const nearestNodeIndex = getNearestBranchIndex(getElementCenter(attribute), nodeCenters)
+          const outerImageLagMs = isWithinRegion(imageCenter, CENTER_PHOTO_REGION)
+            ? 0
+            : OUTER_IMAGE_REVEAL_LAG_MS
+          const imageDelay =
+            nearestNodeIndex >= 0
+              ? (nodeBaseDelayByIndex[nearestNodeIndex] ?? nearestNodeIndex * branchDelayStepMs) +
+                outerImageLagMs
+              : attributeIndex * Math.max(16, branchDelayStepMs * 0.2)
+
+          attribute.style.transitionDuration = `${attributeFadeMs}ms`
+          attribute.style.transitionDelay = `${Math.max(0, imageDelay - attributeLeadMs)}ms`
+          attribute.style.opacity = '1'
+          return
+        }
+
+        const nearestNodeIndex = getNearestBranchIndex(getElementCenter(attribute), nodeCenters)
         const nearestBranchIndex = getNearestBranchIndex(getElementCenter(attribute), branchCenters)
         const baseDelay =
-          nearestBranchIndex >= 0 ? nearestBranchIndex * branchDelayStepMs : index * branchDelayStepMs
+          nearestNodeIndex >= 0
+            ? nodeBaseDelayByIndex[nearestNodeIndex] ?? nearestNodeIndex * branchDelayStepMs
+            : nearestBranchIndex >= 0
+              ? (revealStepByBranchIndex.get(nearestBranchIndex) ?? nearestBranchIndex) * branchDelayStepMs
+              : attributeIndex * Math.max(16, branchDelayStepMs * 0.2)
 
         attribute.style.transitionDuration = `${attributeFadeMs}ms`
         attribute.style.transitionDelay = `${Math.max(0, baseDelay - attributeLeadMs)}ms`

@@ -18,6 +18,17 @@ import type { MomentEngineContent } from '../../content/momentEngine'
 
 type Beat = 1 | 2 | 3 | 4 | 5
 type NodeState = 'resting' | 'active' | 'dimmed'
+type TimelineStop = {
+  beat: Beat
+  label: string
+}
+
+const TIMELINE_STOPS: TimelineStop[] = [
+  { beat: 2, label: 'Data inputs to GeniusIQ' },
+  { beat: 3, label: 'Data inputs to Fan Graph' },
+  { beat: 4, label: 'GeniusIQ + Fan Graph to Moment Engine' },
+  { beat: 5, label: 'Moment Engine to outputs' },
+]
 
 // ─── Beat copy ────────────────────────────────────────────────────────────────
 
@@ -669,6 +680,24 @@ export function MomentEngineSection({ content: _content }: MomentEngineSectionPr
 
   const rawBeat = reducedMotion ? 5 : Math.min(5, Math.floor(progress * 5) + 1)
   const beat = rawBeat as Beat
+  const activeTimelineIndex = TIMELINE_STOPS.findIndex((stop) => stop.beat === beat)
+  const timelineProgressPercent =
+    activeTimelineIndex < 0 ? 0 : ((activeTimelineIndex + 1) / TIMELINE_STOPS.length) * 100
+
+  const scrollToBeat = (targetBeat: Beat) => {
+    const section = sectionRef.current
+    if (!section) return
+
+    const sectionTop = window.scrollY + section.getBoundingClientRect().top
+    const scrollableDistance = Math.max(section.offsetHeight - window.innerHeight, 0)
+    const targetProgress = (targetBeat - 0.5) / 5
+    const targetY = sectionTop + scrollableDistance * Math.min(0.999, Math.max(0, targetProgress))
+
+    window.scrollTo({
+      top: targetY,
+      behavior: reducedMotion ? 'auto' : 'smooth',
+    })
+  }
 
   return (
     <section
@@ -704,6 +733,57 @@ export function MomentEngineSection({ content: _content }: MomentEngineSectionPr
             {/* Right: beat copy */}
             <div className="lg:pl-10">
               <BeatCopy beat={beat} reducedMotion={reducedMotion} />
+            </div>
+          </div>
+
+          <div className="mt-8 px-2 lg:px-6">
+            <div className="relative">
+              <div
+                className="absolute left-0 right-0 top-[16px] h-0.5 rounded-full"
+                style={{ backgroundColor: '#e5e7eb' }}
+                aria-hidden="true"
+              />
+              <motion.div
+                className="absolute left-0 top-[16px] h-0.5 rounded-full"
+                style={{ backgroundColor: '#4337a8' }}
+                initial={{ width: 0 }}
+                animate={{ width: `${timelineProgressPercent}%` }}
+                transition={{ duration: reducedMotion ? 0 : 0.3, ease: 'easeOut' }}
+                aria-hidden="true"
+              />
+
+              <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+                {TIMELINE_STOPS.map((stop, index) => {
+                  const isActive = beat === stop.beat
+
+                  return (
+                    <button
+                      key={stop.label}
+                      type="button"
+                      onClick={() => scrollToBeat(stop.beat)}
+                      aria-current={isActive ? 'step' : undefined}
+                      className="flex flex-col items-start gap-2 text-left"
+                    >
+                      <span
+                        className="w-8 h-8 rounded-full border flex items-center justify-center font-heading text-xs transition-colors duration-200"
+                        style={{
+                          backgroundColor: isActive ? '#4337a8' : '#ffffff',
+                          borderColor: isActive ? '#4337a8' : '#d1d5db',
+                          color: isActive ? '#ffffff' : '#5b6472',
+                        }}
+                      >
+                        {index + 1}
+                      </span>
+                      <span
+                        className="font-body text-[13px] leading-5 transition-colors duration-200"
+                        style={{ color: isActive ? '#0d1226' : '#5b6472' }}
+                      >
+                        {stop.label}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
             </div>
           </div>
         </div>

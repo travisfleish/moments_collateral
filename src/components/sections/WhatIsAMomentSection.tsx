@@ -1,427 +1,265 @@
-import { useRef } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useScrollProgress } from '../../hooks/useScrollProgress'
+import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
 import type { MomentEngineContent } from '../../content/momentEngine'
-
-// ─── State 1 copy ─────────────────────────────────────────────────────────────
-
-function State1Copy({ content }: { content: MomentEngineContent['whatIsAMoment'] }) {
-  return (
-    <div className="max-w-3xl">
-      <h2
-        className="font-heading text-brand-h3 font-light"
-        style={{ color: 'rgb(13, 18, 38)' }}
-      >
-        {content.contrastLeft.label}
-      </h2>
-      <p className="section-copy mt-6">
-        {content.contrastLeft.description}
-      </p>
-      <p className="section-copy mt-4">
-        Buying by schedule can still land impressions near live sports, but it misses the moments when fan attention and intent are highest.
-      </p>
-    </div>
-  )
-}
-
-// ─── State 2 copy ─────────────────────────────────────────────────────────────
-
-function State2Copy({ content }: { content: MomentEngineContent['whatIsAMoment'] }) {
-  return (
-    <div>
-      <h2
-        className="font-heading text-brand-h3 font-light"
-        style={{ color: '#ffffff' }}
-      >
-        {content.contrastRight.headline}
-      </h2>
-      <p
-        className="section-copy mt-6"
-        style={{ color: 'rgba(255,255,255,0.8)' }}
-      >
-        {content.contrastRight.description}
-      </p>
-    </div>
-  )
-}
-
-// ─── Timeline card ────────────────────────────────────────────────────────────
-
-function TimelineCard({ variant }: { variant: 'before' | 'after' }) {
-  const isBefore = variant === 'before'
-
-  return (
-    <div
-      className="w-full rounded-2xl p-6"
-      style={{
-        maxWidth: isBefore ? '100%' : '480px',
-        height: '280px',
-        backgroundColor: isBefore ? '#f6f7f9' : '#0a0a2e',
-        boxShadow: isBefore
-          ? '0 4px 24px rgba(0,0,0,0.10)'
-          : '0 4px 24px rgba(0,0,220,0.25)',
-      }}
-    >
-      {/* Label */}
-      <p
-        className="font-body text-body-sm tracking-widest uppercase mb-4"
-        style={{
-          color: isBefore ? '#9ca3af' : '#00ffcc',
-          fontSize: '20px',
-          lineHeight: 1.2,
-        }}
-      >
-        {isBefore ? 'SCHEDULED DELIVERY' : 'MOMENT ACTIVATION'}
-      </p>
-
-      {/* Timeline bar + markers */}
-      <div className="relative mb-6" style={{ height: '64px' }}>
-        {/* Bar */}
-        <div
-          className="absolute rounded-full"
-          style={{
-            top: '28px',
-            left: 0,
-            right: 0,
-            height: '3px',
-            backgroundColor: isBefore ? '#e5e7eb' : 'rgba(255,255,255,0.15)',
-          }}
-        />
-
-        {isBefore ? (
-          // Before: three identical ad markers
-          <>
-            {[
-              { left: '15%', label: 'Pre-Roll' },
-              { left: '50%', label: 'Mid-Roll' },
-              { left: '80%', label: 'Mid-Roll' },
-            ].map(({ left, label }) => (
-              <div
-                key={left}
-                className="absolute flex flex-col items-center"
-                style={{ left, transform: 'translateX(-50%)', top: '16px' }}
-              >
-                {/* Wireframe ad unit */}
-                <div
-                  className="mb-1"
-                  style={{
-                    width: '28px',
-                    height: '18px',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '2px',
-                    backgroundColor: '#fff',
-                  }}
-                />
-                {/* Yellow ad marker */}
-                <div
-                  className="flex items-center justify-center"
-                  style={{
-                    width: '20px',
-                    height: '20px',
-                    backgroundColor: '#facc15',
-                    borderRadius: '2px',
-                  }}
-                >
-                  <span style={{ fontSize: '8px', color: '#000', fontWeight: 600 }}>Ad</span>
-                </div>
-                <span
-                  className="mt-1 font-body"
-                  style={{ fontSize: '12px', color: '#9ca3af', whiteSpace: 'nowrap' }}
-                >
-                  {label}
-                </span>
-              </div>
-            ))}
-          </>
-        ) : (
-          // After: single neon marker at 65% with spike + badge
-          <div
-            className="absolute flex flex-col items-center"
-            style={{ left: '65%', transform: 'translateX(-50%)', top: '-12px' }}
-          >
-            {/* Badge */}
-            <div
-              className="rounded-full px-3 py-1 mb-1"
-              style={{
-                backgroundColor: 'rgba(0,255,204,0.15)',
-                border: '1px solid #00ffcc',
-                color: '#00ffcc',
-                fontSize: '14px',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Buzzer Beater — High ↑
-            </div>
-            {/* Spike */}
-            <div style={{ width: '2px', height: '32px', backgroundColor: '#00ffcc' }} />
-            {/* Neon marker */}
-            <div
-              className="flex items-center justify-center"
-              style={{
-                width: '20px',
-                height: '20px',
-                backgroundColor: '#00ffcc',
-                borderRadius: '2px',
-              }}
-            >
-              <span style={{ fontSize: '10px', color: '#0a0a2e', fontWeight: 700 }}>Ad</span>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Emotional intensity SVG — after variant only */}
-      {!isBefore && (
-        <svg
-          width="100%"
-          height="40"
-          viewBox="0 0 400 40"
-          preserveAspectRatio="none"
-          className="mb-3"
-          aria-hidden="true"
-        >
-          <polyline
-            points="0,30 40,31 70,27 95,32 120,28 150,33 180,29 210,31 235,24 248,12 260,4 272,14 286,26 310,30 340,28 370,31 400,30"
-            fill="none"
-            stroke="#00ffcc"
-            strokeWidth="1.5"
-            strokeLinejoin="round"
-          />
-        </svg>
-      )}
-
-      {/* Bottom label */}
-      <p
-        className="font-body text-body-sm mt-auto"
-        style={{
-          color: isBefore ? '#9ca3af' : '#ffffff',
-          marginTop: isBefore ? '8px' : '0',
-          fontSize: '20px',
-          lineHeight: 1.35,
-          textAlign: isBefore ? 'left' : 'center',
-        }}
-      >
-        {isBefore
-          ? 'Broad daypart. No game state. No emotion.'
-          : 'Precise. Emotional. Automatic.'}
-      </p>
-    </div>
-  )
-}
-
-// ─── Moment card ──────────────────────────────────────────────────────────────
-
-function MomentCard({ moment, index }: { moment: MomentEngineContent['whatIsAMoment']['moments'][number]; index: number }) {
-  return (
-    <motion.li
-      role="listitem"
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.08, ease: 'easeOut' }}
-      className="rounded-2xl p-5 flex-shrink-0"
-      style={{
-        minWidth: '280px',
-        flex: 1,
-        maxWidth: '400px',
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        border: '1px solid rgba(255,255,255,0.2)',
-      }}
-    >
-      {/* League badge */}
-      <span
-        className="inline-block rounded-full px-2 py-0.5 font-body font-medium"
-        style={{
-          backgroundColor: 'rgba(255,255,255,0.15)',
-          color: '#ffffff',
-          fontSize: '11px',
-        }}
-      >
-        {moment.league}
-      </span>
-
-      {/* Sport */}
-      <p className="font-heading text-brand-h4 mt-3" style={{ color: '#ffffff' }}>
-        {moment.sport}
-      </p>
-
-      {/* Trigger */}
-      <p className="font-body text-body-sm mt-1" style={{ color: 'rgba(255,255,255,0.7)' }}>
-        {moment.trigger}
-      </p>
-
-      {/* Emotion pill */}
-      <div className="mt-3">
-        <span
-          className="inline-block rounded-full px-2 py-0.5 font-body"
-          style={{
-            backgroundColor: 'rgba(0,255,204,0.15)',
-            border: '1px solid #00ffcc',
-            color: '#00ffcc',
-            fontSize: '11px',
-          }}
-        >
-          {moment.emotion}
-        </span>
-      </div>
-
-      {/* Verticals */}
-      <div className="mt-3 flex flex-wrap gap-1">
-        {moment.verticals.map((v) => (
-          <span
-            key={v}
-            className="rounded-full px-2 py-0.5 font-body"
-            style={{
-              backgroundColor: 'rgba(255,255,255,0.1)',
-              color: 'rgba(255,255,255,0.6)',
-              fontSize: '10px',
-            }}
-          >
-            {v}
-          </span>
-        ))}
-      </div>
-    </motion.li>
-  )
-}
-
-// ─── Moment example cards row ─────────────────────────────────────────────────
-
-function MomentExampleCards({ moments }: { moments: MomentEngineContent['whatIsAMoment']['moments'] }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 24 }}
-      transition={{ duration: 0.5 }}
-      className="mt-12 w-full"
-    >
-      <ul
-        role="list"
-        className="flex gap-6 justify-center flex-nowrap"
-      >
-        {moments.map((moment, i) => (
-          <MomentCard key={moment.trigger} moment={moment} index={i} />
-        ))}
-      </ul>
-    </motion.div>
-  )
-}
-
-// ─── Main section ─────────────────────────────────────────────────────────────
 
 interface WhatIsAMomentSectionProps {
   content: MomentEngineContent['whatIsAMoment']
 }
 
-const HEADER_TRANSITION_MS = 400
-const BACKGROUND_TRANSITION_MS = 300
+const AUTO_ADVANCE_MS = 3200
+const comparisonCardClassName = 'flex h-full flex-col rounded-2xl border p-6 lg:h-[300px]'
+
+function ConnectorArrow({
+  direction,
+  reducedMotion,
+}: {
+  direction: 'left' | 'right'
+  reducedMotion: boolean
+}) {
+  const isLeft = direction === 'left'
+
+  return (
+    <div className="hidden lg:flex items-center justify-center" aria-hidden="true">
+      <svg width="72" height="20" viewBox="0 0 72 20" fill="none">
+        <line
+          x1={isLeft ? 66 : 6}
+          y1="10"
+          x2={isLeft ? 6 : 66}
+          y2="10"
+          stroke="#a7b3ff"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+        <motion.line
+          x1={isLeft ? 66 : 6}
+          y1="10"
+          x2={isLeft ? 6 : 66}
+          y2="10"
+          stroke="#5f6fff"
+          strokeWidth="2.6"
+          strokeLinecap="round"
+          initial={false}
+          animate={
+            reducedMotion
+              ? { pathLength: 1, opacity: 0.9 }
+              : { pathLength: [0, 1, 1], opacity: [0, 0.95, 0] }
+          }
+          transition={
+            reducedMotion
+              ? { duration: 0 }
+              : {
+                  duration: 1.35,
+                  ease: 'easeInOut',
+                  repeat: Infinity,
+                  repeatDelay: 0.15,
+                }
+          }
+        />
+        {isLeft ? (
+          <motion.path
+            d="M10 5 L4 10 L10 15"
+            stroke="#a7b3ff"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={false}
+            animate={reducedMotion ? { opacity: 1 } : { opacity: [0.5, 1, 0.5] }}
+            transition={
+              reducedMotion
+                ? { duration: 0 }
+                : { duration: 1.35, ease: 'easeInOut', repeat: Infinity }
+            }
+          />
+        ) : (
+          <motion.path
+            d="M62 5 L68 10 L62 15"
+            stroke="#a7b3ff"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={false}
+            animate={reducedMotion ? { opacity: 1 } : { opacity: [0.5, 1, 0.5] }}
+            transition={
+              reducedMotion
+                ? { duration: 0 }
+                : { duration: 1.35, ease: 'easeInOut', repeat: Infinity }
+            }
+          />
+        )}
+      </svg>
+    </div>
+  )
+}
+
+function GeniusMomentsBridgeCard({ reducedMotion }: { reducedMotion: boolean }) {
+  return (
+    <motion.article
+      className={comparisonCardClassName}
+      initial={false}
+      animate={
+        reducedMotion
+          ? {
+              opacity: 1,
+              scale: 1,
+              boxShadow: '0 14px 30px rgba(67,55,168,0.25)',
+            }
+          : {
+              opacity: 1,
+              scale: [1, 1.02, 1],
+              boxShadow: [
+                '0 14px 30px rgba(67,55,168,0.25)',
+                '0 20px 42px rgba(67,55,168,0.42)',
+                '0 14px 30px rgba(67,55,168,0.25)',
+              ],
+            }
+      }
+      transition={
+        reducedMotion
+          ? { duration: 0.2, ease: 'easeOut' }
+          : { duration: 1.6, ease: 'easeInOut', repeat: Infinity }
+      }
+      style={{
+        borderColor: 'rgba(167,179,255,0.42)',
+        background:
+          'linear-gradient(180deg, rgba(102,86,210,0.96) 0%, rgba(88,73,198,0.96) 100%)',
+      }}
+    >
+      <h3 className="font-heading text-brand-h4" style={{ color: '#ffffff' }}>
+        Genius Moments
+      </h3>
+      <ul className="mt-4 space-y-2.5 list-disc pl-5">
+        {[
+          'Brings the live game into context',
+          'Deploys deterministic fan segments',
+          'Price: low',
+          'Inventory: scaled',
+        ].map((item) => (
+          <li key={item} className="font-body text-sm" style={{ color: 'rgba(255,255,255,0.95)' }}>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </motion.article>
+  )
+}
+
+function ComparisonCard({
+  title,
+  bullets,
+  isActive,
+}: {
+  title: string
+  bullets: string[]
+  isActive: boolean
+}) {
+  return (
+    <motion.article
+      className={comparisonCardClassName}
+      initial={false}
+      animate={{
+        opacity: isActive ? 1 : 0.78,
+        scale: isActive ? 1 : 0.985,
+      }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      style={{
+        borderColor: isActive ? 'rgba(0,0,220,0.30)' : 'rgba(15,23,42,0.12)',
+        boxShadow: isActive ? '0 14px 30px rgba(0,0,220,0.12)' : 'none',
+        backgroundColor: '#ffffff',
+      }}
+    >
+      <h3 className="font-heading text-brand-h4 text-navy">{title}</h3>
+      <ul className="mt-5 space-y-2 list-disc pl-5">
+        {bullets.map((item) => (
+          <li key={item} className="font-body text-sm text-[var(--color-text-muted)]">
+            {item}
+          </li>
+        ))}
+      </ul>
+    </motion.article>
+  )
+}
+
+function OutsideChecklist({ items }: { items: string[] }) {
+  return (
+    <ul className="mt-3 flex flex-wrap gap-2 justify-center">
+      {items.map((item) => (
+        <li
+          key={item}
+          className="rounded-full border px-3 py-1 font-body text-xs"
+          style={{
+            borderColor: 'rgba(15,23,42,0.16)',
+            color: '#5b6472',
+            backgroundColor: '#ffffff',
+          }}
+        >
+          {item}
+        </li>
+      ))}
+    </ul>
+  )
+}
 
 export function WhatIsAMomentSection({ content }: WhatIsAMomentSectionProps) {
-  const sectionRef = useRef<HTMLElement>(null)
-  const progress = useScrollProgress(sectionRef)
   const reducedMotion = useReducedMotionSafe()
+  const [activeCard, setActiveCard] = useState(0)
 
-  // Single threshold: fully State 1 or fully State 2. No in-between.
-  const effectiveProgress = reducedMotion ? 1 : progress
-  const isStateTwo = effectiveProgress >= 0.5
-  const state = isStateTwo ? 2 : 1
-  const showMomentCards = isStateTwo
+  useEffect(() => {
+    if (reducedMotion) {
+      return
+    }
+
+    const intervalId = window.setInterval(() => {
+      setActiveCard((prev) => (prev === 0 ? 1 : 0))
+    }, AUTO_ADVANCE_MS)
+
+    return () => window.clearInterval(intervalId)
+  }, [reducedMotion])
 
   return (
     <section
-      ref={sectionRef}
       id="what-is-a-moment"
       aria-labelledby="what-is-a-moment-heading"
-      style={{ height: '200vh' }}
+      className="bg-white py-24"
     >
-      {/* Sticky container — background flips at threshold with short CSS transition */}
-      <div
-        className="sticky top-0 h-screen"
-        style={{
-          backgroundColor: isStateTwo ? '#0000dc' : '#ffffff',
-          transition: `background-color ${BACKGROUND_TRANSITION_MS}ms ease`,
-        }}
-      >
-        <div className="section-shell flex flex-col h-full py-24">
+      <div className="section-shell">
+        <div className="mx-auto max-w-5xl text-center">
+          <h2 id="what-is-a-moment-heading" className="section-title whitespace-pre-line">
+            {content.headline}
+          </h2>
+          <p className="section-copy mt-5">{content.subhead}</p>
+        </div>
 
-          {/* Header block: fixed height, pinned to top so headline stays stationary across states */}
-          <div
-            className="flex flex-col justify-start flex-shrink-0 pt-12 pb-0"
-            style={{ height: '120px' }}
-          >
-            <AnimatePresence>
-              {isStateTwo && (
-                <motion.p
-                  key="with-genius-prefix"
-                  className="section-title text-center mb-2"
-                  style={{
-                    color: '#00ffcc',
-                    letterSpacing: '0.01em',
-                  }}
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: HEADER_TRANSITION_MS / 1000, ease: 'easeInOut' }}
-                >
-                  With Genius
-                </motion.p>
-              )}
-            </AnimatePresence>
-            <motion.h2
-              id="what-is-a-moment-heading"
-              className="section-title text-center mb-4"
-              style={{ color: isStateTwo ? '#ffffff' : 'rgb(13, 18, 38)' }}
-              initial={false}
-              animate={{ opacity: 1, y: isStateTwo ? 8 : 0 }}
-              transition={{ duration: HEADER_TRANSITION_MS / 1000, ease: 'easeInOut' }}
-            >
-              There's a better way to buy sports.
-            </motion.h2>
+        <div className="mt-12 grid gap-4 lg:gap-6 items-stretch lg:grid-cols-[minmax(0,1fr)_72px_280px_72px_minmax(0,1fr)]">
+          <div className="flex flex-col">
+            <ComparisonCard
+              title={content.contrastLeft.label}
+              bullets={[
+                'Sports fan audiences',
+                'Sports contextual publishers',
+                'Price: low',
+                'Inventory: scale',
+              ]}
+              isActive={activeCard === 0}
+            />
+            <OutsideChecklist items={['✓ Precision', '✓ Scale', '✗ Emotion']} />
           </div>
-
-          {/* Two-column content — fixed min-height so header does not shift when content swaps */}
-          <AnimatePresence mode="wait">
-            {state === 1 ? (
-              <motion.div
-                key="state1"
-                className="grid lg:grid-cols-2 gap-16 items-center flex-shrink-0 mt-10"
-                style={{ minHeight: '360px' }}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.4, ease: 'easeInOut' }}
-              >
-                <State1Copy content={content} />
-                <div className="flex justify-center lg:justify-end">
-                  <TimelineCard variant="before" />
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="state2"
-                className="grid lg:grid-cols-2 gap-16 items-center flex-shrink-0 mt-10"
-                style={{ minHeight: '360px' }}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.4, ease: 'easeInOut' }}
-              >
-                <State2Copy content={content} />
-                <div className="flex justify-center lg:justify-end">
-                  <TimelineCard variant="after" />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Moment example cards — appear at progress 0.85+ */}
-          <AnimatePresence>
-            {showMomentCards && (
-              <MomentExampleCards moments={content.moments} />
-            )}
-          </AnimatePresence>
-
+          <ConnectorArrow direction="left" reducedMotion={reducedMotion} />
+          <GeniusMomentsBridgeCard reducedMotion={reducedMotion} />
+          <ConnectorArrow direction="right" reducedMotion={reducedMotion} />
+          <div className="flex flex-col">
+            <ComparisonCard
+              title={content.contrastRight.label}
+              bullets={[
+                'Live game spots',
+                'In-game sponsorships',
+                'Price: high',
+                'Inventory: scarce',
+              ]}
+              isActive={activeCard === 1}
+            />
+            <OutsideChecklist items={['✓ Scale', '✓ Emotion', '✗ Precision']} />
+          </div>
         </div>
       </div>
     </section>

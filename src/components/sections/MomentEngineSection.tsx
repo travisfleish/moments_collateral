@@ -699,10 +699,10 @@ export function MomentEngineSection({ content: _content }: MomentEngineSectionPr
         <div className="section-shell-wide w-full">
 
           {/* Section header */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-16">
             <h2
               id="moment-engine-heading"
-              className="section-title mt-1 mb-8"
+              className="section-title mb-12"
             >
               The technology behind a moment.
             </h2>

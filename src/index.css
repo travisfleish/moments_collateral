@@ -16,6 +16,14 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--gs-bg);
+
+    /*
+     * Dynamic viewport scaling: on smaller laptop screens (e.g. 13" ~1280px),
+     * scale content down to ~80% so it fits comfortably without manual zoom.
+     * Scales linearly from 80% at 1280px to 100% at 1600px and above.
+     * Supported in Chrome, Safari 15.4+, Edge. Firefox renders at 100%.
+     */
+    zoom: clamp(0.8, calc(0.8 + 0.2 * (100vw - 80rem) / 20rem), 1);
   }
 
   body {

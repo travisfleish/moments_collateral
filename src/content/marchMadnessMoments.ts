@@ -238,7 +238,7 @@ export const marchMadnessMomentsContent: MarchMadnessMomentsContent = {
       "In-Season Moment 5"
     ],
     thematicBundle: {
-      label: "High Impact Moments",
+      label: "Featured Bundle: High Impact Moments",
       trigger: "A curated bundle of high-impact moments spanning in-game and in-season",
       description:
         "This thematic bucket groups multiple moments under a single theme (e.g., high impact, high emotional, high leverage). Unlike discrete in-game or in-season moments, it activates when any moment within the theme occurs, offering broader reach across the designated theme."

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CheckCircle2 } from 'lucide-react'
 import {
@@ -8,16 +8,25 @@ import {
 } from '../../hooks/useCinematicDetectionFlow'
 import { ScannerOverlay } from '../ScannerOverlay'
 
+const LOOP_RESET_DELAY_MS = 400
+
 interface EmbeddedMomentDetectionProps {
   src: string
   videoAlt: string
   onPhaseChange?: (phase: CinematicPhase) => void
+  className?: string
+  style?: React.CSSProperties
+  /** When true, the video and moment detection animation loop continuously */
+  loop?: boolean
 }
 
 export function EmbeddedMomentDetection({
   src,
   videoAlt,
   onPhaseChange,
+  className = '',
+  style,
+  loop = false,
 }: EmbeddedMomentDetectionProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [completionPayload, setCompletionPayload] = useState<CinematicCompletePayload | null>(null)
@@ -29,8 +38,21 @@ export function EmbeddedMomentDetection({
   })
   const isScannerActive = phase === 'playing'
 
+  // When looping, reset as soon as Moment Detected or Moment Captured is shown
+  useEffect(() => {
+    if (!loop || (phase !== 'detected' && phase !== 'complete')) return
+    const id = window.setTimeout(() => {
+      setCompletionPayload(null)
+      reset()
+    }, LOOP_RESET_DELAY_MS)
+    return () => window.clearTimeout(id)
+  }, [loop, phase, reset])
+
   return (
-    <div className="mb-6 overflow-hidden rounded-brand border relative" style={{ borderColor: 'var(--color-lightGrey)' }}>
+    <div
+      className={`mb-6 overflow-hidden rounded-brand border relative ${className}`}
+      style={{ borderColor: 'var(--color-lightGrey)', ...style }}
+    >
       <video
         ref={videoRef}
         className="w-full h-auto"
@@ -62,7 +84,7 @@ export function EmbeddedMomentDetection({
                 animate={{ rotate: 360 }}
                 transition={{ duration: 0.9, ease: 'linear', repeat: Infinity }}
               />
-              <p className="font-body text-lg tracking-wide">Detecting Moment...</p>
+              <p className="font-body text-base tracking-wide">Detecting Moment...</p>
             </div>
           </motion.div>
         )}
@@ -82,7 +104,7 @@ export function EmbeddedMomentDetection({
               className="flex flex-col items-center"
             >
               <CheckCircle2 size={52} className="mb-3 text-[#17b26a]" />
-              <p className="font-body text-xl">Moment Detected</p>
+              <p className="font-body text-lg">Moment Detected</p>
             </motion.div>
           </motion.div>
         )}

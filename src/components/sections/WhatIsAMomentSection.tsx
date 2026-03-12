@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe'
+import { EmbeddedMomentDetection } from './EmbeddedMomentDetection'
 import type { MomentEngineContent } from '../../content/momentEngine'
 
 interface WhatIsAMomentSectionProps {
@@ -63,53 +64,68 @@ function ConnectorArrow({
   )
 }
 
+const MOMENTS_SAMPLE_VIDEO = '/Moments Sample.mp4'
+const INSTAGRAM_ADS_IMAGE = '/instagram-ads.png'
+
 function GeniusMomentsBridgeCard({ reducedMotion }: { reducedMotion: boolean }) {
   return (
     <motion.article
-      className={`${comparisonCardClassName} relative z-10 border border-[rgba(15,23,42,0.08)] lg:scale-[1.06]`}
+      className={`flex h-full flex-col rounded-2xl relative z-10 border border-[rgba(15,23,42,0.08)] p-7 lg:h-[340px] lg:scale-[1.06] overflow-visible`}
       initial={false}
-      animate={
-        reducedMotion
-          ? {
-              opacity: 1,
-              scale: 1,
-              boxShadow: '0 20px 44px rgba(30,58,196,0.34)',
-            }
-          : {
-              opacity: 1,
-              scale: [1.06, 1.08, 1.06],
-              boxShadow: [
-                '0 20px 44px rgba(30,58,196,0.34)',
-                '0 28px 54px rgba(30,58,196,0.46)',
-                '0 20px 44px rgba(30,58,196,0.34)',
-              ],
-            }
-      }
-      transition={
-        reducedMotion
-          ? { duration: 0.2, ease: 'easeOut' }
-          : { duration: 1.6, ease: 'easeInOut', repeat: Infinity }
-      }
+      animate={{
+        opacity: 1,
+        scale: reducedMotion ? 1 : 1.06,
+        boxShadow: '0 20px 44px rgba(30,58,196,0.34)',
+      }}
       style={{
         borderColor: 'rgba(208,219,255,0.8)',
         backgroundColor: 'var(--color-gs-accent-500)',
       }}
     >
-      <h3 className="font-heading text-brand-h4 leading-tight" style={{ color: '#ffffff' }}>
+      <h3 className="font-heading text-xl lg:text-2xl leading-tight" style={{ color: '#ffffff' }}>
         Genius Moments
       </h3>
-      <ul className="mt-4 space-y-2.5 list-disc pl-5">
+      <ul className="mt-5 space-y-3 list-disc pl-5">
         {[
           'Brings the live game into context',
           'Deploys deterministic fan segments',
           'Price: efficient',
           'Inventory: scaled',
         ].map((item) => (
-          <li key={item} className="font-body text-base" style={{ color: 'rgba(255,255,255,0.95)' }}>
+          <li key={item} className="font-body text-base lg:text-lg" style={{ color: 'rgba(255,255,255,0.95)' }}>
             {item}
           </li>
         ))}
       </ul>
+
+      {/* Bottom overlay: video (left, bleeds out) and Instagram ads (right, bleeds out), centered on card */}
+      <div
+        className="absolute bottom-0 left-0 right-0 flex items-center justify-center pb-0 overflow-visible"
+        style={{ transform: 'translateY(50%)' }}
+      >
+        <div className="flex items-center justify-center gap-0">
+          {/* Video: left side, bleeds out over left edge of Genius Moments card */}
+          <div className="relative w-[220px] shrink-0 -ml-4 pointer-events-auto">
+            <EmbeddedMomentDetection
+              src={MOMENTS_SAMPLE_VIDEO}
+              videoAlt="Moment detection sample"
+              loop
+              className="mb-0 rounded-lg shadow-lg"
+              style={{ borderColor: 'rgba(255,255,255,0.3)' }}
+            />
+          </div>
+
+          {/* Instagram ads: right side, bleeds out over right edge of Genius Moments card */}
+          <div className="shrink-0 min-w-[329px] flex items-center justify-end -mr-16 pointer-events-none">
+            <img
+              src={INSTAGRAM_ADS_IMAGE}
+              alt=""
+              aria-hidden
+              className="h-[175px] w-auto object-contain object-right"
+            />
+          </div>
+        </div>
+      </div>
     </motion.article>
   )
 }
@@ -226,7 +242,7 @@ export function WhatIsAMomentSection({ content }: WhatIsAMomentSectionProps) {
             The Sports Media Tradeoff
           </h3>
         </div>
-        <div className="mt-8 grid items-stretch gap-4 lg:mt-12 lg:gap-6 lg:grid-cols-[minmax(0,1fr)_72px_300px_72px_minmax(0,1fr)]">
+        <div className="mt-8 grid items-stretch gap-4 lg:mt-12 lg:gap-6 lg:grid-cols-[minmax(0,1fr)_72px_380px_72px_minmax(0,1fr)]">
           <div className="flex flex-col">
             <ComparisonCard
               title={content.contrastLeft.label}
@@ -240,7 +256,7 @@ export function WhatIsAMomentSection({ content }: WhatIsAMomentSectionProps) {
             <OutsideChecklist items={['✓ Precision', '✓ Scale', '✗ Emotion']} />
           </div>
           <ConnectorArrow direction="right" />
-          <div className="lg:-mt-1">
+          <div className="lg:-mt-1 overflow-visible">
             <GeniusMomentsBridgeCard reducedMotion={reducedMotion} />
           </div>
           <ConnectorArrow direction="left" />

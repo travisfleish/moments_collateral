@@ -125,7 +125,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
       className="relative pt-14 pb-24 md:pt-16 overflow-hidden"
       aria-labelledby="sequence-heading"
     >
-      <div className="section-shell-wide">
+      <div className="section-shell max-w-[1100px]">
         {/* Header */}
         {content.kicker ? (
           <Reveal>
@@ -141,7 +141,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
           </h2>
         </Reveal>
         <Reveal delay={0.12}>
-          <p className="section-copy max-w-2xl mb-16">
+          <p className="section-copy max-w-2xl mb-8">
             {content.subhead}
           </p>
         </Reveal>
@@ -209,6 +209,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: reduced ? 0.1 : 0.2, ease: 'easeInOut' }}
+                      className="max-w-[880px] mx-auto"
                     >
                       <EmbeddedMomentDetection
                         src={detectionStep.videoSrc}
@@ -224,6 +225,7 @@ export function MomentEngineSequence({ content }: MomentEngineSequenceProps) {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: reduced ? 0.1 : 0.25, ease: 'easeInOut' }}
+                      className="max-w-[820px] mx-auto"
                     >
                       <div
                         className="relative overflow-hidden rounded-brand border"

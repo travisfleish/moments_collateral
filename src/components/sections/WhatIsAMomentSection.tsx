@@ -7,7 +7,7 @@ interface WhatIsAMomentSectionProps {
   content: MomentEngineContent['whatIsAMoment']
 }
 
-const comparisonCardClassName = 'flex h-full flex-col rounded-2xl bg-gs-surface p-7 lg:h-[312px]'
+const comparisonCardClassName = 'flex h-full min-w-0 flex-col rounded-2xl bg-gs-surface p-7 lg:h-[312px]'
 const boldSubheadSentence =
   'Genius Moments brings both together, connecting real time fan emotion with scalable, data driven activation.'
 
@@ -70,7 +70,7 @@ const INSTAGRAM_ADS_IMAGE = '/instagram-ads.png'
 function GeniusMomentsBridgeCard({ reducedMotion }: { reducedMotion: boolean }) {
   return (
     <motion.article
-      className={`flex h-full flex-col rounded-2xl relative z-10 border border-[rgba(15,23,42,0.08)] p-7 lg:h-[340px] lg:scale-[1.06] overflow-visible`}
+      className={`flex h-full min-h-[380px] flex-col rounded-2xl relative z-10 border border-[rgba(15,23,42,0.08)] p-7 lg:min-h-[340px] lg:h-[340px] lg:scale-[1.06] overflow-visible`}
       initial={false}
       animate={{
         opacity: 1,
@@ -98,14 +98,14 @@ function GeniusMomentsBridgeCard({ reducedMotion }: { reducedMotion: boolean }) 
         ))}
       </ul>
 
-      {/* Bottom overlay: video (left, bleeds out) and Instagram ads (right, bleeds out), centered on card */}
+      {/* Bottom overlay: video (left) and Instagram ads (right); stacks on mobile, side-by-side on md+ */}
       <div
         className="absolute bottom-0 left-0 right-0 flex items-center justify-center pb-0 overflow-visible"
         style={{ transform: 'translateY(50%)' }}
       >
-        <div className="flex items-center justify-center gap-0">
-          {/* Video: left side, bleeds out over left edge of Genius Moments card */}
-          <div className="relative w-[220px] shrink-0 -ml-4 pointer-events-auto">
+        <div className="flex flex-col items-center justify-center gap-2 md:flex-row md:gap-0">
+          {/* Video: left side on md+, bleeds out over left edge on lg+ */}
+          <div className="relative w-[180px] shrink-0 md:w-[200px] md:-ml-2 lg:w-[220px] lg:-ml-4 pointer-events-auto">
             <EmbeddedMomentDetection
               src={MOMENTS_SAMPLE_VIDEO}
               videoAlt="Moment detection sample"
@@ -115,13 +115,13 @@ function GeniusMomentsBridgeCard({ reducedMotion }: { reducedMotion: boolean }) 
             />
           </div>
 
-          {/* Instagram ads: right side, bleeds out over right edge of Genius Moments card */}
-          <div className="shrink-0 min-w-[329px] flex items-center justify-end -mr-16 pointer-events-none">
+          {/* Instagram ads: right side on md+, bleeds out over right edge on lg+ */}
+          <div className="shrink-0 w-[240px] md:w-[260px] md:-mr-4 lg:min-w-[280px] lg:-mr-8 xl:min-w-[329px] xl:-mr-16 flex items-center justify-center md:justify-end pointer-events-none">
             <img
               src={INSTAGRAM_ADS_IMAGE}
               alt=""
               aria-hidden
-              className="h-[175px] w-auto object-contain object-right"
+              className="h-[140px] md:h-[155px] lg:h-[175px] w-auto object-contain object-center md:object-right"
             />
           </div>
         </div>
@@ -221,9 +221,9 @@ export function WhatIsAMomentSection({ content }: WhatIsAMomentSectionProps) {
     <section
       id="what-is-a-moment"
       aria-labelledby="what-is-a-moment-heading"
-      className="bg-white py-24 md:py-28"
+      className="overflow-x-hidden bg-white py-24 md:py-28"
     >
-      <div className="section-shell">
+      <div className="section-shell-wide">
         <div className="mx-auto max-w-4xl text-center">
           <h2
             id="what-is-a-moment-heading"
@@ -242,8 +242,8 @@ export function WhatIsAMomentSection({ content }: WhatIsAMomentSectionProps) {
             The Sports Media Tradeoff
           </h3>
         </div>
-        <div className="mt-8 grid items-stretch gap-4 lg:mt-12 lg:gap-6 lg:grid-cols-[minmax(0,1fr)_72px_380px_72px_minmax(0,1fr)]">
-          <div className="flex flex-col">
+        <div className="mt-8 grid items-stretch gap-4 md:grid-cols-3 lg:mt-12 lg:gap-6 lg:grid-cols-[minmax(260px,1fr)_72px_minmax(340px,400px)_72px_minmax(260px,1fr)]">
+          <div className="flex min-w-0 flex-col">
             <ComparisonCard
               title={content.contrastLeft.label}
               bullets={[
@@ -256,11 +256,11 @@ export function WhatIsAMomentSection({ content }: WhatIsAMomentSectionProps) {
             <OutsideChecklist items={['✓ Precision', '✓ Scale', '✗ Emotion']} />
           </div>
           <ConnectorArrow direction="right" />
-          <div className="lg:-mt-1 overflow-visible">
+          <div className="min-w-0 lg:-mt-1 overflow-visible">
             <GeniusMomentsBridgeCard reducedMotion={reducedMotion} />
           </div>
           <ConnectorArrow direction="left" />
-          <div className="flex flex-col">
+          <div className="flex min-w-0 flex-col">
             <ComparisonCard
               title={content.contrastRight.label}
               bullets={[

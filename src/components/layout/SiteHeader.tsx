@@ -26,7 +26,7 @@ export function SiteHeader() {
       className="fixed top-0 left-0 right-0 z-50 transition-opacity duration-200"
       style={{ opacity, pointerEvents: opacity < 0.01 ? 'none' : 'auto' }}
     >
-      <div className="section-shell flex h-24 items-center justify-between">
+      <div className="section-shell flex h-24 items-center justify-between pt-6">
         <a
           href="https://www.geniussports.com"
           target="_blank"

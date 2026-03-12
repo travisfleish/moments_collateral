@@ -102,7 +102,7 @@ function GeniusMomentsBridgeCard({ reducedMotion }: { reducedMotion: boolean }) 
         {[
           'Brings the live game into context',
           'Deploys deterministic fan segments',
-          'Price: low',
+          'Price: efficient',
           'Inventory: scaled',
         ].map((item) => (
           <li key={item} className="font-body text-base" style={{ color: 'rgba(255,255,255,0.95)' }}>
